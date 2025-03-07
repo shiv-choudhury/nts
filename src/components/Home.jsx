@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import MainLayout from "./MainLayout";
-import { getCategories } from "../apis/ApiCalls";
+import { getAboutUsData, getCategories } from "../apis/ApiCalls";
 import { toast } from "react-toastify";
 
 export default function Home() {
@@ -11,6 +11,7 @@ export default function Home() {
   const fetchCategories = async () => {
     try {
       const categories = await getCategories();
+      const about = await getAboutUsData();
       toast.success(" this is toast success");
       console.log(categories.data.data);
     } catch (error) {
