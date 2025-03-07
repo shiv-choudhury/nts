@@ -1,15 +1,18 @@
-import { useState } from "react";
+import { ToastContainer } from "react-toastify";
+import { BrowserRouter } from "react-router-dom";
+import { Toaster } from "react-hot-toast";
 
-import reactLogo from "./assets/react.svg";
-import viteLogo from "/vite.svg";
+import Router from "./components/routes/Router";
 import "./App.css";
 
 function App() {
-  const [count, setCount] = useState(0);
-
   return (
     <>
-      <div>hello</div>
+      <BrowserRouter>
+        <ToastContainer position="top-right" autoClose={5000} pauseOnHover />
+        <Toaster />
+        <Router />
+      </BrowserRouter>
     </>
   );
 }
