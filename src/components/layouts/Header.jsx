@@ -15,12 +15,9 @@ export default function Header() {
     try {
       const categories = await getCategories();
       const about = await getHeaderData();
-      const reviews = await getReviews();
-      console.log("ooo", reviews?.data);
 
       setAboutData(about?.data?.data);
       toast.success("Fetched data successfully");
-      console.log(categories.data.data);
     } catch (error) {
       console.error(error);
     }
