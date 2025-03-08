@@ -1,15 +1,8 @@
 import React, { useState, useEffect } from "react";
-import {
-  ChevronLeft,
-  ChevronRight,
-  Phone,
-  Mail,
-  Facebook,
-  Instagram
-} from "lucide-react";
+
+import { FacebookFilled, InstagramOutlined } from "@ant-design/icons";
 import Icon from "../Icon";
 
-// Sample reviews data - in a real application, you would import this from a JSON file
 const reviewsData = [
   {
     id: 1,
@@ -56,25 +49,16 @@ const reviewsData = [
   }
 ];
 
-// Review Stars component
-const ReviewStars = ({ rating }) => {
+const ReviewStars = ({ rating = 5 }) => {
   return (
     <div className="flex">
-      {[...Array(5)].map((_, i) => (
-        <svg
-          key={i}
-          className="w-4 h-4 md:w-5 md:h-5 text-orange-400"
-          fill="currentColor"
-          viewBox="0 0 20 20"
-        >
-          <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-        </svg>
+      {[...Array(rating)].map((_, i) => (
+        <Icon icon="star-fill" className="text-[#ffbb00]" />
       ))}
     </div>
   );
 };
 
-// Reviews Carousel component
 const ReviewsCarousel = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [visibleReviews, setVisibleReviews] = useState(3);
@@ -166,10 +150,10 @@ const ReviewsCarousel = () => {
         <div className="relative">
           <button
             onClick={prevSlide}
-            className="absolute left-0 top-1/2 -translate-y-1/2 bg-white p-1 md:p-2 rounded-full shadow-md z-10"
+            className="absolute left-0 top-1/2 -translate-y-1/2 bg-white p-1 md:p-2 rounded-full shadow-md z-10 flex items-center justify-center"
             aria-label="Previous review"
           >
-            <ChevronLeft size={20} />
+            <Icon icon="angle-left" />
           </button>
 
           <div className="flex overflow-hidden">
@@ -210,10 +194,10 @@ const ReviewsCarousel = () => {
 
           <button
             onClick={nextSlide}
-            className="absolute right-0 top-1/2 -translate-y-1/2 bg-white p-1 md:p-2 rounded-full shadow-md z-10"
+            className="absolute right-0 top-1/2 -translate-y-1/2 bg-white p-1 md:p-2 rounded-full shadow-md z-10 flex items-center justify-center"
             aria-label="Next review"
           >
-            <ChevronRight size={20} />
+            <Icon icon="angle-right" />
           </button>
         </div>
 
@@ -235,7 +219,6 @@ const ReviewsCarousel = () => {
   );
 };
 
-// Main Footer component
 const Footer = () => {
   return (
     <footer className="w-full">
@@ -256,17 +239,21 @@ const Footer = () => {
                 <p className="text-sm md:text-base">
                   Industrial Estate Nuneaton, CV11 6RP
                 </p>
-                <button className="bg-white text-gray-800 px-3 py-1 md:px-4 md:py-2 mt-2 md:mt-4 text-sm md:text-base font-medium">
+                <a
+                  href="https://www.google.com/maps/place/19+Slingsby+Cl,+Nuneaton+CV11+6RP,+UK/@52.514741,-1.449179,16z/data=!4m5!3m4!1s0x48774e24816d8e13:0x91ba7d1e6b2774a3!8m2!3d52.5147413!4d-1.4491792?hl=en-GB"
+                  target="_blank"
+                  className="bg-white text-gray-800 px-3 py-1 md:px-4 md:py-2 mt-2 md:mt-4 text-sm md:text-base font-medium"
+                >
                   Locate Us
-                </button>
+                </a>
 
                 <div className="flex items-center mt-2 md:mt-4">
-                  <Phone size={16} className="mr-2" />
+                  <Icon icon="phone" className="mr-2" />
                   <span className="text-sm md:text-base">024 7637 5531</span>
                 </div>
 
                 <div className="flex items-center">
-                  <Mail size={16} className="mr-2" />
+                  <Icon icon="envelope" className="mr-2" />
                   <span className="text-sm md:text-base">
                     info@naturaltilestone.co.uk
                   </span>
@@ -350,12 +337,20 @@ const Footer = () => {
               © 2025 Copyright The Natural Stone and Tiles Co. | All Rights
               Reserved
             </p>
-            <div className="flex space-x-4">
-              <a href="#" className="bg-blue-600 p-1 md:p-2 rounded-full">
-                <Facebook size={16} />
+            <div className="flex items-center space-x-4">
+              <a
+                href="https://www.facebook.com/NuneatonTiles/"
+                target="_blank"
+                className="flex items-center bg-blue-600 p-1 md:p-2 rounded-full"
+              >
+                <FacebookFilled className="text-white text-2xl" />
               </a>
-              <a href="#" className="bg-pink-600 p-1 md:p-2 rounded-full">
-                <Instagram size={16} />
+              <a
+                href="https://www.instagram.com/naturalstoneandtileco"
+                target="_blank"
+                className="flex items-center bg-pink-600 p-1 md:p-2 rounded-full"
+              >
+                <InstagramOutlined className="text-white text-2xl" />
               </a>
             </div>
           </div>
