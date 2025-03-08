@@ -90,6 +90,13 @@ const ReviewsCarousel = ({ reviewsData = [], stats = {}, loading }) => {
               {stats?.total_reviews} Reviews
             </span>
             <Icon icon="arrow-right" className="text-gray-500" />
+            <a
+              href="https://www.reviews.co.uk/company-reviews/store/natural-tiles-stone?utm_source=natural-tiles-stone&utm_medium=widget&utm_campaign=carousel"
+              target="_blank"
+              className="ml-2 text-xs md:text-base text-blue-600 "
+            >
+              Reviews.io
+            </a>
           </div>
         </div>
 
@@ -140,6 +147,13 @@ const ReviewsCarousel = ({ reviewsData = [], stats = {}, loading }) => {
 };
 
 const ReviewCard = ({ review, index, visibleReviews }) => {
+  const truncateLimit = 300;
+  const truncateComment = (comment) => {
+    if (!comment) return "";
+    if (comment.length <= truncateLimit) return comment;
+    return comment.substring(0, truncateLimit) + "...";
+  };
+
   return (
     <div
       key={index}
@@ -151,7 +165,7 @@ const ReviewCard = ({ review, index, visibleReviews }) => {
           : "w-full md:w-1/2 lg:w-1/3"
       }`}
     >
-      <div className="bg-white p-3 md:p-4 rounded shadow-xl">
+      <div className="bg-white p-3 md:p-4 rounded shadow-xl h-full min-h-56 flex flex-col">
         <div className="flex justify-between items-start mb-1 md:mb-2">
           <div>
             <p className="font-semibold text-sm md:text-base">
@@ -160,10 +174,10 @@ const ReviewCard = ({ review, index, visibleReviews }) => {
             <ReviewStars rating={review?.rating} />
           </div>
         </div>
-        <p className="text-xs md:text-sm mb-2 md:mb-3">
-          {review?.comments || "This review has no comments"}
+        <p className="text-xs md:text-sm mb-2 md:mb-3 flex-grow">
+          {truncateComment(review?.comments)}
         </p>
-        <div className="flex justify-between items-center text-xs text-gray-500">
+        <div className="flex justify-between items-center text-xs text-gray-500 mt-auto">
           <span className="flex items-center mr-2 md:mr-4">
             {/* <img
             src={review.third_party.widget_logo}
