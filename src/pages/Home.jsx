@@ -34,6 +34,16 @@ export default function Home() {
 const Container = ({ children, className = "" }) => {
   return (
     <main className="min-h-screen bg-gray-50">
+      <CookieConsentBanner />
+      <div className="container mx-auto px-4">
+        <ImageCarousel
+          carouselItems={[
+            "assets/banner1.png",
+            "assets/banner2.jpg",
+            "assets/banner1.png"
+          ]}
+        />
+      </div>
       {/* Hero/Banner section */}
       <div className="w-full bg-gray-200 py-12 md:py-24">
         <div className="container mx-auto px-4">

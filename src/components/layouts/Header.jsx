@@ -49,10 +49,11 @@ export default function Header() {
           </div>
         </div>
       </div>
-
-      <marquee className="hidden md:block text-sm text-red-600 font-medium bg-white">
-        Welcome to "The Natural Stone & Tile Co" - Save upto 50% on all tiles
-      </marquee>
+      <div className="container mx-auto">
+        <marquee className="hidden md:block text-sm text-red-600 font-medium bg-white">
+          Welcome to "The Natural Stone & Tile Co" - Save upto 50% on all tiles
+        </marquee>
+      </div>
 
       {/* Logo and search bar */}
       <div className="bg-white pt-2 pb-4">
