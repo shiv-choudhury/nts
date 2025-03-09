@@ -102,7 +102,7 @@ const ImageCarousel = ({ carouselItems = [] }) => {
             onClick={() => goToSlide(index)}
             className={`w-3 h-3 rounded-full transition-colors border border-white ${
               index === currentSlide
-                ? "bg-[#45b5e9]"
+                ? "bg-[#4563e9]"
                 : "bg-[#e2e2e2] bg-opacity-50"
             }`}
             aria-label={`Go to slide ${index + 1}`}

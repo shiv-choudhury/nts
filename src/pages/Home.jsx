@@ -40,7 +40,8 @@ const Container = ({ children, className = "" }) => {
           carouselItems={[
             "assets/banner1.png",
             "assets/banner2.jpg",
-            "assets/banner1.png"
+            "assets/banner1.png",
+            "assets/banner2.jpg"
           ]}
         />
       </div>
