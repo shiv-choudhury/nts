@@ -129,7 +129,7 @@ const ReviewsCarousel = ({ reviewsData = [], stats = {}, loading }) => {
         </div>
 
         {/* Review indicators/dots for mobile */}
-        <div className="flex justify-center mt-4">
+        <div className="hidden md:flex justify-center mt-4">
           {reviewsData.map((_, index) => (
             <button
               key={index}
@@ -165,7 +165,7 @@ const ReviewCard = ({ review, index, visibleReviews }) => {
           : "w-full md:w-1/2 lg:w-1/3"
       }`}
     >
-      <div className="bg-white p-3 md:p-4 rounded shadow-xl h-full min-h-56 flex flex-col">
+      <div className="bg-white p-3 md:p-4 rounded shadow-xl h-full min-h-48 md:min-h-56 flex flex-col">
         <div className="flex justify-between items-start mb-1 md:mb-2">
           <div>
             <p className="font-semibold text-sm md:text-base">
@@ -175,7 +175,7 @@ const ReviewCard = ({ review, index, visibleReviews }) => {
           </div>
         </div>
         <p className="text-xs md:text-sm mb-2 md:mb-3 flex-grow">
-          {truncateComment(review?.comments)}
+          {truncateComment(review?.comments) || "This review has no comment"}
         </p>
         <div className="flex justify-between items-center text-xs text-gray-500 mt-auto">
           <span className="flex items-center mr-2 md:mr-4">
