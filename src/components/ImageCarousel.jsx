@@ -55,7 +55,7 @@ const ImageCarousel = ({ carouselItems = [] }) => {
   return (
     <div className="relative w-full overflow-hidden">
       {/* Carousel Container */}
-      <div className="relative w-full h-96" style={{ height: "400px" }}>
+      <div className="relative w-full h-28 sm:h-96">
         {carouselItems.map((item, index) => (
           <div
             key={item?.id || index}
@@ -66,7 +66,7 @@ const ImageCarousel = ({ carouselItems = [] }) => {
             <img
               src={item}
               alt="banner"
-              className="w-full h-full object-cover"
+              className="w-full h-full object-contain sm:object-cover"
             />
             {/* <div className="absolute inset-0 bg-black bg-opacity-30 flex flex-col items-center justify-center text-white px-6">
               <h2 className="text-4xl font-bold mb-2 text-center">
@@ -84,14 +84,14 @@ const ImageCarousel = ({ carouselItems = [] }) => {
         className="absolute left-4 top-1/2 transform -translate-y-1/2 bg-white bg-opacity-50 hover:bg-opacity-75 rounded-full p-2 z-20 flex justify-center items-center"
         aria-label="Previous slide"
       >
-        <Icon icon="pi-angle-left" className="" />
+        <Icon icon="pi-angle-left" />
       </button>
       <button
         onClick={nextSlide}
         className="absolute right-4 top-1/2 transform -translate-y-1/2 bg-white bg-opacity-50 hover:bg-opacity-75 rounded-full p-2 z-20 flex justify-center items-center"
         aria-label="Next slide"
       >
-        <Icon icon="pi-angle-right" className="" />
+        <Icon icon="pi-angle-right" />
       </button>
 
       {/* Dots Navigation */}
