@@ -20,7 +20,7 @@ const Footer = () => {
       const reviews = await getReviews();
 
       setReviewsData(reviews?.data);
-      toast.success("Fetched Review successfully");
+      // toast.success("Fetched Review successfully");
     } catch (error) {
       console.error(error);
     } finally {
