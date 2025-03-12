@@ -37,13 +37,13 @@ const Navbar = () => {
   const [hoveredMenu, setHoveredMenu] = useState(null);
 
   return (
-    <nav className="hidden md:block bg-gray-800 text-white relative z-20">
-      <div className="container mx-auto w-full overflow-x-hidden">
-        <ul className="flex">
+    <nav className="hidden xl:block bg-gray-800 text-white text-sm relative z-20">
+      <div className="container mx-auto w-full">
+        <ul className="flex justify-center">
           {menuItems.map((item, index) => (
             <li
               key={index}
-              className={`relative px-4 py-3 hover:bg-gray-700 cursor-pointer flex items-center ${
+              className={`relative px-3 py-3 hover:bg-gray-700 cursor-pointer flex items-center ${
                 item.className || ""
               }`}
               onMouseEnter={() => setHoveredMenu(item.name)}
