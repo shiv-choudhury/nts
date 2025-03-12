@@ -2,9 +2,17 @@ import React, { useEffect, useState } from "react";
 
 import { getCategories, getHeaderData } from "../../apis/ApiCalls";
 import Icon from "../Icon";
+import useAppContext from "../context/UserContext";
+import Navbar from "./Navbar";
+import SideMenu from "./SideMenu";
+import SideModal from "./SideModal";
 
 export default function Header() {
+  const { userState, dispatch } = useAppContext();
+
   const [aboutData, setAboutData] = useState([]);
+  const [isOpen, setIsOpen] = useState(false);
+  const [openCart, setOpenCart] = useState(false);
 
   useEffect(() => {
     fetchCategories();
@@ -16,6 +24,10 @@ export default function Header() {
       const about = await getHeaderData();
 
       setAboutData(about?.data?.data);
+      dispatch({
+        type: "HEADER_DATA",
+        data: about?.data?.data
+      });
     } catch (error) {
       console.error(error);
     }
@@ -54,12 +66,14 @@ export default function Header() {
           Welcome to "The Natural Stone & Tile Co" - Save upto 50% on all tiles
         </marquee>
       </div>
-
       {/* Logo and search bar */}
       <div className="bg-white pt-2 pb-4">
         <div className="container mx-auto px-4 flex flex-wrap items-center justify-between">
           <div className="flex items-center">
-            <button className="md:hidden mr-1 md:mr-4 pt-4 pb-2 pr-2 hover:bg-gray-200">
+            <button
+              onClick={() => setIsOpen(true)}
+              className=" mr-1 md:mr-4 pt-4 pb-2 pr-2 hover:bg-gray-200"
+            >
               <Icon icon="pi-bars" className="text-2xl" />
             </button>
 
@@ -101,72 +115,25 @@ export default function Header() {
                 <span className="text-xs mt-1">Compare</span>
               </a>
 
-              <a
-                href="#"
-                className="relative flex flex-col items-center text-white border border-green-600 bg-green-600 px-2 py-2.5 rounded"
+              <button
+                onClick={() => setOpenCart(true)}
+                className="relative flex flex-col items-center text-white border border-green-600 bg-green-600 hover:bg-green-700 px-2 py-2.5 rounded"
               >
                 <Icon icon="shopping-cart" />
                 <span className="absolute -top-2 -right-2 bg-red-500 text-white rounded-full w-5 h-5 flex items-center justify-center text-xs">
                   0
                 </span>
                 {/* <span className="hidden md:block text-xs mt-1">Cart</span> */}
-              </a>
+              </button>
             </div>
           </div>
         </div>
       </div>
-
-      {/* Main navigation */}
-      <nav className="hidden md:block bg-gray-800 text-white">
-        {/* make the menus horizontal scrollable */}
-        <div className="container mx-auto w-full overflow-x-auto whitespace-nowrap hide-scrollbar">
-          <ul className="flex">
-            <li className="px-4 py-3 hover:bg-gray-700 cursor-pointer">WALL</li>
-            <li className="px-4 py-3 hover:bg-gray-700 cursor-pointer">
-              FLOOR
-            </li>
-            <li className="px-4 py-3 hover:bg-gray-700 cursor-pointer flex items-center">
-              BATHROOM <Icon icon="angle-down" />
-            </li>
-            <li className="px-4 py-3 hover:bg-gray-700 cursor-pointer flex items-center">
-              PORCELAIN <Icon icon="angle-down" />
-            </li>
-            <li className="px-4 py-3 hover:bg-gray-700 cursor-pointer flex items-center">
-              WOOD EFFECT <Icon icon="angle-down" />
-            </li>
-            <li className="px-4 py-3 hover:bg-gray-700 cursor-pointer flex items-center">
-              OUTDOOR <Icon icon="angle-down" />
-            </li>
-            <li className="px-4 py-3 hover:bg-gray-700 cursor-pointer flex items-center">
-              ACCESSORIES <Icon icon="angle-down" />
-            </li>
-            <li className="px-4 py-3 bg-red-600 hover:bg-red-700 cursor-pointer">
-              CLEARANCE
-            </li>
-            <li className="px-4 py-3 hover:bg-gray-700 cursor-pointer">
-              REAL IMAGES
-            </li>
-            <li className="px-4 py-3 hover:bg-gray-700 cursor-pointer">
-              CONTACT US
-            </li>
-            <li className="px-4 py-3 hover:bg-gray-700 cursor-pointer flex items-center">
-              OUTDOOR <Icon icon="angle-down" />
-            </li>
-            <li className="px-4 py-3 hover:bg-gray-700 cursor-pointer flex items-center">
-              ACCESSORIES <Icon icon="angle-down" />
-            </li>
-            <li className="px-4 py-3 bg-red-600 hover:bg-red-700 cursor-pointer">
-              CLEARANCE
-            </li>
-            <li className="px-4 py-3 hover:bg-gray-700 cursor-pointer">
-              REAL IMAGES
-            </li>
-            <li className="px-4 py-3 hover:bg-gray-700 cursor-pointer">
-              CONTACT US
-            </li>
-          </ul>
-        </div>
-      </nav>
+      <div className="">
+        <Navbar />
+      </div>
+      <SideModal isOpen={openCart} setIsOpen={setOpenCart} />
+      <SideMenu isOpen={isOpen} setIsOpen={setIsOpen} />
     </header>
   );
 }
