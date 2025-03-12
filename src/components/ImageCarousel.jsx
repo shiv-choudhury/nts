@@ -81,21 +81,21 @@ const ImageCarousel = ({ carouselItems = [] }) => {
       {/* Navigation Arrows */}
       <button
         onClick={prevSlide}
-        className="absolute left-4 top-1/2 transform -translate-y-1/2 bg-white bg-opacity-50 hover:bg-opacity-75 rounded-full p-2 z-20 flex justify-center items-center"
+        className="absolute left-4 top-1/2 transform -translate-y-1/2 bg-white bg-opacity-50 hover:bg-opacity-75 rounded-full p-2 z-10 flex justify-center items-center"
         aria-label="Previous slide"
       >
         <Icon icon="pi-angle-left" />
       </button>
       <button
         onClick={nextSlide}
-        className="absolute right-4 top-1/2 transform -translate-y-1/2 bg-white bg-opacity-50 hover:bg-opacity-75 rounded-full p-2 z-20 flex justify-center items-center"
+        className="absolute right-4 top-1/2 transform -translate-y-1/2 bg-white bg-opacity-50 hover:bg-opacity-75 rounded-full p-2 z-10 flex justify-center items-center"
         aria-label="Next slide"
       >
         <Icon icon="pi-angle-right" />
       </button>
 
       {/* Dots Navigation */}
-      <div className="absolute bottom-4 left-0 right-0 flex justify-center gap-2 z-20">
+      <div className="absolute bottom-4 left-0 right-0 flex justify-center gap-2 z-10">
         {carouselItems.map((_, index) => (
           <button
             key={index}
