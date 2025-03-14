@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 
 import { getCategories, getHeaderData } from "../../apis/ApiCalls";
 import Icon from "../Icon";
@@ -6,7 +7,6 @@ import useAppContext from "../context/UserContext";
 import Navbar from "./Navbar";
 import SideMenu from "./SideMenu";
 import SideModal from "./SideModal";
-import { Link } from "react-router-dom";
 
 export default function Header() {
   const { userState, dispatch } = useAppContext();

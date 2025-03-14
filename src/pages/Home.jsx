@@ -1,11 +1,11 @@
 import React, { useEffect } from "react";
 import { toast } from "react-toastify";
+import { Link } from "react-router-dom";
 
 import { getAboutUsData, getCategories } from "../apis/ApiCalls";
 import ProductCard from "../components/ProductCard";
 import ImageCarousel from "../components/ImageCarousel";
 import CookieConsentBanner from "../components/CookieConsentBanner";
-import { Link } from "react-router-dom";
 
 export default function Home(props) {
   const { children, className } = props;

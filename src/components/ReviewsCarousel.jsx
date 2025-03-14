@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
+
 import Icon from "./Icon";
 import Loader from "../pages/Loader";
-import { Link } from "react-router-dom";
 
 const ReviewsCarousel = ({ reviewsData = [], stats = {}, loading }) => {
   const [currentIndex, setCurrentIndex] = useState(0);

@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { toast } from "react-toastify";
+import { Link } from "react-router-dom";
 
 import { FacebookFilled, InstagramOutlined } from "@ant-design/icons";
 import Icon from "../Icon";
 import ReviewsCarousel from "../ReviewsCarousel";
 import { getReviews } from "../../apis/ApiCalls";
-import { Link } from "react-router-dom";
 
 const Footer = () => {
   const [reviewsData, setReviewsData] = useState([]);
