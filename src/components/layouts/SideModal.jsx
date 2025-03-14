@@ -1,10 +1,8 @@
-import { CloseOutlined } from "@ant-design/icons";
 import { useEffect } from "react";
+import { CloseOutlined } from "@ant-design/icons";
+import { AnimatePresence, motion } from "framer-motion";
 
-const SideModal = (props) => {
-  const { isOpen, setIsOpen } = props;
-  if (!isOpen) return null;
-
+const SideModal = ({ isOpen, setIsOpen }) => {
   const toggleMenu = () => setIsOpen(!isOpen);
 
   const closeMenu = (e) => {
@@ -24,28 +22,40 @@ const SideModal = (props) => {
   }, [isOpen]);
 
   return (
-    <div>
-      {/* Background overlay */}
-      <div
-        className="fixed inset-0 bg-black opacity-50 z-50"
-        onClick={closeMenu}
-      ></div>
+    <AnimatePresence>
+      {isOpen && (
+        <>
+          {/* Background Overlay */}
+          <motion.div
+            className="fixed inset-0 bg-black/50 z-50"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            onClick={closeMenu}
+          />
 
-      {/* Side modal (positioned on the right) */}
-      <div
-        className={`fixed top-0 right-0 h-full w-80 bg-white transform ${
-          isOpen ? "translate-x-0" : "translate-x-full"
-        } transition-transform sidemenu z-50 flex flex-col`}
-      >
-        <div className="p-4 flex justify-between items-center border-b border-gray-700">
-          <span className="text-lg font-bold">Cart</span>
-          <button className="" onClick={toggleMenu}>
-            <CloseOutlined className="mr-2 text-md" />
-          </button>
-        </div>
-        <div className="p-4">Cart content</div>
-      </div>
-    </div>
+          {/* Side Modal (Slides in from Right) */}
+          <motion.div
+            className="fixed top-0 right-0 h-full w-80 bg-white z-50 flex flex-col sidemenu shadow-lg"
+            initial={{ x: "100%" }}
+            animate={{ x: 0 }}
+            exit={{ x: "100%" }}
+            transition={{ duration: 0.3, ease: "easeInOut" }}
+          >
+            {/* Header */}
+            <div className="p-4 flex justify-between items-center border-b border-gray-300">
+              <span className="text-lg font-bold">Cart</span>
+              <button onClick={toggleMenu}>
+                <CloseOutlined className="mr-2 text-md" />
+              </button>
+            </div>
+
+            {/* Content */}
+            <div className="p-4">Cart content</div>
+          </motion.div>
+        </>
+      )}
+    </AnimatePresence>
   );
 };
 
