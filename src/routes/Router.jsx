@@ -2,6 +2,7 @@ import React, { Suspense } from "react";
 import { Route, Routes } from "react-router-dom";
 
 import MainLayout from "../components/layouts/MainLayout";
+import PageNotFound from "../pages/PageNotFound";
 import DynamicPage from "../components/DynamicPage";
 import Home from "../pages/Home";
 import Wishlist from "../pages/Wishlist";
@@ -18,6 +19,7 @@ export default function Router() {
           <Route path="/wishlist" element={<Wishlist />} />
           <Route path="/compare" element={<Compare />} />
           <Route path="/cart" element={<Cart />} />
+          <Route path="*" element={<PageNotFound />} />
         </Routes>
       </Suspense>
     </MainLayout>

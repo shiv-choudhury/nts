@@ -1,6 +1,7 @@
 import React from "react";
 import { useParams } from "react-router-dom";
 import useAppContext from "./context/UserContext";
+import PageNotFound from "../pages/PageNotFound";
 
 export default function DynamicPage() {
   const { pageUrl } = useParams();
@@ -10,13 +11,9 @@ export default function DynamicPage() {
 
   const page = headerData?.find((p) => p.pageId.pg_url_key === pageUrl);
 
-  // if (!page) {
-  //   return (
-  //     <MainLayout>
-  //       <h1>Page Not Found</h1>
-  //     </MainLayout>
-  //   );
-  // }
+  if (!page) {
+    return <PageNotFound />;
+  }
 
   return (
     <div>
