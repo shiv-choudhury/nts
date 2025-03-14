@@ -1,18 +1,21 @@
-import React, { Suspense } from "react";
+import React, { lazy, Suspense } from "react";
 import { Route, Routes } from "react-router-dom";
 
 import MainLayout from "../components/layouts/MainLayout";
-import PageNotFound from "../pages/PageNotFound";
-import DynamicPage from "../components/DynamicPage";
-import Home from "../pages/Home";
-import Wishlist from "../pages/Wishlist";
-import Compare from "../pages/Compare";
-import Cart from "../pages/Cart";
+import Loader from "../pages/Loader";
+
+//pages
+const Home = lazy(() => import("../pages/Home"));
+const Wishlist = lazy(() => import("../pages/Wishlist"));
+const Compare = lazy(() => import("../pages/Compare"));
+const Cart = lazy(() => import("../pages/Cart"));
+const PageNotFound = lazy(() => import("../pages/PageNotFound"));
+const DynamicPage = lazy(() => import("../components/DynamicPage"));
 
 export default function Router() {
   return (
     <MainLayout>
-      <Suspense fallback="Loading...">
+      <Suspense fallback={<Loader />}>
         <Routes>
           <Route path="/:pageUrl" element={<DynamicPage />} />
           <Route path="/" element={<Home />} />

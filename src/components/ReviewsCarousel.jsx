@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import Icon from "./Icon";
+import Loader from "../pages/Loader";
 
 const ReviewsCarousel = ({ reviewsData = [], stats = {}, loading }) => {
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -58,7 +59,7 @@ const ReviewsCarousel = ({ reviewsData = [], stats = {}, loading }) => {
   };
 
   if (loading) {
-    return <div className="w-full bg-white py-4 md:py-8">Loading... </div>;
+    return <Loader />;
   }
 
   return (
