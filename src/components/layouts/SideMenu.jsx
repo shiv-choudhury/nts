@@ -1,8 +1,9 @@
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import { Link } from "react-router-dom";
+
 import { CloseOutlined } from "@ant-design/icons";
 import useAppContext from "../context/UserContext";
-import { Link } from "react-router-dom";
 
 const SideMenu = ({ isOpen, setIsOpen }) => {
   const { userState } = useAppContext();

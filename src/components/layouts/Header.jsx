@@ -73,7 +73,7 @@ export default function Header() {
           <div className="flex items-center">
             <button
               onClick={() => setIsOpen(true)}
-              className="xl:hidden mr-1 md:mr-4 pt-4 pb-2 pr-2 hover:bg-gray-200"
+              className=" mr-1 md:mr-4 pt-4 pb-2 pr-2 hover:bg-gray-200" //xl:hidden
             >
               <Icon icon="pi-bars" className="text-2xl" />
             </button>

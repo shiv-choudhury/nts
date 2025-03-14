@@ -6,6 +6,8 @@ import { getAboutUsData, getCategories } from "../apis/ApiCalls";
 import ProductCard from "../components/ProductCard";
 import ImageCarousel from "../components/ImageCarousel";
 import CookieConsentBanner from "../components/CookieConsentBanner";
+import PromotionalHeader from "../components/PromotionalHeader";
+import CountdownBanner from "../components/CountdownBanner";
 
 export default function Home(props) {
   const { children, className } = props;
@@ -39,6 +41,8 @@ export default function Home(props) {
             ]}
           />
         </div>
+        <PromotionalHeader />
+        <CountdownBanner />
 
         {/* Hero/Banner section */}
         <div className="w-full bg-gray-200 py-12 md:py-24">
