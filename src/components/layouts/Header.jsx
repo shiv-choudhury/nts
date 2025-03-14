@@ -6,6 +6,7 @@ import useAppContext from "../context/UserContext";
 import Navbar from "./Navbar";
 import SideMenu from "./SideMenu";
 import SideModal from "./SideModal";
+import { Link } from "react-router-dom";
 
 export default function Header() {
   const { userState, dispatch } = useAppContext();
@@ -40,13 +41,13 @@ export default function Header() {
           <div className="hidden md:flex space-x-6 text-sm">
             <>
               {aboutData.map((item, index) => (
-                <a
+                <Link
                   key={item?.pageId?._id || index}
-                  href={item?.pageId?.pg_url_key}
+                  to={item?.pageId?.pg_url_key}
                   className="hover:text-blue-600"
                 >
                   {item?.headerName}
-                </a>
+                </Link>
               ))}
             </>
           </div>
@@ -55,9 +56,9 @@ export default function Header() {
             4:00pm | Sunday Closed
           </div>
           <div className="hidden md:block text-sm">
-            <a href="#" className="hover:text-blue-600">
+            <Link to="/login" className="hover:text-blue-600">
               Sign In / Register
-            </a>
+            </Link>
           </div>
         </div>
       </div>
@@ -77,13 +78,13 @@ export default function Header() {
               <Icon icon="pi-bars" className="text-2xl" />
             </button>
 
-            <a href="/" className="mr-2 md:mr-8">
+            <Link to="/" className="mr-2 md:mr-8">
               <img
                 src="/logo.png"
                 alt="The Natural Stone & Tile Co"
                 className="h-10 md:h-14"
               />
-            </a>
+            </Link>
           </div>
 
           <div className="mr-2 md:mr-4 relative flex-1">
@@ -99,21 +100,21 @@ export default function Header() {
 
           <div className="flex items-center space-x-4">
             <div className="flex items-center space-x-6">
-              <a
-                href="#"
+              <Link
+                to="/wishlist"
                 className="hidden md:flex flex-col items-center text-gray-600 hover:text-blue-600"
               >
                 <Icon icon="pi-heart" />
                 <span className="text-xs mt-1">Wishlist</span>
-              </a>
+              </Link>
 
-              <a
-                href="#"
+              <Link
+                to="/compare"
                 className="hidden md:flex flex-col items-center text-gray-600 hover:text-blue-600"
               >
                 <Icon icon="pi-shopping-bag" />
                 <span className="text-xs mt-1">Compare</span>
-              </a>
+              </Link>
 
               <button
                 onClick={() => setOpenCart(true)}

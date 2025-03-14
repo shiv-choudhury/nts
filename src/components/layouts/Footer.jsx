@@ -5,6 +5,7 @@ import { FacebookFilled, InstagramOutlined } from "@ant-design/icons";
 import Icon from "../Icon";
 import ReviewsCarousel from "../ReviewsCarousel";
 import { getReviews } from "../../apis/ApiCalls";
+import { Link } from "react-router-dom";
 
 const Footer = () => {
   const [reviewsData, setReviewsData] = useState([]);
@@ -51,13 +52,13 @@ const Footer = () => {
                 <p className="text-sm md:text-base">
                   Industrial Estate Nuneaton, CV11 6RP
                 </p>
-                <a
-                  href="https://www.google.com/maps/place/19+Slingsby+Cl,+Nuneaton+CV11+6RP,+UK/@52.514741,-1.449179,16z/data=!4m5!3m4!1s0x48774e24816d8e13:0x91ba7d1e6b2774a3!8m2!3d52.5147413!4d-1.4491792?hl=en-GB"
+                <Link
+                  to="https://www.google.com/maps/place/19+Slingsby+Cl,+Nuneaton+CV11+6RP,+UK/@52.514741,-1.449179,16z/data=!4m5!3m4!1s0x48774e24816d8e13:0x91ba7d1e6b2774a3!8m2!3d52.5147413!4d-1.4491792?hl=en-GB"
                   target="_blank"
                   className="bg-white text-gray-800 px-3 py-1 md:px-4 md:py-2 mt-2 md:mt-4 text-sm md:text-base font-medium"
                 >
                   Locate Us
-                </a>
+                </Link>
 
                 <div className="flex items-center mt-2 md:mt-4">
                   <Icon icon="phone" className="mr-2" />
@@ -150,20 +151,20 @@ const Footer = () => {
               Reserved
             </p>
             <div className="flex items-center space-x-4">
-              <a
-                href="https://www.facebook.com/NuneatonTiles/"
+              <Link
+                to="https://www.facebook.com/NuneatonTiles/"
                 target="_blank"
                 className="flex items-center bg-blue-600 p-1 md:p-2 rounded-full"
               >
                 <FacebookFilled className="text-white text-2xl" />
-              </a>
-              <a
-                href="https://www.instagram.com/naturalstoneandtileco"
+              </Link>
+              <Link
+                to="https://www.instagram.com/naturalstoneandtileco"
                 target="_blank"
                 className="flex items-center bg-pink-600 p-1 md:p-2 rounded-full"
               >
                 <InstagramOutlined className="text-white text-2xl" />
-              </a>
+              </Link>
             </div>
           </div>
         </div>

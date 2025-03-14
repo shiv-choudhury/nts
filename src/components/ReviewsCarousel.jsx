@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import Icon from "./Icon";
 import Loader from "../pages/Loader";
+import { Link } from "react-router-dom";
 
 const ReviewsCarousel = ({ reviewsData = [], stats = {}, loading }) => {
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -91,13 +92,13 @@ const ReviewsCarousel = ({ reviewsData = [], stats = {}, loading }) => {
               {stats?.total_reviews} Reviews
             </span>
             <Icon icon="arrow-right" className="text-gray-500" />
-            <a
-              href="https://www.reviews.co.uk/company-reviews/store/natural-tiles-stone?utm_source=natural-tiles-stone&utm_medium=widget&utm_campaign=carousel"
+            <Link
+              to="https://www.reviews.co.uk/company-reviews/store/natural-tiles-stone?utm_source=natural-tiles-stone&utm_medium=widget&utm_campaign=carousel"
               target="_blank"
               className="ml-2 text-xs md:text-base text-blue-600 "
             >
               Reviews.io
-            </a>
+            </Link>
           </div>
         </div>
 

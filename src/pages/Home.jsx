@@ -5,6 +5,7 @@ import { getAboutUsData, getCategories } from "../apis/ApiCalls";
 import ProductCard from "../components/ProductCard";
 import ImageCarousel from "../components/ImageCarousel";
 import CookieConsentBanner from "../components/CookieConsentBanner";
+import { Link } from "react-router-dom";
 
 export default function Home(props) {
   const { children, className } = props;
@@ -90,9 +91,9 @@ export default function Home(props) {
               <h2 className="text-xl md:text-2xl font-semibold text-gray-800">
                 Featured Products
               </h2>
-              <a href="#" className="text-blue-600 hover:text-blue-800">
+              <Link to="#" className="text-blue-600 hover:text-blue-800">
                 View All
-              </a>
+              </Link>
             </div>
 
             <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6">
