@@ -113,6 +113,42 @@ export default function Home(props) {
             </div>
           </div>
 
+          {/* bottom About section */}
+          <div className="w-full bg-gray-200 py-12 md:py-24">
+            <div className="container mx-auto px-4">
+              <div className="flex flex-col items-center text-center">
+                <h1 className="text-3xl md:text-5xl font-bold text-gray-800 mb-4">
+                  Natural Stone & Tiles
+                </h1>
+                <p className="text-lg md:text-md text-gray-600 mb-8">
+                  Welcome to The Natural Stone & Tiles Co. We specialize in
+                  designing and importing premium quality Natural Stone, Quartz
+                  & Porcelain floor & wall tiles. Our products are brought in
+                  direct from source, this means that we can bring you the very
+                  latest products at prices much lower than high street
+                  retailers. Contact one of our experienced Tile Consultants
+                  today, they are on-hand to answer all your product enquiries.
+                  If you have an enquiry or know more please call us at{" "}
+                  <a href="tel:02476375531" className="text-blue-600">
+                    024-76375531
+                  </a>
+                  or email the team at{" "}
+                  <a
+                    href="mailto:info@naturaltilestone.co.uk"
+                    className="text-blue-600"
+                  >
+                    info@naturaltilestone.co.uk
+                  </a>
+                </p>
+                <p>
+                  WE ARE EXTREMELY COMPETITIVE ON PRICE; OUR POLICY IS TO BETTER
+                  ANY LIKE FOR LIKE QUOTE.
+                </p>
+                <p>WE PROVIDE UK-WIDE DELIVERY.</p>
+              </div>
+            </div>
+          </div>
+
           {/* Custom content area */}
           {false && (
             <div
