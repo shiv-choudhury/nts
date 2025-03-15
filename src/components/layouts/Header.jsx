@@ -12,6 +12,7 @@ export default function Header() {
   const { userState, dispatch } = useAppContext();
 
   const [aboutData, setAboutData] = useState([]);
+  const [categories, setCategories] = useState([]);
   const [isOpen, setIsOpen] = useState(false);
   const [openCart, setOpenCart] = useState(false);
 
@@ -23,7 +24,7 @@ export default function Header() {
     try {
       const categories = await getCategories();
       const about = await getHeaderData();
-
+      setCategories(categories?.data?.data);
       setAboutData(about?.data?.data);
       dispatch({
         type: "HEADER_DATA",
@@ -131,10 +132,10 @@ export default function Header() {
         </div>
       </div>
       <div className="">
-        <Navbar />
+        <Navbar data={categories} />
       </div>
       <SideModal isOpen={openCart} setIsOpen={setOpenCart} />
-      <SideMenu isOpen={isOpen} setIsOpen={setIsOpen} />
+      <SideMenu isOpen={isOpen} setIsOpen={setIsOpen} data={categories} />
     </header>
   );
 }
