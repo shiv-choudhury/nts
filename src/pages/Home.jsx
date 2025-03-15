@@ -39,7 +39,6 @@ export default function Home(props) {
       console.error(error);
     }
   };
-  console.log("homeData", homeData?.bestseller);
 
   return (
     <div>
