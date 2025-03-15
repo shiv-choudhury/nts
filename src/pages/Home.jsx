@@ -1,37 +1,46 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import { Link } from "react-router-dom";
 
-import { getAboutUsData, getCategories } from "../apis/ApiCalls";
+import { getHomeData } from "../apis/ApiCalls";
 import CategoryCard from "../components/CategoryCard";
 import ProductCard from "../components/ProductCard";
 import ImageCarousel from "../components/ImageCarousel";
 import CookieConsentBanner from "../components/CookieConsentBanner";
 import PromotionalHeader from "../components/PromotionalHeader";
 import CountdownBanner from "../components/CountdownBanner";
+import WelcomePopup from "../components/WelcomePopup";
 
 export default function Home(props) {
   const { children, className } = props;
 
+  const [homeData, setHomeData] = useState({});
+
   useEffect(() => {
-    // fetchCategories();
+    fetchCategories();
   }, []);
 
   const fetchCategories = async () => {
     try {
-      const categories = await getCategories();
-      const about = await getAboutUsData();
-      toast.success(" this is toast success");
-      console.log(categories.data.data);
+      const resp = await getHomeData();
+      const { data, status, message } = resp.data;
+      if (status) {
+        setHomeData(data);
+      } else {
+        toast.error(message);
+      }
     } catch (error) {
-      console.log(error);
+      console.error(error);
     }
   };
 
   return (
     <div>
       <main className="bg-gray-50">
-        <CookieConsentBanner />
+        <div id="popups">
+          <WelcomePopup data={homeData?.popup} />
+          <CookieConsentBanner />
+        </div>
         <div className="container mx-auto">
           <ImageCarousel
             carouselItems={[
@@ -68,18 +77,6 @@ export default function Home(props) {
 
         {/* Main content area */}
         <div className="container mx-auto px-4 py-8 md:py-12">
-          {/* Category navigation */}
-          <div className="mb-8 md:mb-12">
-            <h2 className="text-xl md:text-2xl font-semibold mb-4 text-gray-800">
-              Shop By Category
-            </h2>
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-              {[1, 2, 3, 4].map((category) => (
-                <CategoryCard key={category} />
-              ))}
-            </div>
-          </div>
-
           {/* Featured products */}
           <div className="mb-8 md:mb-12">
             <div className="flex justify-between items-center mb-4">
@@ -94,6 +91,18 @@ export default function Home(props) {
             <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6">
               {[1, 2, 3, 4, 5, 6, 7, 8].map((item) => (
                 <ProductCard key={item} />
+              ))}
+            </div>
+          </div>
+
+          {/* Category navigation */}
+          <div className="mb-8 md:mb-12">
+            <h2 className="text-xl md:text-2xl font-semibold mb-4 text-gray-800">
+              Shop By Category
+            </h2>
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+              {[1, 2, 3, 4].map((item) => (
+                <CategoryCard key={item} />
               ))}
             </div>
           </div>
