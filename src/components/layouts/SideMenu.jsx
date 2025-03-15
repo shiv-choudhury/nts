@@ -122,7 +122,11 @@ const SideMenu = (props) => {
                       }`}
                     >
                       <div className="flex justify-between items-center">
-                        <Link to={`/${category.slug}`} className="block">
+                        <Link
+                          onClick={() => setIsOpen(false)}
+                          to={`/${category.slug}`}
+                          className="block"
+                        >
                           {category.name}
                         </Link>
                         {/* Toggle Button for Submenu */}
@@ -152,7 +156,10 @@ const SideMenu = (props) => {
                                   key={sub._id}
                                   className="py-2 text-gray-400 hover:text-white"
                                 >
-                                  <Link to={`/${category.slug}/${sub.slug}`}>
+                                  <Link
+                                    onClick={() => setIsOpen(false)}
+                                    to={`/${category.slug}/${sub.slug}`}
+                                  >
                                     {sub.name}
                                   </Link>
                                 </li>
@@ -167,7 +174,11 @@ const SideMenu = (props) => {
                       className="py-3 border-b border-gray-700 hover:bg-gray-800"
                     >
                       <div className="flex justify-between items-center">
-                        <Link to={`/${item?.slug}`} className="block">
+                        <Link
+                          onClick={() => setIsOpen(false)}
+                          to={item?.url}
+                          className="block"
+                        >
                           {item?.name}
                         </Link>
                       </div>

@@ -60,7 +60,7 @@ const Navbar = ({ data }) => {
               key={item.name}
               className="px-3 py-3 hover:bg-gray-700 cursor-pointer"
             >
-              <Link to={`/${item?.url}`}>{item?.name}</Link>
+              <Link to={item?.url}>{item?.name}</Link>
             </li>
           ))}
         </ul>
