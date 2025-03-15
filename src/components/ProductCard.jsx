@@ -15,7 +15,7 @@ export default function ProductCard(props) {
         <img
           src={`${imageBaseUrl}${data?.images[0]}`}
           onError={(e) => {
-            e.target.src = `${imageBaseUrl}${data?.images[1]}`;
+            e.target.src = `assets/product.jpg`;
           }}
           alt="Product"
           className="w-full h-full object-cover hover:scale-110 transition-transform duration-500"
