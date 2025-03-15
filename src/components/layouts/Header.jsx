@@ -43,7 +43,7 @@ export default function Header() {
               {aboutData.map((item, index) => (
                 <Link
                   key={item?.pageId?._id || index}
-                  to={item?.pageId?.pg_url_key}
+                  to={`pages/${item?.pageId?.pg_url_key}`}
                   className="hover:text-blue-600"
                 >
                   {item?.headerName}

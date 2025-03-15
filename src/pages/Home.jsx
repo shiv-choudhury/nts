@@ -10,9 +10,11 @@ import CookieConsentBanner from "../components/CookieConsentBanner";
 import PromotionalHeader from "../components/PromotionalHeader";
 import CountdownBanner from "../components/CountdownBanner";
 import WelcomePopup from "../components/WelcomePopup";
+import useAppContext from "../components/context/UserContext";
 
 export default function Home(props) {
   const { children, className } = props;
+  const { userState, dispatch } = useAppContext();
 
   const [homeData, setHomeData] = useState({});
 
@@ -26,6 +28,10 @@ export default function Home(props) {
       const { data, status, message } = resp.data;
       if (status) {
         setHomeData(data);
+        dispatch({
+          type: "HOME_PAGE_DATA",
+          data: data
+        });
       } else {
         toast.error(message);
       }
@@ -51,8 +57,8 @@ export default function Home(props) {
             ]}
           />
         </div>
-        <PromotionalHeader />
-        <CountdownBanner />
+        <PromotionalHeader data={homeData?.aboutdelivery} />
+        <CountdownBanner data={homeData?.offers} />
 
         {/* Hero/Banner section */}
         {false && (

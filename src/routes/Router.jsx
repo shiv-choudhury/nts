@@ -19,7 +19,7 @@ export default function Router() {
       <Suspense fallback={<Loader />}>
         <Routes>
           <Route path="/" element={<Home />} />
-          <Route path="/:pageUrl" element={<DynamicPage />} />
+          <Route path="pages/:pageUrl" element={<DynamicPage />} />
           <Route path="/category/:pageUrl" element={<ProductsPage />} />
           <Route path="/subcategory/:pageUrl" element={<ProductsPage />} />
           <Route path="/wishlist" element={<Wishlist />} />

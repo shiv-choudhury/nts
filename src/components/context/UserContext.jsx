@@ -16,6 +16,8 @@ function appReducer(userState, action) {
       return { ...userState, userData: action.data };
     case "HEADER_DATA":
       return { ...userState, headerData: action.data };
+    case "HOME_PAGE_DATA":
+      return { ...userState, homePageData: action.data };
     default:
       return userState;
   }
