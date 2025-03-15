@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 
 import Icon from "./Icon";
 
-const PromotionalHeader = ({ data = [] }) => {
+const PromotionalBanner = ({ data = [] }) => {
   const icon = {
     0: <Icon icon="wallet" className="mr-2 text-white text-2xl" />,
     1: <Icon icon="wallet" className="mr-2 text-white text-2xl" />,
@@ -39,4 +39,4 @@ const PromotionalHeader = ({ data = [] }) => {
   );
 };
 
-export default PromotionalHeader;
+export default PromotionalBanner;

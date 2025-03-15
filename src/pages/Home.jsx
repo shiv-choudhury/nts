@@ -7,7 +7,7 @@ import CategoryCard from "../components/CategoryCard";
 import ProductCard from "../components/ProductCard";
 import ImageCarousel from "../components/ImageCarousel";
 import CookieConsentBanner from "../components/CookieConsentBanner";
-import PromotionalHeader from "../components/PromotionalHeader";
+import PromotionalBanner from "../components/PromotionalBanner";
 import CountdownBanner from "../components/CountdownBanner";
 import WelcomePopup from "../components/WelcomePopup";
 import useAppContext from "../components/context/UserContext";
@@ -57,7 +57,7 @@ export default function Home(props) {
             ]}
           />
         </div>
-        <PromotionalHeader data={homeData?.aboutdelivery} />
+        <PromotionalBanner data={homeData?.aboutdelivery} />
         <CountdownBanner data={homeData?.offers} />
 
         {/* Hero/Banner section */}
