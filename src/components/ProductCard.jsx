@@ -9,7 +9,7 @@ export default function ProductCard(props) {
         <img
           src="assets/product.jpg"
           alt="Product"
-          className="w-full h-full object-cover"
+          className="w-full h-full object-cover hover:scale-110 transition-transform duration-500"
         />
         <span className="absolute top-2 right-2 bg-red-500 text-white text-xs px-2 py-1 rounded">
           SALE

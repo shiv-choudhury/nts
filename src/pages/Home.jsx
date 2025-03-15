@@ -3,6 +3,7 @@ import { toast } from "react-toastify";
 import { Link } from "react-router-dom";
 
 import { getAboutUsData, getCategories } from "../apis/ApiCalls";
+import CategoryCard from "../components/CategoryCard";
 import ProductCard from "../components/ProductCard";
 import ImageCarousel from "../components/ImageCarousel";
 import CookieConsentBanner from "../components/CookieConsentBanner";
@@ -73,21 +74,8 @@ export default function Home(props) {
               Shop By Category
             </h2>
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-              {[
-                "Wall Tiles",
-                "Floor Tiles",
-                "Bathroom Tiles",
-                "Outdoor Tiles"
-              ].map((category) => (
-                <div
-                  key={category}
-                  className="bg-white rounded-lg shadow hover:shadow-md transition-shadow p-4 text-center cursor-pointer"
-                >
-                  <div className="bg-gray-200 h-32 md:h-40 mb-3 rounded flex items-center justify-center">
-                    <span className="text-gray-400">Image</span>
-                  </div>
-                  <h3 className="font-medium">{category}</h3>
-                </div>
+              {[1, 2, 3, 4].map((category) => (
+                <CategoryCard key={category} />
               ))}
             </div>
           </div>
