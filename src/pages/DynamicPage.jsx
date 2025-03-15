@@ -1,8 +1,8 @@
 import React from "react";
 import { useParams } from "react-router-dom";
 
-import useAppContext from "./context/UserContext";
-import PageNotFound from "../pages/PageNotFound";
+import useAppContext from "../components/context/UserContext";
+import PageNotFound from "./PageNotFound";
 
 export default function DynamicPage() {
   const { pageUrl } = useParams();

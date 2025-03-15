@@ -16,6 +16,21 @@ export const getHeaderData = (payload) => {
   return ApiMethods.postResponse(url, payload);
 };
 
+export const getHomeData = (payload) => {
+  let url = `home`;
+  return ApiMethods.postResponse(url, payload);
+};
+
+export const getRealImages = (payload) => {
+  let url = `realimage`;
+  return ApiMethods.postResponse(url, payload);
+};
+
+export const getProducts = (product) => {
+  let url = `getproducts/${product}`;
+  return ApiMethods.postResponse(url);
+};
+
 export const getReviews = async (config) => {
   const resp = await axios({
     method: "get",
