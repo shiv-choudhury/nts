@@ -2,12 +2,21 @@ import { ApartmentOutlined } from "@ant-design/icons";
 import Icon from "./Icon";
 
 export default function ProductCard(props) {
+  const { data } = props;
+  const imageBaseUrl = "https://naturaltilestone.co.uk/public/upload/product/";
+
   return (
-    <div className="bg-white rounded-lg shadow hover:shadow-lg transition-shadow overflow-hidden relative group">
+    <div
+      key={data?.id}
+      className="bg-white rounded-lg shadow hover:shadow-lg transition-shadow overflow-hidden relative group"
+    >
       {/* Product Image */}
       <div className="relative h-40 md:h-48">
         <img
-          src="assets/product.jpg"
+          src={`${imageBaseUrl}${data?.images[0]}`}
+          onError={(e) => {
+            e.target.src = `${imageBaseUrl}${data?.images[1]}`;
+          }}
           alt="Product"
           className="w-full h-full object-cover hover:scale-110 transition-transform duration-500"
         />
@@ -17,16 +26,28 @@ export default function ProductCard(props) {
 
         {/* Icons Overlay (Hidden by default, visible on hover) */}
         <div className="absolute bottom-2 left-1/2 transform -translate-x-1/2 flex space-x-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-          <button className="bg-white p-2 rounded-full shadow">
+          <button
+            title="Add to Cart"
+            className="bg-white p-2 rounded-full shadow hover:cursor-pointer"
+          >
             <Icon icon="shopping-bag" className="text-lg" />
           </button>
-          <button className="bg-white p-2 rounded-full shadow">
+          <button
+            title="Add to Wishlist"
+            className="bg-white p-2 rounded-full shadow hover:cursor-pointer"
+          >
             <Icon icon="heart" className="text-lg" />
           </button>
-          <button className="bg-white p-2 rounded-full shadow">
+          <button
+            title="Quickview"
+            className="bg-white p-2 rounded-full shadow hover:cursor-pointer"
+          >
             <Icon icon="search" className="text-lg" />
           </button>
-          <button className="bg-white p-2 rounded-full shadow">
+          <button
+            title="Add to Compare"
+            className="bg-white p-2 rounded-full shadow hover:cursor-pointer"
+          >
             <ApartmentOutlined className="text-lg" />
           </button>
         </div>
@@ -34,21 +55,23 @@ export default function ProductCard(props) {
 
       {/* Product Details */}
       <div className="p-3 md:p-4">
-        <h3 className="font-medium text-sm md:text-base mb-1">
-          Natural Stone Tile
-        </h3>
+        <h3 className="font-medium text-sm md:text-base mb-1">{data?.name}</h3>
         <div className="flex justify-between items-center">
           <div>
             <span className="text-gray-500 line-through text-xs md:text-sm">
-              £59.99
+              £{data?.price?.price}
             </span>
-            <span className="text-black font-bold ml-2">£49.99</span>
+            <span className="text-black font-bold ml-2">
+              £{data?.price?.ourPrice}
+            </span>{" "}
+            <span> per m</span>
+            <sup>2</sup>
           </div>
         </div>
         <div className="flex justify-between items-center">
           <div>
-            Size:
-            <span className="font-bold">100 x 360</span>
+            Size:{" "}
+            <span className="font-bold">{data?.tilesPerfection?.sizeMM}</span>
           </div>
           <button className="bg-blue-600 hover:bg-blue-700 text-white text-xs md:text-sm pt-2 pb-1 px-2 rounded">
             <Icon icon="shopping-cart" className="text-2xl" />

@@ -39,6 +39,7 @@ export default function Home(props) {
       console.error(error);
     }
   };
+  console.log("homeData", homeData?.bestseller);
 
   return (
     <div>
@@ -83,20 +84,32 @@ export default function Home(props) {
 
         {/* Main content area */}
         <div className="container mx-auto px-4 py-8 md:py-12">
-          {/* Featured products */}
+          {/* Best sellers */}
           <div className="mb-8 md:mb-12">
             <div className="flex justify-between items-center mb-4">
-              <h2 className="text-xl md:text-2xl font-semibold text-gray-800">
-                Featured Products
+              <h2 className="text-xl md:text-2xl font-semibold text-blue-800">
+                Best Sellers
               </h2>
-              <Link to="#" className="text-blue-600 hover:text-blue-800">
-                View All
-              </Link>
             </div>
 
             <div className="grid grid-cols-1 xs:grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 md:gap-6">
-              {[1, 2, 3, 4, 5, 6, 7, 8].map((item) => (
-                <ProductCard key={item} />
+              {homeData?.bestseller?.map((item) => (
+                <ProductCard data={item} />
+              ))}
+            </div>
+          </div>
+
+          {/* Best sellers */}
+          <div className="mb-8 md:mb-12">
+            <div className="flex justify-between items-center mb-4">
+              <h2 className="text-xl md:text-2xl font-semibold text-blue-800">
+                Trending Products
+              </h2>
+            </div>
+
+            <div className="grid grid-cols-1 xs:grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 md:gap-6">
+              {homeData?.toproduct?.map((item) => (
+                <ProductCard data={item} />
               ))}
             </div>
           </div>
