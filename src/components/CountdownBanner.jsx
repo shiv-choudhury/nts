@@ -10,35 +10,33 @@ const CountdownBanner = () => {
 
   const [offerEnded, setOfferEnded] = useState(true);
 
-  // For demonstration purposes, we could set a future date to countdown to
   useEffect(() => {
-    // Uncomment and modify this to set a future date for the countdown
-    /*
     const targetDate = new Date();
-    targetDate.setDate(targetDate.getDate() + 3); // 3 days from now
-    
+    targetDate.setDate(targetDate.getDate() + 3);
+
     const interval = setInterval(() => {
       const now = new Date();
       const difference = targetDate - now;
-      
+
       if (difference <= 0) {
         setOfferEnded(true);
         clearInterval(interval);
         return;
       }
-      
+
       setOfferEnded(false);
-      
+
       const days = Math.floor(difference / (1000 * 60 * 60 * 24));
-      const hours = Math.floor((difference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+      const hours = Math.floor(
+        (difference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)
+      );
       const minutes = Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60));
       const seconds = Math.floor((difference % (1000 * 60)) / 1000);
-      
+
       setTimeRemaining({ days, hours, minutes, seconds });
     }, 1000);
-    
+
     return () => clearInterval(interval);
-    */
   }, []);
 
   return (
@@ -50,38 +48,19 @@ const CountdownBanner = () => {
 
         {offerEnded ? (
           <div className="text-red-500 text-2xl font-bold mb-6">
-            OFFER HAS BEEN ENDED!
+            OFFER HAS ENDED!
           </div>
         ) : null}
 
-        <div className="flex justify-center space-x-4">
-          <div className="flex flex-col items-center">
-            <div className="bg-white text-red-600 w-20 h-16 flex items-center justify-center text-3xl font-bold rounded">
-              {timeRemaining.days}
+        <div className="flex flex-col md:flex-row justify-center items-center md:space-x-4 space-y-4 md:space-y-0">
+          {Object.entries(timeRemaining).map(([label, value]) => (
+            <div key={label} className="flex flex-col items-center">
+              <div className="bg-white text-red-600 w-20 h-16 flex items-center justify-center text-3xl font-bold rounded">
+                {value}
+              </div>
+              <span className="mt-2 capitalize">{label}</span>
             </div>
-            <span className="mt-2">Days</span>
-          </div>
-
-          <div className="flex flex-col items-center">
-            <div className="bg-white text-red-600 w-20 h-16 flex items-center justify-center text-3xl font-bold rounded">
-              {timeRemaining.hours}
-            </div>
-            <span className="mt-2">Hours</span>
-          </div>
-
-          <div className="flex flex-col items-center">
-            <div className="bg-white text-red-600 w-20 h-16 flex items-center justify-center text-3xl font-bold rounded">
-              {timeRemaining.minutes}
-            </div>
-            <span className="mt-2">Minutes</span>
-          </div>
-
-          <div className="flex flex-col items-center">
-            <div className="bg-white text-red-600 w-20 h-16 flex items-center justify-center text-3xl font-bold rounded">
-              {timeRemaining.seconds}
-            </div>
-            <span className="mt-2">Seconds</span>
-          </div>
+          ))}
         </div>
       </div>
     </div>

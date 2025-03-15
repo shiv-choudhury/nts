@@ -94,7 +94,7 @@ export default function Home(props) {
               </Link>
             </div>
 
-            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6">
+            <div className="grid grid-cols-1 xs:grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 md:gap-6">
               {[1, 2, 3, 4, 5, 6, 7, 8].map((item) => (
                 <ProductCard key={item} />
               ))}
@@ -106,7 +106,7 @@ export default function Home(props) {
             <h2 className="text-xl md:text-2xl font-semibold mb-4 text-gray-800">
               Shop By Category
             </h2>
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+            <div className="grid grid-cols-1 xs:grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 md:gap-6">
               {[1, 2, 3, 4].map((item) => (
                 <CategoryCard key={item} />
               ))}
