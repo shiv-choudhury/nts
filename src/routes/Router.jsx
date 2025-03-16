@@ -14,6 +14,7 @@ const DynamicPage = lazy(() => import("../pages/DynamicPage"));
 const ProductsPage = lazy(() => import("../pages/ProductsPage"));
 const Gallery = lazy(() => import("../pages/Gallery"));
 const Contact = lazy(() => import("../pages/Contact"));
+const ProductDetailPage = lazy(() => import("../pages/ProductDetailPage"));
 
 export default function Router() {
   return (
@@ -22,8 +23,15 @@ export default function Router() {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="pages/:pageUrl" element={<DynamicPage />} />
-          <Route path="/category/:pageUrl" element={<ProductsPage />} />
-          <Route path="/subcategory/:pageUrl" element={<ProductsPage />} />
+          <Route path="/category/:categoryName" element={<ProductsPage />} />
+          <Route
+            path="/subcategory/:subcategoryName"
+            element={<ProductsPage />}
+          />
+          <Route
+            path="/product/details/:slug"
+            element={<ProductDetailPage />}
+          />
           <Route path="/gallery" element={<Gallery />} />
           <Route path="/contact" element={<Contact />} />
           <Route path="/wishlist" element={<Wishlist />} />

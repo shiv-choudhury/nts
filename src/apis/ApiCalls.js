@@ -31,6 +31,21 @@ export const getProducts = (product) => {
   return ApiMethods.postResponse(url);
 };
 
+export const getSubCategories = (product) => {
+  let url = `subcategories/${product}`;
+  return ApiMethods.postResponse(url);
+};
+
+export const getProductDetails = (slug) => {
+  let url = `getproductdetils/${slug}`;
+  return ApiMethods.postResponse(url);
+};
+
+export const addToFavorites = (payload) => {
+  let url = `favorites/add`;
+  return ApiMethods.postResponse(url, payload);
+};
+
 export const getReviews = async (config) => {
   const resp = await axios({
     method: "get",

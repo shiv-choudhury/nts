@@ -1,8 +1,12 @@
 import { ApartmentOutlined } from "@ant-design/icons";
+import { useNavigate } from "react-router-dom";
+
 import Icon from "./Icon";
 
 export default function ProductCard(props) {
+  const navigate = useNavigate();
   const { data } = props;
+
   const imageBaseUrl = "https://naturaltilestone.co.uk/public/upload/product/";
 
   return (
@@ -16,6 +20,9 @@ export default function ProductCard(props) {
           src={`${imageBaseUrl}${data?.images[0]}`}
           onError={(e) => {
             e.target.src = `assets/product.jpg`;
+          }}
+          onClick={() => {
+            navigate(`/product/details/${data?.slug}`);
           }}
           alt="Product"
           className="w-full h-full object-cover hover:scale-110 transition-transform duration-500"
