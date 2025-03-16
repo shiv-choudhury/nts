@@ -38,8 +38,8 @@ export default function Header() {
     <header className="w-full">
       {/* Top navigation bar */}
       <div className="bg-white border-b border-gray-300">
-        <div className="container mx-auto px-4 py-2 flex flex-wrap justify-between items-center">
-          <div className="hidden md:flex space-x-6 text-sm">
+        <div className="w-full lg:container mx-auto px-4 py-2 flex flex-wrap justify-between items-center">
+          <div className="hidden lg:flex space-x-6 text-sm">
             <>
               {aboutData.map((item, index) => (
                 <Link
@@ -63,14 +63,14 @@ export default function Header() {
           </div>
         </div>
       </div>
-      <div className="container mx-auto">
+      <div className="w-full lg:container mx-auto">
         <marquee className="hidden md:block text-sm text-red-600 font-medium bg-white">
           Welcome to "The Natural Stone & Tile Co" - Save upto 50% on all tiles
         </marquee>
       </div>
       {/* Logo and search bar */}
       <div className="bg-white pt-2 pb-4">
-        <div className="container mx-auto px-4 flex flex-wrap items-center justify-between">
+        <div className="w-full lg:container mx-auto px-4 flex flex-wrap items-center justify-between">
           <div className="flex items-center">
             <button
               onClick={() => setIsOpen(true)}

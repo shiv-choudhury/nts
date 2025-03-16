@@ -7,7 +7,7 @@ export default function MainLayout(props) {
   return (
     <div>
       <Header />
-      <div className="container mx-auto p-4">{children}</div>
+      <div className="w-full lg:container mx-auto p-4">{children}</div>
       <Footer />
     </div>
   );

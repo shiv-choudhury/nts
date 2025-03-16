@@ -69,7 +69,7 @@ const ReviewsCarousel = ({ reviewsData = [], stats = {}, loading }) => {
 
   return (
     <div className="w-full bg-white py-4 md:py-8">
-      <div className="container mx-auto px-4">
+      <div className="w-full lg:container mx-auto px-4">
         <div className="flex flex-col items-center mb-4 md:mb-6">
           <div className="flex items-center mb-1 md:mb-2">
             <span className="text-base md:text-lg font-bold mr-2">
