@@ -1,4 +1,5 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
+import { ApartmentOutlined } from "@ant-design/icons";
 import { Link } from "react-router-dom";
 
 import { getCategories, getHeaderData } from "../../apis/ApiCalls";
@@ -9,12 +10,23 @@ import SideMenu from "./SideMenu";
 import SideModal from "./SideModal";
 
 export default function Header() {
+  const headerRef = useRef(null);
+
   const { userState, dispatch } = useAppContext();
 
   const [aboutData, setAboutData] = useState([]);
   const [categories, setCategories] = useState([]);
   const [isOpen, setIsOpen] = useState(false);
   const [openCart, setOpenCart] = useState(false);
+
+  useEffect(() => {
+    if (headerRef.current) {
+      headerRef.current.scrollIntoView({
+        behavior: "smooth",
+        block: "start"
+      });
+    }
+  }, [window.location.pathname]);
 
   useEffect(() => {
     fetchCategories();
@@ -35,7 +47,7 @@ export default function Header() {
     }
   };
   return (
-    <header className="w-full">
+    <header ref={headerRef} id="header" className="w-full">
       {/* Top navigation bar */}
       <div className="bg-white border-b border-gray-300">
         <div className="w-full lg:container mx-auto px-4 py-2 flex flex-wrap justify-between items-center">
@@ -113,7 +125,7 @@ export default function Header() {
                 to="/compare"
                 className="hidden md:flex flex-col items-center text-gray-600 hover:text-blue-600"
               >
-                <Icon icon="pi-shopping-bag" />
+                <ApartmentOutlined className="text-xl" />
                 <span className="text-xs mt-1">Compare</span>
               </Link>
 

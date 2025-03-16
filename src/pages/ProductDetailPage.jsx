@@ -3,6 +3,7 @@ import { useParams } from "react-router-dom";
 
 import { getProductDetails } from "../apis/ApiCalls";
 import Icon from "../components/Icon";
+import { ApartmentOutlined } from "@ant-design/icons";
 
 const ProductDetailPage = () => {
   const { slug } = useParams();
@@ -57,20 +58,29 @@ const ProductDetailPage = () => {
       "Suitable with underfloor heating"
     ],
     specifications: [
-      { name: "Finish (Appearance)", value: "Polished" },
-      { name: "Material", value: "Porcelain" },
-      { name: "Glaze", value: "Glazed" },
-      { name: "Rectified", value: "No" },
-      { name: "Thickness (mm)", value: "9" },
+      {
+        name: "Finish (Appearance)",
+        value: productDetails?.tilesPerfection?.appearance
+      },
+      { name: "Material", value: productDetails?.tilesPerfection?.material },
+      { name: "Glaze", value: productDetails?.tilesPerfection?.glaze },
+      { name: "Rectified", value: productDetails?.tilesPerfection?.rectified },
+      {
+        name: "Thickness (mm)",
+        value: productDetails?.tilesPerfection?.thickness
+      },
       {
         name: "Recommended Room",
-        value: "Wall, Floor, Bathroom, Conservatory, Hall, Kitchen"
+        value: productDetails?.tilesPerfection?.recommendedRoom
       },
-      { name: "Type", value: "Wall,Floor" },
-      { name: "Size (mm)", value: "600x600mm" },
-      { name: "Wastage(%)", value: "10%" },
-      { name: "Print", value: "HD,Digital" },
-      { name: "Usage", value: "Wall,Floor" }
+      { name: "Type", value: productDetails?.tilesPerfection?.type },
+      { name: "Size (mm)", value: productDetails?.tilesPerfection?.sizeMM },
+      {
+        name: "Wastage(%)",
+        value: productDetails?.tilesPerfection?.wastage + "%"
+      },
+      { name: "Print", value: productDetails?.tilesPerfection?.print },
+      { name: "Usage", value: productDetails?.tilesPerfection?.usage }
     ]
   };
 
@@ -150,19 +160,19 @@ const ProductDetailPage = () => {
         <div className="lg:w-2/3 md:w-1/2 p-2">
           <div className="bg-white p-6 rounded-md shadow-sm">
             <h1 className="text-xl font-medium text-gray-800 mb-4">
-              {productData.name}
+              {productDetails.name}
             </h1>
 
             <div className="bg-green-500 text-white inline-block px-2 py-1 text-xs rounded mb-4">
-              IN STOCK
+              Confim this: IN STOCK
             </div>
 
             <div className="mb-4">
               <span className="text-gray-500 line-through mr-2">
-                £{productData.price}
+                £{productDetails?.price?.price}
               </span>
               <span className="text-red-500 text-2xl font-medium">
-                £{productData.ourPrice}
+                £{productDetails?.price?.ourPrice}
               </span>
               <span className="text-gray-600 text-sm ml-2">Per M2</span>
             </div>
@@ -170,19 +180,22 @@ const ProductDetailPage = () => {
             <div className="space-y-2 mb-6">
               <div className="flex">
                 <span className="w-28 text-gray-600">Brand:</span>
-                <span className="text-gray-800">{productData.brand}</span>
+                <span className="text-gray-800">{productDetails.brand}</span>
               </div>
               <div className="flex">
                 <span className="w-28 text-gray-600">Size:</span>
-                <span className="text-gray-800">{productData.size}</span>
+                <span className="text-gray-800">
+                  {productDetails?.tilesPerfection?.sizeMM}
+                </span>
               </div>
               <div className="flex">
                 <span className="w-28 text-gray-600">Product Code:</span>
-                <span className="text-gray-800">{productData.productCode}</span>
+                <span className="text-gray-800">{productDetails?.sku}</span>
               </div>
               <div className="flex">
                 <span className="w-28 text-gray-600">Availability:</span>
                 <span className="text-gray-800">
+                  Confim this:
                   {productData.availability}
                 </span>
               </div>
@@ -193,7 +206,7 @@ const ProductDetailPage = () => {
               <div className="flex items-center border rounded">
                 <button
                   onClick={decrementQuantity}
-                  className="px-3 py-1 border-r hover:bg-gray-100"
+                  className="px-3 py-1 border-r hover:bg-gray-100 rounded"
                 >
                   −
                 </button>
@@ -205,7 +218,7 @@ const ProductDetailPage = () => {
                 />
                 <button
                   onClick={incrementQuantity}
-                  className="px-3 py-1 border-l hover:bg-gray-100"
+                  className="px-3 py-1 border-l hover:bg-gray-100 rounded"
                 >
                   +
                 </button>
@@ -221,12 +234,12 @@ const ProductDetailPage = () => {
                 <Icon icon="heart" className="" />
               </button>
               <button className="border border-gray-300 hover:bg-gray-100 px-2 py-2 rounded">
-                <Icon icon="arrow-right-arrow-left" className="" />
+                <ApartmentOutlined className="text-lg" />
               </button>
             </div>
 
             <button className="w-full bg-teal-500 hover:bg-teal-600 text-white px-4 py-2 rounded mb-4">
-              ORDER FULL TILE SAMPLE (£4.99)
+              ORDER FULL TILE SAMPLE (Confim this: £4.99)
             </button>
 
             <div className="text-sm text-gray-600 mb-2">
