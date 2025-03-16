@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 
 import { getProductDetails } from "../apis/ApiCalls";
 import Icon from "../components/Icon";
@@ -69,10 +69,6 @@ const ProductDetailPage = () => {
         name: "Thickness (mm)",
         value: productDetails?.tilesPerfection?.thickness
       },
-      {
-        name: "Recommended Room",
-        value: productDetails?.tilesPerfection?.recommendedRoom
-      },
       { name: "Type", value: productDetails?.tilesPerfection?.type },
       { name: "Size (mm)", value: productDetails?.tilesPerfection?.sizeMM },
       {
@@ -80,7 +76,11 @@ const ProductDetailPage = () => {
         value: productDetails?.tilesPerfection?.wastage + "%"
       },
       { name: "Print", value: productDetails?.tilesPerfection?.print },
-      { name: "Usage", value: productDetails?.tilesPerfection?.usage }
+      { name: "Usage", value: productDetails?.tilesPerfection?.usage },
+      {
+        name: "Recommended Room",
+        value: productDetails?.tilesPerfection?.recommendedRoom
+      }
     ]
   };
 
@@ -106,7 +106,9 @@ const ProductDetailPage = () => {
     <div className="max-w-7xl mx-auto bg-gray-50 min-h-screen">
       {/* Breadcrumb */}
       <div className="p-4 text-sm text-gray-500">
-        <span className="hover:text-gray-700 cursor-pointer">Home</span>
+        <Link to="/" className="hover:text-blue-700 cursor-pointer">
+          Home
+        </Link>
         <span className="mx-2">&gt;</span>
         <span className="text-gray-700">Products Details</span>
       </div>
@@ -118,7 +120,7 @@ const ProductDetailPage = () => {
             {productDetails?.images && productDetails.images.length > 0 && (
               <img
                 src={`${imageBaseUrl}${productDetails?.images[currentImage]}`}
-                alt="Foggy light grey polished tile"
+                alt={productDetails?.name}
                 className="w-full h-auto object-cover aspect-square"
               />
             )}
@@ -260,6 +262,16 @@ const ProductDetailPage = () => {
             </div>
           </div>
         </div>
+      </div>
+
+      <div className="p-4">
+        <h2 className="text-2xl font-medium text-center text-gray-800 mb-6">
+          Description
+        </h2>
+        <div
+          className="text-center text-gray-600"
+          dangerouslySetInnerHTML={{ __html: productData.description }}
+        ></div>
       </div>
 
       {/* Key Features */}
