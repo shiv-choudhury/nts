@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import { ApartmentOutlined } from "@ant-design/icons";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 
 import { getCategories, getHeaderData } from "../../apis/ApiCalls";
 import Icon from "../Icon";
@@ -11,6 +11,7 @@ import SideModal from "./SideModal";
 
 export default function Header() {
   const headerRef = useRef(null);
+  const location = useLocation();
 
   const { userState, dispatch } = useAppContext();
 
@@ -26,7 +27,7 @@ export default function Header() {
         block: "start"
       });
     }
-  }, [window.location.pathname]);
+  }, [location.pathname]);
 
   useEffect(() => {
     fetchCategories();

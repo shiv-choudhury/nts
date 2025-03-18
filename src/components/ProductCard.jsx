@@ -1,11 +1,16 @@
+import { useState } from "react";
 import { ApartmentOutlined } from "@ant-design/icons";
 import { useNavigate } from "react-router-dom";
 
 import Icon from "./Icon";
+import ProductDetailQuickview from "../pages/ProductDetailQuickview";
 
 export default function ProductCard(props) {
   const navigate = useNavigate();
   const { data } = props;
+
+  const [slug, setSlug] = useState(false);
+  const [openQuickview, setOpenQuickview] = useState(false);
 
   const imageBaseUrl = "https://naturaltilestone.co.uk/public/upload/product/";
 
@@ -14,6 +19,15 @@ export default function ProductCard(props) {
       key={data?.id}
       className="bg-white rounded-lg shadow hover:shadow-lg transition-shadow overflow-hidden relative group"
     >
+      <div id="popup">
+        {openQuickview && (
+          <ProductDetailQuickview
+            isOpen={openQuickview}
+            onClose={() => setOpenQuickview(false)}
+            slug={slug}
+          />
+        )}
+      </div>
       {/* Product Image */}
       <div className="relative h-40 md:h-48">
         <img
@@ -32,28 +46,32 @@ export default function ProductCard(props) {
         </span>
 
         {/* Icons Overlay (Hidden by default, visible on hover) */}
-        <div className="absolute bottom-2 left-1/2 transform -translate-x-1/2 flex space-x-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+        <div className="absolute bottom-2 left-1/2 transform -translate-x-1/2 flex space-x-2 opacity-100 sm:opacity-0 sm:group-hover:opacity-100 transition-opacity duration-300">
           <button
             title="Add to Cart"
-            className="bg-white p-2 rounded-full shadow hover:cursor-pointer"
+            className="bg-white p-2 rounded-full shadow hover:cursor-pointer flex items-center justify-center"
           >
             <Icon icon="shopping-bag" className="text-lg" />
           </button>
           <button
             title="Add to Wishlist"
-            className="bg-white p-2 rounded-full shadow hover:cursor-pointer"
+            className="bg-white p-2 rounded-full shadow hover:cursor-pointer flex items-center justify-center"
           >
             <Icon icon="heart" className="text-lg" />
           </button>
           <button
+            onClick={() => {
+              setOpenQuickview(true);
+              setSlug(data?.slug);
+            }}
             title="Quickview"
-            className="bg-white p-2 rounded-full shadow hover:cursor-pointer"
+            className="bg-white p-2 rounded-full shadow hover:cursor-pointer flex items-center justify-center"
           >
             <Icon icon="search" className="text-lg" />
           </button>
           <button
             title="Add to Compare"
-            className="bg-white p-2 rounded-full shadow hover:cursor-pointer"
+            className="bg-white p-2 rounded-full shadow hover:cursor-pointer flex items-center justify-center"
           >
             <ApartmentOutlined className="text-lg" />
           </button>
