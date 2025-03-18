@@ -1,14 +1,15 @@
 import React, { useEffect, useState } from "react";
+import { ApartmentOutlined } from "@ant-design/icons";
 import { Link, useParams } from "react-router-dom";
 
 import { getProductDetails } from "../apis/ApiCalls";
 import Icon from "../components/Icon";
-import { ApartmentOutlined } from "@ant-design/icons";
+import { imageBaseUrl1 } from "../components/utils/constants";
 
 const ProductDetailPage = () => {
   const { slug } = useParams();
 
-  const imageBaseUrl = "https://naturaltilestone.co.uk/public/upload/product/";
+  const imageBaseUrl = imageBaseUrl1;
 
   const [quantity, setQuantity] = useState(1);
   const [currentImage, setCurrentImage] = useState(0);
@@ -33,13 +34,6 @@ const ProductDetailPage = () => {
   };
 
   const productData = {
-    name: "Foggy light grey polished 60X60 mm Premium Porcelain Wall & Floor Tile",
-    price: 45.99,
-    ourPrice: 23.99,
-    brand: "Natural Tile Stone",
-    size: "600x600mm",
-    productCode: "CI-Foglightgrey60x60",
-    availability: "800SqM (In Stock )",
     keyFeatures: [
       "Authentic Marble effect tile replicates real marble",
       "polished finish",
@@ -101,6 +95,8 @@ const ProductDetailPage = () => {
   const prevImage = () => {
     setCurrentImage(currentImage - 1);
   };
+
+  const inStock = Number(productDetails?.stock) > 0;
 
   return (
     <div className="max-w-7xl mx-auto bg-gray-50 min-h-screen">
@@ -165,8 +161,12 @@ const ProductDetailPage = () => {
               {productDetails.name}
             </h1>
 
-            <div className="bg-green-500 text-white inline-block px-2 py-1 text-xs rounded mb-4">
-              Confim this: IN STOCK
+            <div
+              className={`text-white inline-block px-2 py-1 text-xs font-semibold rounded mb-4 ${
+                inStock ? "bg-green-500" : "bg-red-500"
+              }`}
+            >
+              {inStock ? "IN STOCK" : "Out Of Stock"}
             </div>
 
             <div className="mb-4">
@@ -176,13 +176,15 @@ const ProductDetailPage = () => {
               <span className="text-red-500 text-2xl font-medium">
                 £{productDetails?.price?.ourPrice}
               </span>
-              <span className="text-gray-600 text-sm ml-2">Per M2</span>
+              <span className="text-gray-600 text-sm ml-2">
+                per m<sup>2</sup>
+              </span>
             </div>
 
             <div className="space-y-2 mb-6">
               <div className="flex">
                 <span className="w-28 text-gray-600">Brand:</span>
-                <span className="text-gray-800">{productDetails.brand}</span>
+                <span className="text-gray-800">{productDetails?.brand}</span>
               </div>
               <div className="flex">
                 <span className="w-28 text-gray-600">Size:</span>
@@ -197,18 +199,17 @@ const ProductDetailPage = () => {
               <div className="flex">
                 <span className="w-28 text-gray-600">Availability:</span>
                 <span className="text-gray-800">
-                  Confim this:
-                  {productData.availability}
+                  {productDetails?.stock} SqM
                 </span>
               </div>
             </div>
 
             <div className="flex items-center mb-4">
-              <span className="mr-4 text-gray-600">Sqm(QTY)</span>
+              <span className="mr-4 text-gray-600">SqM(QTY)</span>
               <div className="flex items-center border rounded">
                 <button
                   onClick={decrementQuantity}
-                  className="px-3 py-1 border-r hover:bg-gray-100 rounded"
+                  className="px-3 py-1 border-r hover:bg-gray-100 rounded cursor-pointer"
                 >
                   −
                 </button>
@@ -220,7 +221,7 @@ const ProductDetailPage = () => {
                 />
                 <button
                   onClick={incrementQuantity}
-                  className="px-3 py-1 border-l hover:bg-gray-100 rounded"
+                  className="px-3 py-1 border-l hover:bg-gray-100 rounded cursor-pointer"
                 >
                   +
                 </button>
@@ -228,20 +229,20 @@ const ProductDetailPage = () => {
             </div>
 
             <div className="flex flex-wrap gap-2 mb-4">
-              <button className="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded flex items-center">
+              <button className="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded flex items-center cursor-pointer">
                 <Icon icon="shopping-cart" className="mr-2" />
                 ADD TO CART
               </button>
-              <button className="border border-gray-300 hover:bg-gray-100 px-2 py-2 rounded">
+              <button className="border border-gray-300 hover:bg-gray-100 px-2 py-2 rounded cursor-pointer">
                 <Icon icon="heart" className="" />
               </button>
-              <button className="border border-gray-300 hover:bg-gray-100 px-2 py-2 rounded">
+              <button className="border border-gray-300 hover:bg-gray-100 px-2 py-2 rounded cursor-pointer">
                 <ApartmentOutlined className="text-lg" />
               </button>
             </div>
 
-            <button className="w-full bg-teal-500 hover:bg-teal-600 text-white px-4 py-2 rounded mb-4">
-              ORDER FULL TILE SAMPLE (Confim this: £4.99)
+            <button className="w-full bg-teal-500 hover:bg-teal-600 text-white px-4 py-2 rounded mb-4 cursor-pointer">
+              ORDER FULL TILE SAMPLE (£{productDetails?.price?.ourFullCutPrice})
             </button>
 
             <div className="text-sm text-gray-600 mb-2">
@@ -264,15 +265,17 @@ const ProductDetailPage = () => {
         </div>
       </div>
 
-      <div className="p-4">
-        <h2 className="text-2xl font-medium text-center text-gray-800 mb-6">
-          Description
-        </h2>
-        <div
-          className="text-center text-gray-600"
-          dangerouslySetInnerHTML={{ __html: productData.description }}
-        ></div>
-      </div>
+      {productDetails?.description && (
+        <div className="p-4">
+          <h2 className="text-2xl font-medium text-center text-gray-800 mb-6">
+            Description
+          </h2>
+          <div
+            className="text-center text-gray-600"
+            dangerouslySetInnerHTML={{ __html: productDetails?.description }}
+          ></div>
+        </div>
+      )}
 
       {/* Key Features */}
       <div className="p-4">
@@ -316,7 +319,7 @@ const ProductDetailPage = () => {
         <div className="overflow-x-auto">
           <table className="w-full border-collapse">
             <tbody>
-              {productData.specifications.map((spec, index) => (
+              {productData?.specifications.map((spec, index) => (
                 <tr
                   key={index}
                   className={index % 2 === 0 ? "bg-gray-50" : "bg-white"}
