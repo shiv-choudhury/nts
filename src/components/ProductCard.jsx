@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 
 import Icon from "./Icon";
 import ProductDetailQuickview from "../pages/ProductDetailQuickview";
+import CompareModal from "./CompareModal";
 
 export default function ProductCard(props) {
   const navigate = useNavigate();
@@ -11,6 +12,7 @@ export default function ProductCard(props) {
 
   const [slug, setSlug] = useState(false);
   const [openQuickview, setOpenQuickview] = useState(false);
+  const [openCompare, setOpenCompare] = useState(false);
 
   const imageBaseUrl = "https://naturaltilestone.co.uk/public/upload/product/";
 
@@ -25,6 +27,12 @@ export default function ProductCard(props) {
             isOpen={openQuickview}
             onClose={() => setOpenQuickview(false)}
             slug={slug}
+          />
+        )}
+        {openCompare && (
+          <CompareModal
+            isOpen={openCompare}
+            onClose={() => setOpenCompare(false)}
           />
         )}
       </div>
@@ -47,12 +55,12 @@ export default function ProductCard(props) {
 
         {/* Icons Overlay (Hidden by default, visible on hover) */}
         <div className="absolute bottom-2 left-1/2 transform -translate-x-1/2 flex space-x-2 opacity-100 sm:opacity-0 sm:group-hover:opacity-100 transition-opacity duration-300">
-          <button
+          {/* <button
             title="Add to Cart"
             className="bg-white p-2 rounded-full shadow hover:cursor-pointer flex items-center justify-center"
           >
             <Icon icon="shopping-bag" className="text-lg" />
-          </button>
+          </button> */}
           <button
             title="Add to Wishlist"
             className="bg-white p-2 rounded-full shadow hover:cursor-pointer flex items-center justify-center"
@@ -70,6 +78,7 @@ export default function ProductCard(props) {
             <Icon icon="search" className="text-lg" />
           </button>
           <button
+            onClick={() => setOpenCompare(true)}
             title="Add to Compare"
             className="bg-white p-2 rounded-full shadow hover:cursor-pointer flex items-center justify-center"
           >
@@ -86,7 +95,7 @@ export default function ProductCard(props) {
             <span className="text-gray-500 line-through text-xs md:text-sm">
               £{data?.price?.price}
             </span>
-            <span className="text-black font-bold ml-2">
+            <span className="text-red-500 font-bold ml-2">
               £{data?.price?.ourPrice}
             </span>{" "}
             <span> per m</span>
