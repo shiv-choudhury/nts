@@ -108,6 +108,7 @@ export default function ProductDetailQuickview(props) {
       showHeader={true}
       isOpen={isOpen}
       onClose={onClose}
+      closeOnOutsideClick={true}
     >
       <div className="">
         {loading ? (

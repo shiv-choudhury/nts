@@ -40,7 +40,7 @@ const CountdownBanner = () => {
   }, []);
 
   return (
-    <div className="w-full bg-black text-white py-8">
+    <div className="w-full bg-black text-white py-8 px-4">
       <div className="container mx-auto text-center">
         <h1 className="text-3xl font-bold mb-6">
           HUGE SAVINGS, MASSIVE DISCOUNTS!

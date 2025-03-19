@@ -79,8 +79,8 @@ const ProductComparisonModal = () => {
 
         <div className="md:col-span-4 flex flex-col md:flex-row md:items-center space-y-2 md:space-y-0 md:space-x-4 justify-end">
           <button
+            className="bg-red-600 text-white px-4 py-2 text-sm font-medium rounded-md hover:bg-gray-700"
             onClick={handleClearAll}
-            className="text-sm text-gray-500 hover:text-gray-700"
           >
             Clear All
           </button>

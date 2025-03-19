@@ -18,7 +18,8 @@ const Modal = (props) => {
     saving = false,
     saveBtnText = "Save",
     showSaveBtn = true,
-    saveDisabled = false
+    saveDisabled = false,
+    closeOnOutsideClick = false
   } = props;
 
   // Prevent background scrolling when modal is open
@@ -46,19 +47,16 @@ const Modal = (props) => {
   const modalContent = (
     <>
       <div
-        className="fixed inset-0 z-50 bg-black/50"
         onClick={() => {
-          console.log("Overlay clicked");
-          onClose();
+          if (closeOnOutsideClick) {
+            onClose();
+          }
         }}
-      ></div>
-
-      <div className="fixed inset-0 z-50 flex items-center justify-center">
+        className="fixed inset-0 z-50  bg-black/50 flex items-center justify-center"
+      >
         <div
           className={`relative w-full flex flex-col max-h-[calc(100%-64px)] ${sizeClasses[size]} w-[calc(100%-64px)] mx-2 md:mx-16 bg-white rounded-xl shadow-lg overflow-hidden`}
-          onClick={(e) => {
-            e.stopPropagation();
-          }}
+          onClick={(e) => e.stopPropagation()} // Prevent closing when clicking inside
         >
           {/* Modal Header */}
           {showHeader && (
