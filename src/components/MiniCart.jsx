@@ -2,8 +2,10 @@ import React from "react";
 import SideModal from "./layouts/SideModal";
 import Icon from "./Icon";
 import Counter from "./Counter";
+import { useNavigate } from "react-router-dom";
 
 export default function MiniCart(props) {
+  const navigate = useNavigate();
   const { isOpen, setIsOpen } = props;
 
   return (
@@ -37,7 +39,13 @@ export default function MiniCart(props) {
 
           {/* Buttons - Stacked on small screens, side by side on large screens */}
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-            <button className="bg-gray-900 text-white py-3 rounded-lg font-medium text-sm hover:bg-gray-700 transition">
+            <button
+              onClick={() => {
+                navigate("/cart");
+                setIsOpen(false);
+              }}
+              className="bg-gray-900 text-white py-3 rounded-lg font-medium text-sm hover:bg-gray-700 transition"
+            >
               View Cart
             </button>
             <button className="bg-red-600 text-white py-3 rounded-lg font-medium text-sm hover:bg-red-700 transition">
