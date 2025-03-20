@@ -1,27 +1,50 @@
-import React, { useState } from "react";
+import React from "react";
 import SideModal from "./layouts/SideModal";
 import Icon from "./Icon";
 import Counter from "./Counter";
 
 export default function MiniCart(props) {
   const { isOpen, setIsOpen } = props;
-  // const [isOpen, setIsOpen] = useState(false);
+
   return (
     <SideModal
       title="Mini Cart"
       isOpen={isOpen}
       setIsOpen={setIsOpen}
-      contentStyle="!p-0 flex h-screen"
+      contentStyle="p-0 flex flex-col h-full"
     >
-      <div className="p-2 flex flex-col justify-between h-full">
-        <div className="overflow-y-auto">
+      <div className="flex flex-col h-full">
+        <div className="flex-1 overflow-auto p-2">
           {Array(14)
             .fill(0)
-            .map((item, index) => (
+            .map((_, index) => (
               <MiniCartCard key={index} />
             ))}
         </div>
-        <div>Footer content</div>
+
+        {/* Sticky Footer (Ensures It Stays at Bottom) */}
+        <div className="p-4 bg-white shadow-lg border-t border-gray-200 sticky bottom-0">
+          {/* Subtotal */}
+          <div className="flex justify-between items-center text-lg font-semibold text-gray-900 mb-2">
+            <span>Subtotal:</span>
+            <span className="text-red-600">£1999</span>
+          </div>
+
+          {/* Shipping Info */}
+          <p className="text-xs text-gray-500 mb-4">
+            Shipping, taxes, and discounts codes calculated at checkout.
+          </p>
+
+          {/* Buttons - Stacked on small screens, side by side on large screens */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            <button className="bg-gray-900 text-white py-3 rounded-lg font-medium text-sm hover:bg-gray-700 transition">
+              View Cart
+            </button>
+            <button className="bg-red-600 text-white py-3 rounded-lg font-medium text-sm hover:bg-red-700 transition">
+              Checkout
+            </button>
+          </div>
+        </div>
       </div>
     </SideModal>
   );
@@ -29,9 +52,9 @@ export default function MiniCart(props) {
 
 const MiniCartCard = () => {
   return (
-    <div className="p-2 mb-2 relative flex justify-between items-center bg-white rounded-lg shadow-lg border border-gray-200 transition-all hover:shadow-2xl">
+    <div className="p-2 mb-2 relative flex items-center bg-white rounded-lg shadow-lg border border-gray-200 transition-all hover:shadow-2xl">
       {/* Left Section (Title, Price & Counter) */}
-      <div className="mr-3 flex-1">
+      <div className="flex-1 pr-3">
         <div className="text-sm font-medium text-gray-900 mb-2 line-clamp-2">
           Very very very long very long very Product title
         </div>
@@ -52,10 +75,10 @@ const MiniCartCard = () => {
         />
       </div>
 
-      {/* Remove Button */}
+      {/* Remove Button - Positioned Properly */}
       <button
         title="Remove"
-        className="absolute -top-2 -right-2 text-xs bg-white text-gray-800 rounded-full w-6 h-6 flex items-center justify-center font-bold hover:bg-gray-50 hover:text-white transition-all"
+        className="absolute top-0 right-0 text-xs bg-white text-gray-800 rounded-lg w-6 h-6 flex items-center justify-center font-bold hover:bg-gray-50 hover:text-white transition-all"
       >
         <Icon icon="times" className="text-xs text-red-600" />
       </button>
