@@ -7,7 +7,7 @@ import Icon from "../Icon";
 import useAppContext from "../context/UserContext";
 import Navbar from "./Navbar";
 import SideMenu from "./SideMenu";
-import SideModal from "./SideModal";
+import MiniCart from "../MiniCart";
 
 export default function Header() {
   const headerRef = useRef(null);
@@ -147,7 +147,7 @@ export default function Header() {
       <div className="">
         <Navbar data={categories} />
       </div>
-      <SideModal isOpen={openCart} setIsOpen={setOpenCart} />
+      <MiniCart isOpen={openCart} setIsOpen={setOpenCart} />
       <SideMenu isOpen={isOpen} setIsOpen={setIsOpen} data={categories} />
     </header>
   );
