@@ -29,8 +29,8 @@ const CookieConsentBanner = () => {
   if (!isVisible) return null;
 
   return (
-    <div className="fixed bottom-0 left-0 right-0 bg-gray-800 opacity-80 text-white py-4 px-6 flex flex-col md:flex-row items-center justify-between z-50 shadow-lg">
-      <div className="mb-4 md:mb-0 md:mr-4 text-sm md:text-base">
+    <div className="fixed bottom-0 left-0 right-0 bg-gray-800 text-white py-4 px-6 flex flex-col md:flex-row items-center justify-between z-50 shadow-lg">
+      <div className="mb-4 md:mb-0 md:mr-4 text-sm md:text-xs">
         We use essential and functional cookies on our website to provide you
         with a more personalized digital experience. If you are fine to continue
         in light of the above, please click on I Accept. However, if you do not
