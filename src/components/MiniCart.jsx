@@ -48,7 +48,13 @@ export default function MiniCart(props) {
             >
               View Cart
             </button>
-            <button className="bg-red-600 text-white py-3 rounded-lg font-medium text-sm hover:bg-red-700 transition">
+            <button
+              onClick={() => {
+                navigate("/checkout");
+                setIsOpen(false);
+              }}
+              className="bg-red-600 text-white py-3 rounded-lg font-medium text-sm hover:bg-red-700 transition"
+            >
               Checkout
             </button>
           </div>

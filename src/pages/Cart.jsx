@@ -1,6 +1,9 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import Icon from "../components/Icon";
 
 const Cart = () => {
+  const navigate = useNavigate();
   const [cartItems, setCartItems] = useState([
     {
       id: 1,
@@ -169,7 +172,10 @@ const Cart = () => {
 
           {/* Buttons */}
           <div className="flex flex-col sm:flex-row sm:justify-between mt-4 sm:mt-6 gap-3">
-            <button className="flex items-center justify-center px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700 transition text-sm sm:text-base">
+            <button
+              onClick={() => navigate("/")}
+              className="flex items-center justify-center px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700 transition text-sm sm:text-base"
+            >
               Continue Shopping
             </button>
             <button
@@ -197,8 +203,9 @@ const Cart = () => {
           <div className="text-xs sm:text-sm text-gray-500 mb-4">
             Shipping, taxes, and discounts calculated at checkout.
           </div>
-          <button className="w-full bg-green-600 text-white py-2 sm:py-3 rounded-lg font-medium hover:bg-green-700 transition">
-            Proceed to Checkout →
+          <button className="w-full bg-green-600 text-white py-2 sm:py-3 rounded-lg font-medium hover:bg-green-700 flex items-center justify-center">
+            Proceed to Checkout
+            <Icon icon="arrow-right" className="ml-2 text-md" />
           </button>
         </div>
       </div>
