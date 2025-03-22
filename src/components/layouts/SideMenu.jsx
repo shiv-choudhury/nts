@@ -189,7 +189,14 @@ const SideMenu = (props) => {
             </div>
 
             {/* Close Button */}
-            <div className="p-4 border-t border-gray-700 flex justify-end">
+            <div className="p-4 border-t border-gray-700 flex justify-between items-center">
+              <Link
+                className="text-white"
+                onClick={() => setIsOpen(false)}
+                to="/login"
+              >
+                Login/Signup
+              </Link>
               <button className="text-white" onClick={toggleMenu}>
                 <CloseOutlined className="text-lg" />
               </button>

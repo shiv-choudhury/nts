@@ -5,6 +5,8 @@ import MainLayout from "../components/layouts/MainLayout";
 import Loader from "../pages/Loader";
 
 //pages
+const Login = lazy(() => import("../pages/Login"));
+const Signup = lazy(() => import("../pages/Signup"));
 const Home = lazy(() => import("../pages/Home"));
 const Wishlist = lazy(() => import("../pages/Wishlist"));
 const Compare = lazy(() => import("../pages/Compare"));
@@ -22,6 +24,8 @@ export default function Router() {
     <MainLayout>
       <Suspense fallback={<Loader />}>
         <Routes>
+          <Route path="/login" element={<Login />} />
+          <Route path="/signup" element={<Signup />} />
           <Route path="/" element={<Home />} />
           <Route path="pages/:pageUrl" element={<DynamicPage />} />
           <Route path="/category/:categoryName" element={<ProductsPage />} />
