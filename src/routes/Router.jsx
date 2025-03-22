@@ -9,6 +9,7 @@ const Home = lazy(() => import("../pages/Home"));
 const Wishlist = lazy(() => import("../pages/Wishlist"));
 const Compare = lazy(() => import("../pages/Compare"));
 const Cart = lazy(() => import("../pages/Cart"));
+const Checkout = lazy(() => import("../pages/Checkout"));
 const PageNotFound = lazy(() => import("../pages/PageNotFound"));
 const DynamicPage = lazy(() => import("../pages/DynamicPage"));
 const ProductsPage = lazy(() => import("../pages/ProductsPage"));
@@ -37,6 +38,7 @@ export default function Router() {
           <Route path="/wishlist" element={<Wishlist />} />
           <Route path="/compare" element={<Compare />} />
           <Route path="/cart" element={<Cart />} />
+          <Route path="/checkout" element={<Checkout />} />
           <Route path="*" element={<PageNotFound />} />
         </Routes>
       </Suspense>
