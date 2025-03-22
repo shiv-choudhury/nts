@@ -8,10 +8,10 @@ export default function DynamicPage() {
   const { pageUrl } = useParams();
   const { userState } = useAppContext();
 
-  const { headerData, homePageData } = userState;
-  const { header, aboutdelivery } = homePageData;
+  const { headerData = [], homePageData = {} } = userState;
+  const { header = [], aboutdelivery = [] } = homePageData;
 
-  const pageData = [...header, ...aboutdelivery];
+  const pageData = [...header, ...aboutdelivery, ...headerData];
   const page = pageData?.find(
     (p) =>
       p?.pageId?.pg_url_key === pageUrl || p?.page_id?.pg_url_key === pageUrl
