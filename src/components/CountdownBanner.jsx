@@ -1,6 +1,24 @@
 import React, { useState, useEffect } from "react";
+import parse from "html-react-parser";
 
-const CountdownBanner = () => {
+const CountdownBanner = ({ data }) => {
+  const countdownData = data?.find(
+    (item) => item?.dynamic_section === "header_timer"
+  );
+
+  if (!countdownData || countdownData?.status !== "Active") {
+    return null;
+  }
+
+  const title = countdownData?.extra || "Limited Time Offer!";
+  const endTimeString = countdownData?.content
+    ? parse(countdownData.content).props.children
+    : null;
+
+  const endTime = endTimeString
+    ? new Date(endTimeString.replace("T", " "))
+    : null;
+
   const [timeRemaining, setTimeRemaining] = useState({
     days: 0,
     hours: 0,
@@ -8,15 +26,17 @@ const CountdownBanner = () => {
     seconds: 0
   });
 
-  const [offerEnded, setOfferEnded] = useState(true);
+  const [offerEnded, setOfferEnded] = useState(false);
 
   useEffect(() => {
-    const targetDate = new Date();
-    targetDate.setDate(targetDate.getDate() + 3);
+    if (!endTime || isNaN(endTime.getTime())) {
+      setOfferEnded(true);
+      return;
+    }
 
     const interval = setInterval(() => {
       const now = new Date();
-      const difference = targetDate - now;
+      const difference = endTime - now;
 
       if (difference <= 0) {
         setOfferEnded(true);
@@ -37,31 +57,28 @@ const CountdownBanner = () => {
     }, 1000);
 
     return () => clearInterval(interval);
-  }, []);
+  }, [endTime]);
 
   return (
     <div className="w-full bg-black text-white py-8 px-4">
       <div className="container mx-auto text-center">
-        <h1 className="text-3xl font-bold mb-6">
-          HUGE SAVINGS, MASSIVE DISCOUNTS!
-        </h1>
-
+        <h1 className="text-3xl font-bold mb-6">{title}</h1>
         {offerEnded ? (
           <div className="text-red-500 text-2xl font-bold mb-6">
             OFFER HAS ENDED!
           </div>
-        ) : null}
-
-        <div className="flex flex-col md:flex-row justify-center items-center md:space-x-4 space-y-4 md:space-y-0">
-          {Object.entries(timeRemaining).map(([label, value]) => (
-            <div key={label} className="flex flex-col items-center">
-              <div className="bg-white text-red-600 w-20 h-16 flex items-center justify-center text-3xl font-bold rounded">
-                {value}
+        ) : (
+          <div className="flex flex-col md:flex-row justify-center items-center md:space-x-4 space-y-4 md:space-y-0">
+            {Object.entries(timeRemaining).map(([label, value]) => (
+              <div key={label} className="flex flex-col items-center">
+                <div className="bg-white text-red-600 w-20 h-16 flex items-center justify-center text-3xl font-bold rounded">
+                  {value}
+                </div>
+                <span className="mt-2 capitalize">{label}</span>
               </div>
-              <span className="mt-2 capitalize">{label}</span>
-            </div>
-          ))}
-        </div>
+            ))}
+          </div>
+        )}
       </div>
     </div>
   );

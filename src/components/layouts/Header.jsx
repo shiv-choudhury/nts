@@ -14,6 +14,9 @@ export default function Header() {
   const location = useLocation();
 
   const { userState, dispatch } = useAppContext();
+  const marqueData = userState?.homePageData?.offers?.find(
+    (item) => item?.dynamic_section === "header_marquee"
+  );
 
   const [aboutData, setAboutData] = useState([]);
   const [categories, setCategories] = useState([]);
@@ -77,9 +80,11 @@ export default function Header() {
         </div>
       </div>
       <div className="w-full lg:container mx-auto">
-        <marquee className="hidden md:block text-sm text-red-600 font-medium bg-white">
-          Welcome to "The Natural Stone & Tile Co" - Save upto 50% on all tiles
-        </marquee>
+        {marqueData?.status === "Active" && (
+          <marquee className="hidden md:block text-sm text-red-600 font-medium bg-white">
+            <div dangerouslySetInnerHTML={{ __html: marqueData?.content }} />
+          </marquee>
+        )}
       </div>
       {/* Logo and search bar */}
       <div className="bg-white pt-2 pb-4">
