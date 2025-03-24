@@ -3,3 +3,6 @@ export const imageBaseUrl1 =
 
 export const imageBaseUrl2 =
   "https://naturaltilestone.co.uk/public/upload/advertisement/imagesbyuser/";
+
+export const imageBaseUrl3 =
+  "https://naturaltilestone.co.uk/public/upload/advertisement/slider/";

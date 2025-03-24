@@ -6,9 +6,9 @@ export const getCategories = (payload) => {
   return ApiMethods.postResponse(url, payload);
 };
 
-export const getAboutUsData = (payload) => {
-  let url = `pages/about-us`;
-  return ApiMethods.postResponse(url, payload);
+export const getPages = (page) => {
+  let url = `pages/${page}`;
+  return ApiMethods.postResponse(url);
 };
 
 export const getHeaderData = (payload) => {
@@ -43,6 +43,16 @@ export const getProductDetails = (slug) => {
 
 export const addToFavorites = (payload) => {
   let url = `favorites/add`;
+  return ApiMethods.postResponse(url, payload);
+};
+
+export const addToCompare = (payload) => {
+  let url = `compare/add`;
+  return ApiMethods.postResponse(url, payload);
+};
+
+export const addToCart = (payload) => {
+  let url = `add`;
   return ApiMethods.postResponse(url, payload);
 };
 

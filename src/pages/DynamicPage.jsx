@@ -1,34 +1,51 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 
-import useAppContext from "../components/context/UserContext";
 import PageNotFound from "./PageNotFound";
+import { getPages } from "../apis/ApiCalls";
 
 export default function DynamicPage() {
   const { pageUrl } = useParams();
-  const { userState } = useAppContext();
 
-  const { headerData = [], homePageData = {} } = userState;
-  const { header = [], aboutdelivery = [] } = homePageData;
+  const [pageTitle, setPageTitle] = useState("");
+  const [pageDetails, setPageDetails] = useState("");
+  const [pageNotFound, setPageNotFound] = useState(false);
 
-  const pageData = [...header, ...aboutdelivery, ...headerData];
-  const page = pageData?.find(
-    (p) =>
-      p?.pageId?.pg_url_key === pageUrl || p?.page_id?.pg_url_key === pageUrl
-  );
+  useEffect(() => {
+    fetchPageDetails();
+  }, [pageUrl]);
 
-  if (!page) {
+  const fetchPageDetails = async () => {
+    try {
+      const resp = await getPages(pageUrl);
+      const { data, status, message } = resp.data;
+      if (status) {
+        if (data.length === 0) {
+          setPageNotFound(true);
+          return;
+        }
+        setPageTitle(data[0]?.pg_title);
+        setPageDetails(data[0]?.pg_content);
+      } else {
+        toast.error(message);
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  console.log("pageDetails", pageDetails);
+
+  if (pageNotFound) {
     return <PageNotFound />;
   }
 
   return (
     <div>
-      <h1 className="text-2xl font-bold">
-        {page?.pageId?.pg_title || page?.page_id?.pg_title}
-      </h1>
+      <h1 className="text-2xl font-bold">{pageTitle}</h1>
       <div
         dangerouslySetInnerHTML={{
-          __html: page?.pageId?.pg_content || page?.page_id?.pg_content
+          __html: pageDetails
         }}
       />
     </div>
