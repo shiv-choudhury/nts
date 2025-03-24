@@ -84,14 +84,26 @@ const Signup = () => {
               )
           )}
           <div>
-            <label className="flex items-center gap-2">
+            <label className="text-sm font-light text-gray-800">
+              Your personal data will be used to support your experience
+              throughout this website, to manage access to your account, and for
+              other purposes described in our{" "}
+              <Link className="text-blue-600" to="/pages/privacy-policy">
+                privacy policy
+              </Link>
+              .
+            </label>
+            <label className="mt-1 flex items-center gap-2">
               <input
                 type="checkbox"
                 name="agree"
                 checked={form.agree}
                 onChange={handleChange}
               />
-              I agree to the privacy policy
+              I agree to the{" "}
+              <Link className="text-blue-600" to="/pages/privacy-policy">
+                privacy policy
+              </Link>
             </label>
             {errors.agree && (
               <p className="text-red-500 text-sm">{errors.agree}</p>
