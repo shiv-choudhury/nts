@@ -1,9 +1,14 @@
 import { useState, useEffect } from "react";
-import { CloseOutlined, DownOutlined } from "@ant-design/icons";
+import {
+  ApartmentOutlined,
+  CloseOutlined,
+  DownOutlined
+} from "@ant-design/icons";
 import { motion, AnimatePresence } from "framer-motion";
 import { Link } from "react-router-dom";
 
 import useAppContext from "../context/UserContext";
+import Icon from "../Icon";
 
 const SideMenu = (props) => {
   const { isOpen, setIsOpen, data } = props;
@@ -108,6 +113,33 @@ const SideMenu = (props) => {
                       </Link>
                     </li>
                   ))}
+                  <li className="p-3 border-b border-gray-700 hover:bg-gray-800">
+                    <div className="flex justify-between items-center">
+                      <Link
+                        onClick={() => setIsOpen(false)}
+                        to="/wishlist"
+                        className="block"
+                      >
+                        <Icon
+                          icon="heart"
+                          className="mr-2 text-white text-sm"
+                        />
+                        Wishlist
+                      </Link>
+                    </div>
+                  </li>
+                  <li className="p-3 border-b border-gray-700 hover:bg-gray-800">
+                    <div className="flex justify-between items-center">
+                      <Link
+                        onClick={() => setIsOpen(false)}
+                        to="/compare"
+                        className="block"
+                      >
+                        <ApartmentOutlined className="mr-2 text-sm" />
+                        Compare
+                      </Link>
+                    </div>
+                  </li>
                 </ul>
               ) : (
                 <ul className="p-4">
