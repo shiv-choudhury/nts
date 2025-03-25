@@ -177,7 +177,8 @@ const ProductDetailPage = () => {
                 £{productDetails?.price?.ourPrice}
               </span>
               <span className="text-gray-600 text-sm ml-2">
-                per m<sup>2</sup>
+                {/* per m<sup>2</sup> */}
+                {productDetails?.unit}
               </span>
             </div>
 

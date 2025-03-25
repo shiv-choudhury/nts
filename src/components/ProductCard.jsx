@@ -73,9 +73,11 @@ export default function ProductCard(props) {
           alt="Product"
           className="w-full h-full object-cover hover:scale-110 transition-transform duration-500"
         />
-        <span className="absolute top-2 right-2 bg-red-500 text-white text-xs px-2 py-1 rounded">
-          SALE
-        </span>
+        {data?.productLabel && (
+          <span className="absolute top-2 right-2 bg-red-500 text-white text-xs px-2 py-1 rounded">
+            {data?.productLabel}
+          </span>
+        )}
 
         {/* Icons Overlay (Hidden by default, visible on hover) */}
         <div className="absolute bottom-2 left-1/2 transform -translate-x-1/2 flex space-x-2 opacity-100 sm:opacity-0 sm:group-hover:opacity-100 transition-opacity duration-300">
@@ -132,8 +134,8 @@ export default function ProductCard(props) {
             <span className="text-red-500 font-bold ml-2">
               £{data?.price?.ourPrice}
             </span>{" "}
-            <span> per m</span>
-            <sup>2</sup>
+            <span>{data?.unit}</span>
+            {/* <sup>2</sup> */}
           </div>
         </div>
         <div className="flex justify-between items-center">
