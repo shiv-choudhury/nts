@@ -56,6 +56,11 @@ export const addToCart = (payload) => {
   return ApiMethods.postResponse(url, payload);
 };
 
+export const login = (payload) => {
+  let url = `login`;
+  return ApiMethods.postResponse(url, payload);
+};
+
 export const getReviews = async (config) => {
   const resp = await axios({
     method: "get",

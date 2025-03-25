@@ -1,5 +1,8 @@
 import { useState } from "react";
+import { toast } from "react-toastify";
 import { Link } from "react-router-dom";
+
+import { login } from "../apis/ApiCalls";
 
 const Login = () => {
   const [form, setForm] = useState({
@@ -8,6 +11,7 @@ const Login = () => {
     remember: false
   });
   const [errors, setErrors] = useState({});
+  const [loading, setLoading] = useState(false);
 
   const validate = () => {
     let newErrors = {};
@@ -29,7 +33,25 @@ const Login = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     if (validate()) {
-      alert("Login successful!");
+      handleLogin();
+    }
+  };
+
+  const handleLogin = async () => {
+    try {
+      setLoading(true);
+      const response = await login(form);
+      const { data, status, message } = response.data;
+      if (status) {
+        localStorage.setItem("token", data?.token);
+        toast.success(message);
+      } else {
+        toast.error(message);
+      }
+    } catch (error) {
+      toast.error("Something went wrong");
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -87,7 +109,7 @@ const Login = () => {
             type="submit"
             className="bg-green-600 text-white w-full py-2 rounded-lg"
           >
-            SIGN IN
+            {loading ? "Please wait..." : "SIGN IN"}
           </button>
         </form>
         <p className="text-center mt-4">
