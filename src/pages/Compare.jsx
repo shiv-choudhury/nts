@@ -53,32 +53,37 @@ const ComparisonTable = () => {
   return (
     <div className="container mx-auto p-4 overflow-x-auto">
       {products.length === 0 ? (
-        <p className="text-center text-gray-700 font-semibold">
+        <p className="h-[20vh] text-center text-gray-700 font-semibold flex items-center justify-center">
           You don't have any items in your compare list
         </p>
       ) : (
         <table className="w-full text-center bg-white shadow-xl rounded-md table-fixed">
           <thead>
             <tr className="bg-white text-gray-700 text-sm md:text-base">
-              <th className="p-2 w-32 rounded-tl-md">Product</th>
+              <th className="p-2 w-32 bg-red-100 rounded-tl-md">Product</th>
+              {products.map((_, index) => (
+                <th key={index} className="p-2 w-48 bg-red-100">
+                  <button
+                    onClick={() => removeProduct(index)}
+                    className="bg-red-500 text-white text-xs px-2 py-1 rounded-full hover:bg-red-600"
+                  >
+                    ✕
+                  </button>
+                </th>
+              ))}
+            </tr>
+            <tr className="bg-white text-gray-700 text-sm md:text-base">
+              <th className="p-2 w-32 rounded-tl-md">Image</th>
               {products.map((product, index) => (
                 <th key={index} className="p-2 w-48 relative align-top">
-                  <div className="relative w-full">
-                    <button
-                      onClick={() => removeProduct(index)}
-                      className="absolute top-1 right-1 bg-red-500 text-white text-xs px-2 py-1 rounded-full hover:bg-red-600"
-                    >
-                      ✕
-                    </button>
-                    <img
-                      src={product.image}
-                      alt={product.name}
-                      className="mx-auto w-44 h-44 object-cover rounded-md"
-                    />
-                    <p className="mt-2 text-sm md:text-base font-semibold text-gray-800">
-                      {product.name}
-                    </p>
-                  </div>
+                  <img
+                    src={product.image}
+                    alt={product.name}
+                    className="mx-auto w-44 h-44 object-cover rounded-md"
+                  />
+                  <p className="mt-2 text-sm md:text-base font-semibold text-gray-800">
+                    {product.name}
+                  </p>
                 </th>
               ))}
             </tr>
