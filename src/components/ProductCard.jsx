@@ -1,10 +1,12 @@
 import { useState } from "react";
 import { ApartmentOutlined } from "@ant-design/icons";
+import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 
 import Icon from "./Icon";
 import ProductDetailQuickview from "../pages/ProductDetailQuickview";
 import CompareModal from "./CompareModal";
+import { addToFavorites } from "../apis/ApiCalls";
 
 export default function ProductCard(props) {
   const navigate = useNavigate();
@@ -13,8 +15,30 @@ export default function ProductCard(props) {
   const [slug, setSlug] = useState(false);
   const [openQuickview, setOpenQuickview] = useState(false);
   const [openCompare, setOpenCompare] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [isFavorite, setIsFavorite] = useState(false);
 
   const imageBaseUrl = "https://naturaltilestone.co.uk/public/upload/product/";
+
+  const addToWishlist = async () => {
+    try {
+      setLoading(true);
+      const resp = await addToFavorites({ productId: data?._id });
+      const { success, message, fav } = resp.data;
+
+      setIsFavorite(message === "Product added to favorites.");
+
+      if (success) {
+        toast.success(message);
+      } else {
+        toast.error(message);
+      }
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
     <div
@@ -62,10 +86,27 @@ export default function ProductCard(props) {
             <Icon icon="shopping-bag" className="text-lg" />
           </button> */}
           <button
-            title="Add to Wishlist"
+            onClick={addToWishlist}
+            title={isFavorite ? "Remove from Wishlist" : "Add to Wishlist"}
+            className={`p-2 rounded-full shadow hover:cursor-pointer flex items-center justify-center ${
+              isFavorite ? "bg-red-500" : "bg-white"
+            }`}
+          >
+            {loading ? (
+              <Icon icon="spinner" className={`text-lg animate-spin`} />
+            ) : (
+              <Icon
+                icon="heart"
+                className={`text-lg ${isFavorite ? "text-white" : ""}`}
+              />
+            )}
+          </button>
+          <button
+            onClick={() => setOpenCompare(true)}
+            title="Add to Compare"
             className="bg-white p-2 rounded-full shadow hover:cursor-pointer flex items-center justify-center"
           >
-            <Icon icon="heart" className="text-lg" />
+            <ApartmentOutlined className="text-lg" />
           </button>
           <button
             onClick={() => {
@@ -76,13 +117,6 @@ export default function ProductCard(props) {
             className="bg-white p-2 rounded-full shadow hover:cursor-pointer flex items-center justify-center"
           >
             <Icon icon="search" className="text-lg" />
-          </button>
-          <button
-            onClick={() => setOpenCompare(true)}
-            title="Add to Compare"
-            className="bg-white p-2 rounded-full shadow hover:cursor-pointer flex items-center justify-center"
-          >
-            <ApartmentOutlined className="text-lg" />
           </button>
         </div>
       </div>
