@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { ApartmentOutlined } from "@ant-design/icons";
+import parse from "html-react-parser";
 
 import { getProductDetails } from "../apis/ApiCalls";
 import { OrderDetailLoader } from "../components/Loaders";
@@ -16,6 +17,10 @@ export default function ProductDetailQuickview(props) {
   const [currentImage, setCurrentImage] = useState(0);
   const [productDetails, setProductDetails] = useState([]);
   const [loading, setLoading] = useState(false);
+
+  const keyFeatures = productDetails?.metaDescription?.metaDescription
+    ? parse(productDetails?.metaDescription?.metaDescription)
+    : null;
 
   useEffect(() => {
     fetchProductDetails();
@@ -307,26 +312,17 @@ export default function ProductDetailQuickview(props) {
                 Key Features
               </h2>
 
-              <div className="lg:flex">
-                <div className="lg:w-1/2 p-4">
+              <div className="flex">
+                <div className="lg:p-4">
                   <ul className="space-y-3">
-                    {productData.keyFeatures.map((feature, index) => (
-                      <li key={index} className="flex items-start">
-                        <Icon icon="check" className="mr-2 text-green-500" />
+                    {keyFeatures?.map((feature, index) => (
+                      <li key={index} className="flex items-start ">
+                        <Icon
+                          icon="check"
+                          className="mt-1 mr-2 text-green-500"
+                        />
 
-                        <span>{feature}</span>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-
-                <div className="lg:w-1/2 p-4">
-                  <ul className="space-y-3">
-                    {productData.moreFeatures.map((feature, index) => (
-                      <li key={index} className="flex items-start">
-                        <Icon icon="check" className="mr-2 text-green-500" />
-
-                        <span>{feature}</span>
+                        <span>{feature?.props?.children}</span>
                       </li>
                     ))}
                   </ul>
