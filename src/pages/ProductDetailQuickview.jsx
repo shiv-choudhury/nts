@@ -6,6 +6,7 @@ import { OrderDetailLoader } from "../components/Loaders";
 import Modal from "../components/Modal";
 import { imageBaseUrl1 } from "../components/utils/constants";
 import Icon from "../components/Icon";
+import ProductCard from "../components/ProductCard";
 
 export default function ProductDetailQuickview(props) {
   const { isOpen, onClose, slug } = props;
@@ -357,6 +358,34 @@ export default function ProductDetailQuickview(props) {
                     ))}
                   </tbody>
                 </table>
+              </div>
+            </div>
+
+            {/* related products */}
+            <div className="mx-4 mb-8 md:mb-12">
+              <div className="flex justify-between items-center mb-4">
+                <h2 className="text-xl md:text-2xl font-semibold text-blue-800">
+                  Related Products
+                </h2>
+              </div>
+              <div className="grid grid-cols-1 xs:grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 md:gap-6">
+                {productDetails?.relatedproduct?.map((item) => (
+                  <ProductCard data={item} />
+                ))}
+              </div>
+            </div>
+
+            {/* required products */}
+            <div className="mx-4 mb-8 md:mb-12">
+              <div className="flex justify-between items-center mb-4">
+                <h2 className="text-xl md:text-2xl font-semibold text-blue-800">
+                  Required Products
+                </h2>
+              </div>
+              <div className="grid grid-cols-1 xs:grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 md:gap-6">
+                {productDetails?.requiredproduct?.map((item) => (
+                  <ProductCard data={item} />
+                ))}
               </div>
             </div>
           </div>
