@@ -1,10 +1,11 @@
 import { useState } from "react";
 import { toast } from "react-toastify";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 import { login } from "../apis/ApiCalls";
 
 const Login = () => {
+  const navigate = useNavigate();
   const [form, setForm] = useState({
     email: "",
     password: "",
@@ -45,6 +46,7 @@ const Login = () => {
       if (status) {
         localStorage.setItem("token", data?.token);
         toast.success(message);
+        navigate("/");
       } else {
         toast.error(message);
       }
