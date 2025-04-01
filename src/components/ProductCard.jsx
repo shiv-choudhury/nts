@@ -6,19 +6,24 @@ import { useNavigate } from "react-router-dom";
 import Icon from "./Icon";
 import ProductDetailQuickview from "../pages/ProductDetailQuickview";
 import CompareModal from "./CompareModal";
-import { addToFavorites } from "../apis/ApiCalls";
+import { addToCompare, addToFavorites } from "../apis/ApiCalls";
 
 export default function ProductCard(props) {
   const navigate = useNavigate();
   const { data } = props;
 
+  const imageBaseUrl = "https://naturaltilestone.co.uk/public/upload/product/";
+
   const [slug, setSlug] = useState(false);
   const [openQuickview, setOpenQuickview] = useState(false);
   const [openCompare, setOpenCompare] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [isFavorite, setIsFavorite] = useState(false);
+  const [compareLoader, setCompareLoader] = useState(false);
+  const [cartLoader, setCartLoader] = useState(false);
 
-  const imageBaseUrl = "https://naturaltilestone.co.uk/public/upload/product/";
+  const [isFavorite, setIsFavorite] = useState(false);
+  const [isCompare, setIsCompare] = useState(false);
+  const [isInCart, setIsInCart] = useState(false);
 
   const addToWishlist = async () => {
     try {
@@ -37,6 +42,25 @@ export default function ProductCard(props) {
       console.error(error);
     } finally {
       setLoading(false);
+    }
+  };
+
+  const handleAddToCompare = async () => {
+    try {
+      setCompareLoader(true);
+      const resp = await addToCompare({ productId: data?._id });
+      const { success, message } = resp.data;
+
+      setIsCompare(message === "Product added to compare product.");
+      if (success) {
+        toast.success(message);
+      } else {
+        toast.error(message);
+      }
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setCompareLoader(false);
     }
   };
 
@@ -95,7 +119,7 @@ export default function ProductCard(props) {
             }`}
           >
             {loading ? (
-              <Icon icon="spinner" className={`text-lg animate-spin`} />
+              <Icon icon="spinner" className="text-lg animate-spin" />
             ) : (
               <Icon
                 icon="heart"
@@ -104,11 +128,20 @@ export default function ProductCard(props) {
             )}
           </button>
           <button
-            onClick={() => setOpenCompare(true)}
-            title="Add to Compare"
-            className="bg-white p-2 rounded-full shadow hover:cursor-pointer flex items-center justify-center"
+            onClick={handleAddToCompare}
+            title={isCompare ? "Remove from Compare" : "Add to Compare"}
+            className={` p-2 rounded-full shadow hover:cursor-pointer flex items-center justify-center ${
+              isCompare ? "bg-red-500" : "bg-white"
+            }`}
           >
-            <ApartmentOutlined className="text-lg" />
+            {compareLoader ? (
+              <Icon icon="spinner" className="text-lg animate-spin" />
+            ) : (
+              <ApartmentOutlined
+                className="text-lg"
+                style={{ color: isCompare ? "white" : "inherit" }}
+              />
+            )}
           </button>
           <button
             onClick={() => {
