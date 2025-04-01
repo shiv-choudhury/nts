@@ -6,7 +6,7 @@ import { useNavigate } from "react-router-dom";
 import Icon from "./Icon";
 import ProductDetailQuickview from "../pages/ProductDetailQuickview";
 import CompareModal from "./CompareModal";
-import { addToCompare, addToFavorites } from "../apis/ApiCalls";
+import { addToCart, addToCompare, addToFavorites } from "../apis/ApiCalls";
 
 export default function ProductCard(props) {
   const navigate = useNavigate();
@@ -61,6 +61,28 @@ export default function ProductCard(props) {
       console.error(error);
     } finally {
       setCompareLoader(false);
+    }
+  };
+
+  const handleAddToCart = async () => {
+    try {
+      setCartLoader(true);
+      const payload = {
+        productId: data?._id,
+        quantity: 1,
+        price: data?.price?.ourPrice
+      };
+      const resp = await addToCart(payload);
+      const { success, message, status } = resp.data;
+      if (status) {
+        toast.success(message);
+      } else {
+        toast.error(message);
+      }
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setCartLoader(false);
     }
   };
 
@@ -176,8 +198,16 @@ export default function ProductCard(props) {
             Size:{" "}
             <span className="font-bold">{data?.tilesPerfection?.sizeMM}</span>
           </div>
-          <button className="bg-blue-600 hover:bg-blue-700 text-white text-xs md:text-sm pt-2 pb-1 px-2 rounded">
-            <Icon icon="shopping-cart" className="text-2xl" />
+          <button
+            title="Add to Cart"
+            onClick={handleAddToCart}
+            className="bg-blue-600 hover:bg-blue-700 text-white text-xs md:text-sm pt-2 pb-1 px-2 rounded"
+          >
+            {cartLoader ? (
+              <Icon icon="spinner" className="text-lg animate-spin" />
+            ) : (
+              <Icon icon="shopping-cart" className="text-2xl" />
+            )}
           </button>
         </div>
       </div>
