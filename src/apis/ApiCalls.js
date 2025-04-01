@@ -41,23 +41,62 @@ export const getProductDetails = (slug) => {
   return ApiMethods.postResponse(url);
 };
 
+//wishlist
 export const addToFavorites = (payload) => {
   let url = `favorites/add`;
   return ApiMethods.postResponse(url, payload);
 };
 
+export const getFavoritesList = (payload) => {
+  let url = `favorites`;
+  return ApiMethods.postResponse(url, payload);
+};
+
+//compare
 export const addToCompare = (payload) => {
   let url = `compare/add`;
   return ApiMethods.postResponse(url, payload);
 };
 
-export const addToCart = (payload) => {
-  let url = `add`;
+export const getCompareList = (payload) => {
+  let url = `getcompare`;
   return ApiMethods.postResponse(url, payload);
 };
 
+//cart
+export const getCartList = (payload) => {
+  let url = `cart`;
+  return ApiMethods.postResponse(url, payload);
+};
+
+export const addToCart = (payload) => {
+  let url = `cart/add`;
+  return ApiMethods.postResponse(url, payload);
+};
+
+export const updateCart = (payload) => {
+  let url = `cart/update`;
+  return ApiMethods.postResponse(url, payload);
+};
+
+export const removeFromCart = (payload) => {
+  let url = `cart/remove`;
+  return ApiMethods.postResponse(url, payload);
+};
+
+export const clearCart = (payload) => {
+  let url = `cart/clear`;
+  return ApiMethods.postResponse(url, payload);
+};
+
+//signup login
 export const login = (payload) => {
   let url = `login`;
+  return ApiMethods.postResponse(url, payload);
+};
+
+export const register = (payload) => {
+  let url = `register`;
   return ApiMethods.postResponse(url, payload);
 };
 
