@@ -34,8 +34,6 @@ export default function DynamicPage() {
     }
   };
 
-  console.log("pageDetails", pageDetails);
-
   if (pageNotFound) {
     return <PageNotFound />;
   }
