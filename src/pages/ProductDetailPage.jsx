@@ -21,6 +21,11 @@ const ProductDetailPage = () => {
     ? parse(productDetails?.metaDescription?.metaDescription)
     : null;
 
+  console.log(
+    "keyFeatures",
+    keyFeatures?.map((feature) => feature?.props?.children)
+  );
+
   useEffect(() => {
     fetchProductDetails();
   }, [slug]);
@@ -300,6 +305,17 @@ const ProductDetailPage = () => {
                   <span>{feature?.props?.children}</span>
                 </li>
               ))}
+              {/* to handle empty strings */}
+              {/* {keyFeatures?.map(
+                (feature, index) =>
+                  typeof feature?.props?.children === "string" &&
+                  feature?.props?.children.trim() && (
+                    <li key={index} className="flex items-start">
+                      <Icon icon="check" className="mt-1 mr-2 text-green-500" />
+                      <span>{feature?.props?.children}</span>
+                    </li>
+                  )
+              )} */}
             </ul>
           </div>
         </div>

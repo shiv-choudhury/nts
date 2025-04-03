@@ -34,9 +34,14 @@ export default function Wishlist() {
 
       <div className="grid grid-cols-1 xs:grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 md:gap-6">
         {wishlist?.map((item) => (
-          <ProductCard data={item} />
+          <ProductCard data={item} showProductActions={true} />
         ))}
       </div>
+      {wishlist?.length === 0 && (
+        <div className="text-center text-xl h-60 flex items-center justify-center text-gray-500 mt-4">
+          No products in wishlist.
+        </div>
+      )}
     </div>
   );
 }
