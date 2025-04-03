@@ -2,7 +2,12 @@ import { createContext, useContext, useReducer } from "react";
 
 const initialState = {
   userData: null,
-  headerData: null
+  headerData: null,
+  homePageData: null,
+  wishlistData: null,
+  compareData: null,
+  cartData: null,
+  cartLength: 0
 };
 
 const AppContext = createContext({
@@ -18,6 +23,14 @@ function appReducer(userState, action) {
       return { ...userState, headerData: action.data };
     case "HOME_PAGE_DATA":
       return { ...userState, homePageData: action.data };
+    case "WISHLIST_DATA":
+      return { ...userState, wishlistData: action.data };
+    case "COMPARE_DATA":
+      return { ...userState, compareData: action.data };
+    case "CART_DATA":
+      return { ...userState, cartData: action.data };
+    case "CART_LENGTH":
+      return { ...userState, cartLength: action.data };
     default:
       return userState;
   }

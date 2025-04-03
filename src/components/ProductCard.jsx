@@ -8,10 +8,12 @@ import ProductDetailQuickview from "../pages/ProductDetailQuickview";
 import CompareModal from "./CompareModal";
 import { addToCart, addToCompare, addToFavorites } from "../apis/ApiCalls";
 import { imageBaseUrl1 } from "./utils/constants";
+import useAppContext from "./context/UserContext";
 
 export default function ProductCard(props) {
   const navigate = useNavigate();
   const { data, showProductActions = true } = props;
+  const { userState, dispatch } = useAppContext();
 
   const imageBaseUrl = imageBaseUrl1;
 
@@ -73,9 +75,13 @@ export default function ProductCard(props) {
         price: data?.price?.ourPrice
       };
       const resp = await addToCart(payload);
-      const { success, message, status } = resp.data;
+      const { data: productData, success, message, status } = resp.data;
       if (status) {
         toast.success(message);
+        dispatch({
+          type: "CART_LENGTH",
+          data: productData?.products?.length
+        });
       } else {
         toast.error(message);
       }

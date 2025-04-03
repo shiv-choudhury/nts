@@ -141,7 +141,7 @@ export default function Header() {
               >
                 <Icon icon="shopping-cart" />
                 <span className="absolute -top-2 -right-2 bg-red-500 text-white rounded-full w-5 h-5 flex items-center justify-center text-xs">
-                  0
+                  {userState?.cartLength}
                 </span>
                 {/* <span className="hidden md:block text-xs mt-1">Cart</span> */}
               </button>
@@ -152,7 +152,7 @@ export default function Header() {
       <div className="">
         <Navbar data={categories} />
       </div>
-      <MiniCart isOpen={openCart} setIsOpen={setOpenCart} />
+      {openCart && <MiniCart isOpen={openCart} setIsOpen={setOpenCart} />}
       <SideMenu isOpen={isOpen} setIsOpen={setIsOpen} data={categories} />
     </header>
   );
