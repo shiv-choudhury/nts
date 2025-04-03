@@ -46,7 +46,7 @@ export default function MiniCart({ isOpen, setIsOpen }) {
       contentStyle="p-0 flex flex-col h-full"
     >
       <div className="flex flex-col h-full">
-        <div className="flex-1 overflow-auto p-2">
+        <div className="flex-1 overflow-auto p-2 pb-16">
           {cartData?.products?.length > 0 ? (
             cartData.products.map((data, index) => (
               <MiniCartCard
