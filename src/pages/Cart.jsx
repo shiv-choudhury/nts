@@ -11,6 +11,8 @@ import {
 } from "../apis/ApiCalls";
 import useAppContext from "../components/context/UserContext";
 import { imageBaseUrl1 } from "../components/utils/constants";
+import Counter from "../components/Counter";
+import { DeleteFilled, DeleteOutlined } from "@ant-design/icons";
 
 const Cart = () => {
   const navigate = useNavigate();
@@ -109,76 +111,54 @@ const Cart = () => {
       <div className="grid md:grid-cols-3 gap-4 sm:gap-6">
         <div className="md:col-span-2 bg-white shadow-md rounded-lg p-3 sm:p-4">
           {cartItems.length > 0 ? (
-            <div className="overflow-x-auto">
-              <table className="w-full text-left border-collapse">
-                <thead>
-                  <tr className="border-b border-gray-200">
-                    <th className="p-3">Items</th>
-                    <th className="p-3">Price</th>
-                    <th className="p-3">Quantity</th>
-                    <th className="p-3">Subtotal</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {cartItems.map((item) => (
-                    <tr
-                      key={item.product._id}
-                      className="border-b border-gray-200"
+            <div className="space-y-4">
+              <tr className="hidden border-b border-gray-200 sm:flex justify-between items-center">
+                <th className="p-3">Items</th>
+                <th className="p-3">Subtotal</th>
+              </tr>
+              {cartItems.map((item) => (
+                <div
+                  key={item.product._id}
+                  className="flex flex-col sm:flex-row items-center sm:items-center bg-gray-50 p-3 rounded-lg shadow-sm"
+                >
+                  <div className="relative">
+                    <img
+                      src={`${imageBaseUrl1}${item?.product?.images[0]}`}
+                      onError={(e) => (e.target.src = `assets/product.jpg`)}
+                      alt={item.product.name}
+                      className="w-full sm:w-20 h-auto sm:h-20 object-cover rounded border border-gray-200 sm:mr-4"
+                    />
+                    <button
+                      onClick={() => removeItem(item.product._id)}
+                      className="absolute -top-2 -right-2 mr-0 sm:mr-2 px-1 bg-white rounded-2xl self-center sm:self-center font-bold text-red-500 hover:bg-red-100"
                     >
-                      <td className="p-3 flex items-center space-x-3">
-                        <button
-                          onClick={() => removeItem(item.product._id)}
-                          className="px-1 text-red-500 hover:text-red-700 transition cursor-pointer hover:bg-red-200 rounded-xl"
-                        >
-                          ✕
-                        </button>
-                        <img
-                          src={`${imageBaseUrl1}${item?.product?.images[0]}`}
-                          onError={(e) => (e.target.src = `assets/product.jpg`)}
-                          alt={item.product.name}
-                          className="w-16 h-16 object-cover rounded border border-gray-200"
-                        />
-                        <div>
-                          <p className="font-semibold">{item.product.name}</p>
-                        </div>
-                      </td>
-                      <td className="p-3 text-gray-700">
+                      ✕
+                    </button>
+                  </div>
+
+                  <div className="flex flex-col w-full sm:flex-row sm:justify-between text-center sm:text-left">
+                    <div className="flex-1">
+                      <p className="font-semibold">{item.product.name}</p>
+                      <p className="mt-2  text-sm text-blue-800">
                         £{item.price.toFixed(2)}
-                      </td>
-                      <td className="p-3">
-                        <div className="flex items-center border rounded w-fit">
-                          <button
-                            onClick={() =>
-                              updateQuantity(
-                                item.product._id,
-                                item.quantity - 1
-                              )
-                            }
-                            className="px-3 py-1 border-r hover:bg-gray-100 transition"
-                          >
-                            −
-                          </button>
-                          <span className="px-4">{item.quantity}</span>
-                          <button
-                            onClick={() =>
-                              updateQuantity(
-                                item.product._id,
-                                item.quantity + 1
-                              )
-                            }
-                            className="px-3 py-1 border-l hover:bg-gray-100 transition"
-                          >
-                            +
-                          </button>
-                        </div>
-                      </td>
-                      <td className="p-3 font-semibold">
-                        £{(item.price * item.quantity).toFixed(2)}
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
+                      </p>
+                    </div>
+
+                    <div className="flex items-center justify-center sm:justify-start mt-2 sm:mt-0">
+                      <Counter
+                        quantity={item.quantity}
+                        setQuantity={(newQuantity) =>
+                          updateQuantity(item.product._id, newQuantity)
+                        }
+                      />
+                    </div>
+
+                    <div className="font-semibold mt-2 sm:mt-0 sm:ml-4 sm:flex justify-between items-center">
+                      £{(item.price * item.quantity).toFixed(2)}
+                    </div>
+                  </div>
+                </div>
+              ))}
             </div>
           ) : (
             <div className="text-center text-lg text-gray-600 h-32 flex justify-center items-center">
