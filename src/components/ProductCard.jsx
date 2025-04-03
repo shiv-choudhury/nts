@@ -7,12 +7,13 @@ import Icon from "./Icon";
 import ProductDetailQuickview from "../pages/ProductDetailQuickview";
 import CompareModal from "./CompareModal";
 import { addToCart, addToCompare, addToFavorites } from "../apis/ApiCalls";
+import { imageBaseUrl1 } from "./utils/constants";
 
 export default function ProductCard(props) {
   const navigate = useNavigate();
-  const { data } = props;
+  const { data, showProductActions = true } = props;
 
-  const imageBaseUrl = "https://naturaltilestone.co.uk/public/upload/product/";
+  const imageBaseUrl = imageBaseUrl1;
 
   const [slug, setSlug] = useState(false);
   const [openQuickview, setOpenQuickview] = useState(false);
@@ -23,7 +24,6 @@ export default function ProductCard(props) {
 
   const [isFavorite, setIsFavorite] = useState(false);
   const [isCompare, setIsCompare] = useState(false);
-  const [isInCart, setIsInCart] = useState(false);
 
   const addToWishlist = async () => {
     try {
@@ -126,56 +126,58 @@ export default function ProductCard(props) {
         )}
 
         {/* Icons Overlay (Hidden by default, visible on hover) */}
-        <div className="absolute bottom-2 left-1/2 transform -translate-x-1/2 flex space-x-2 opacity-100 sm:opacity-0 sm:group-hover:opacity-100 transition-opacity duration-300">
-          {/* <button
+        {showProductActions && (
+          <div className="absolute bottom-2 left-1/2 transform -translate-x-1/2 flex space-x-2 opacity-100 sm:opacity-0 sm:group-hover:opacity-100 transition-opacity duration-300">
+            {/* <button
             title="Add to Cart"
             className="bg-white p-2 rounded-full shadow hover:cursor-pointer flex items-center justify-center"
           >
             <Icon icon="shopping-bag" className="text-lg" />
           </button> */}
-          <button
-            onClick={addToWishlist}
-            title={isFavorite ? "Remove from Wishlist" : "Add to Wishlist"}
-            className={`p-2 rounded-full shadow hover:cursor-pointer flex items-center justify-center ${
-              isFavorite ? "bg-red-500" : "bg-white"
-            }`}
-          >
-            {loading ? (
-              <Icon icon="spinner" className="text-lg animate-spin" />
-            ) : (
-              <Icon
-                icon="heart"
-                className={`text-lg ${isFavorite ? "text-white" : ""}`}
-              />
-            )}
-          </button>
-          <button
-            onClick={handleAddToCompare}
-            title={isCompare ? "Remove from Compare" : "Add to Compare"}
-            className={` p-2 rounded-full shadow hover:cursor-pointer flex items-center justify-center ${
-              isCompare ? "bg-red-500" : "bg-white"
-            }`}
-          >
-            {compareLoader ? (
-              <Icon icon="spinner" className="text-lg animate-spin" />
-            ) : (
-              <ApartmentOutlined
-                className="text-lg"
-                style={{ color: isCompare ? "white" : "inherit" }}
-              />
-            )}
-          </button>
-          <button
-            onClick={() => {
-              setOpenQuickview(true);
-              setSlug(data?.slug);
-            }}
-            title="Quickview"
-            className="bg-white p-2 rounded-full shadow hover:cursor-pointer flex items-center justify-center"
-          >
-            <Icon icon="search" className="text-lg" />
-          </button>
-        </div>
+            <button
+              onClick={addToWishlist}
+              title={isFavorite ? "Remove from Wishlist" : "Add to Wishlist"}
+              className={`p-2 rounded-full shadow hover:cursor-pointer flex items-center justify-center ${
+                isFavorite ? "bg-red-500" : "bg-white"
+              }`}
+            >
+              {loading ? (
+                <Icon icon="spinner" className="text-lg animate-spin" />
+              ) : (
+                <Icon
+                  icon="heart"
+                  className={`text-lg ${isFavorite ? "text-white" : ""}`}
+                />
+              )}
+            </button>
+            <button
+              onClick={handleAddToCompare}
+              title={isCompare ? "Remove from Compare" : "Add to Compare"}
+              className={` p-2 rounded-full shadow hover:cursor-pointer flex items-center justify-center ${
+                isCompare ? "bg-red-500" : "bg-white"
+              }`}
+            >
+              {compareLoader ? (
+                <Icon icon="spinner" className="text-lg animate-spin" />
+              ) : (
+                <ApartmentOutlined
+                  className="text-lg"
+                  style={{ color: isCompare ? "white" : "inherit" }}
+                />
+              )}
+            </button>
+            <button
+              onClick={() => {
+                setOpenQuickview(true);
+                setSlug(data?.slug);
+              }}
+              title="Quickview"
+              className="bg-white p-2 rounded-full shadow hover:cursor-pointer flex items-center justify-center"
+            >
+              <Icon icon="search" className="text-lg" />
+            </button>
+          </div>
+        )}
       </div>
 
       {/* Product Details */}
