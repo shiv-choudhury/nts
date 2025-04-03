@@ -92,6 +92,14 @@ const Cart = () => {
     0
   );
 
+  const handleCheckout = () => {
+    if (cartItems.length === 0) {
+      toast.error("Your cart is empty");
+      return;
+    }
+    navigate("/checkout");
+  };
+
   return (
     <div className="container mx-auto p-4 sm:p-6">
       <h2 className="text-xl sm:text-2xl font-bold mb-4 sm:mb-6">
@@ -209,7 +217,10 @@ const Cart = () => {
           <p className="text-xs sm:text-sm text-gray-500 mb-4">
             Shipping, taxes, and discounts calculated at checkout.
           </p>
-          <button className="w-full bg-green-600 text-white py-2 sm:py-3 rounded-lg font-medium hover:bg-green-700 flex items-center justify-center">
+          <button
+            onClick={handleCheckout}
+            className="w-full bg-green-600 text-white py-2 sm:py-3 rounded-lg font-medium hover:bg-green-700 flex items-center justify-center"
+          >
             Proceed to Checkout
             <Icon icon="arrow-right" className="ml-2 text-md" />
           </button>
