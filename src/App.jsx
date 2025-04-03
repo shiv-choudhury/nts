@@ -12,8 +12,8 @@ function App() {
     <>
       <BrowserRouter>
         <UserContextProvider>
-          <ToastContainer position="top-right" autoClose={5000} pauseOnHover />
-          <Toaster />
+          <ToastContainer position="top-center" autoClose={1000} pauseOnHover />
+          <Toaster position="top-center" />
           <Router />
         </UserContextProvider>
       </BrowserRouter>
