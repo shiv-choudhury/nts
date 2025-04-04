@@ -3,6 +3,7 @@ import { toast } from "react-toastify";
 import { Link, useNavigate } from "react-router-dom";
 
 import { register } from "../apis/ApiCalls";
+import Icon from "../components/Icon";
 
 const Signup = () => {
   const navigate = useNavigate();
@@ -166,10 +167,10 @@ const Signup = () => {
                 onChange={handleChange}
               />
               <span
-                className="absolute right-3 top-2 text-sm cursor-pointer text-blue-600"
+                className="absolute right-3 top-2.5 text-sm cursor-pointer text-gray-600"
                 onClick={() => setShowPassword((prev) => !prev)}
               >
-                {showPassword ? "Hide" : "Show"}
+                {showPassword ? <Icon icon="eye" /> : <Icon icon="eye-slash" />}
               </span>
             </div>
             {errors.password && (
@@ -193,10 +194,14 @@ const Signup = () => {
                 onChange={handleChange}
               />
               <span
-                className="absolute right-3 top-2 text-sm cursor-pointer text-blue-600"
+                className="absolute right-3 top-2.5 text-sm cursor-pointer text-gray-600"
                 onClick={() => setShowConfirmPassword((prev) => !prev)}
               >
-                {showConfirmPassword ? "Hide" : "Show"}
+                {showConfirmPassword ? (
+                  <Icon icon="eye" />
+                ) : (
+                  <Icon icon="eye-slash" />
+                )}
               </span>
             </div>
             {errors.confirmPassword && (
