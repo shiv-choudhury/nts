@@ -2,12 +2,22 @@ import React, { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import { Link } from "react-router-dom";
 
-import { FacebookFilled, InstagramOutlined } from "@ant-design/icons";
+import {
+  FacebookFilled,
+  InstagramOutlined,
+  WhatsAppOutlined
+} from "@ant-design/icons";
 import Icon from "../Icon";
 import ReviewsCarousel from "../ReviewsCarousel";
 import { getReviews } from "../../apis/ApiCalls";
+import useAppContext from "../context/UserContext";
 
 const Footer = () => {
+  const { userState } = useAppContext();
+
+  const customerPages = userState?.homePageData?.customer || [];
+  const shopbyPages = userState?.homePageData?.shopby || [];
+
   const [reviewsData, setReviewsData] = useState([]);
   const [loading, setLoading] = useState(false);
 
@@ -122,14 +132,16 @@ const Footer = () => {
                 SHOP BY
               </h3>
               <ul className="space-y-1 md:space-y-2">
-                <li className="text-sm md:text-base">WALL</li>
-                <li className="text-sm md:text-base">FLOOR</li>
-                <li className="text-sm md:text-base">BATHROOM</li>
-                <li className="text-sm md:text-base">PORCELAIN</li>
-                <li className="text-sm md:text-base">WOOD EFFECT</li>
-                <li className="text-sm md:text-base">OUTDOOR</li>
-                <li className="text-sm md:text-base">ACCESSORIES</li>
-                <li className="text-sm md:text-base">CLEARANCE</li>
+                {shopbyPages?.map((item, index) => (
+                  <li key={index} className="text-sm md:text-base">
+                    <Link
+                      to={`/category/${item?.slug}`}
+                      className="hover:text-blue-600"
+                    >
+                      {item?.name}
+                    </Link>
+                  </li>
+                ))}
               </ul>
             </div>
 
@@ -139,11 +151,16 @@ const Footer = () => {
                 CUSTOMER SERVICE
               </h3>
               <ul className="space-y-1 md:space-y-2">
-                <li className="text-sm md:text-base">About Us</li>
-                <li className="text-sm md:text-base">Why Choose Us</li>
-                <li className="text-sm md:text-base">Contact Us</li>
-                <li className="text-sm md:text-base">Delivery and Returns</li>
-                <li className="text-sm md:text-base">Privacy Policy</li>
+                {customerPages?.map((item, index) => (
+                  <li key={index} className="text-sm md:text-base">
+                    <Link
+                      to={`/pages/${item?.pg_url_key}`}
+                      className="hover:text-blue-600"
+                    >
+                      {item?.pg_title}
+                    </Link>
+                  </li>
+                ))}
               </ul>
             </div>
           </div>
@@ -168,6 +185,13 @@ const Footer = () => {
                 className="flex items-center bg-pink-600 p-1 md:p-2 rounded-full"
               >
                 <InstagramOutlined className="text-white text-2xl" />
+              </Link>
+              <Link
+                to="https://api.whatsapp.com/send?phone=+4407395384381&text=Hi%20Natural%20Tile%20Stone%21%20I%20need%20some%20information%20and%20help%20regarding%20tiles.%20Please%20do%20connect%20with%20me."
+                target="_blank"
+                className="flex items-center bg-green-500 p-1 md:p-2 rounded-full"
+              >
+                <WhatsAppOutlined className="text-white text-2xl" />
               </Link>
             </div>
           </div>
