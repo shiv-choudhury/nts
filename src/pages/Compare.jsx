@@ -50,7 +50,7 @@ const ComparisonTable = () => {
 
   return (
     <div className="container mx-auto p-4 overflow-x-auto">
-      {products.length === 0 ? (
+      {products?.length === 0 ? (
         <p className="h-[20vh] text-center text-gray-700 font-semibold flex items-center justify-center">
           You don't have any items in your compare list
         </p>

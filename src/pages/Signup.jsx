@@ -68,9 +68,9 @@ const Signup = () => {
     try {
       setLoading(true);
       const payload = {
-        firstname: form.firstname,
-        lastname: form.lastname,
-        mobileno: form.mobileno,
+        firstname: form.firstname || undefined,
+        lastname: form.lastname || undefined,
+        mobileno: form.mobileno || undefined,
         email: form.email,
         password: form.password,
         confirmPassword: form.confirmPassword,
