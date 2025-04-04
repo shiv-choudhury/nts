@@ -31,7 +31,7 @@ const Navbar = ({ data }) => {
                 onMouseEnter={() => setHoveredMenu(menu.name)}
                 onMouseLeave={() => setHoveredMenu(null)}
               >
-                <Link to={`/${menu.slug}`}>{menu.name}</Link>
+                <Link to={`/category/${menu.slug}`}>{menu.name}</Link>
 
                 {activeSubCategories.length > 0 && (
                   <>
@@ -43,7 +43,7 @@ const Navbar = ({ data }) => {
                             key={sub._id}
                             className="px-4 py-2 hover:bg-gray-600"
                           >
-                            <Link to={`/${menu.slug}/${sub.slug}`}>
+                            <Link to={`/subcategory/${sub.slug}`}>
                               {sub.name}
                             </Link>
                           </li>

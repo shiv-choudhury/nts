@@ -156,7 +156,7 @@ const SideMenu = (props) => {
                       <div className="flex justify-between items-center">
                         <Link
                           onClick={() => setIsOpen(false)}
-                          to={`/${category.slug}`}
+                          to={`/category/${category.slug}`}
                           className="block"
                         >
                           {category.name}
@@ -190,7 +190,7 @@ const SideMenu = (props) => {
                                 >
                                   <Link
                                     onClick={() => setIsOpen(false)}
-                                    to={`/${category.slug}/${sub.slug}`}
+                                    to={`/subcategory/${sub.slug}`}
                                   >
                                     {sub.name}
                                   </Link>

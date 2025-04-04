@@ -17,14 +17,20 @@ export const Skeleton = ({
 
 export default function ProductLoader() {
   return (
-    <div className="flex gap-3">
-      <Skeleton height="h-[400px]" pulse />
-      <Skeleton height="h-[400px]" pulse />
-      <Skeleton height="h-[400px]" pulse />
-      <Skeleton height="h-[400px]" pulse />
-      <Skeleton height="h-[400px]" pulse />
-      <Skeleton height="h-[400px]" pulse />
-    </div>
+    <>
+      <div className="flex gap-3">
+        <Skeleton height="h-[270px]" pulse />
+        <Skeleton height="h-[270px]" pulse />
+        <Skeleton height="h-[270px]" pulse />
+        <Skeleton height="h-[270px]" pulse />
+      </div>
+      <div className="flex gap-3">
+        <Skeleton height="h-[270px]" pulse />
+        <Skeleton height="h-[270px]" pulse />
+        <Skeleton height="h-[270px]" pulse />
+        <Skeleton height="h-[270px]" pulse />
+      </div>
+    </>
   );
 }
 

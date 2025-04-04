@@ -26,9 +26,9 @@ export const getRealImages = (payload) => {
   return ApiMethods.postResponse(url, payload);
 };
 
-export const getProducts = (product) => {
+export const getProducts = (product, payload) => {
   let url = `getproducts/${product}`;
-  return ApiMethods.postResponse(url);
+  return ApiMethods.postResponse(url, payload);
 };
 
 export const getSubCategories = (product) => {

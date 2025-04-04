@@ -28,11 +28,8 @@ export default function Router() {
           <Route path="/signup" element={<Signup />} />
           <Route path="/" element={<Home />} />
           <Route path="pages/:pageUrl" element={<DynamicPage />} />
-          <Route path="/category/:categoryName" element={<ProductsPage />} />
-          <Route
-            path="/subcategory/:subcategoryName"
-            element={<ProductsPage />}
-          />
+          <Route path="/category/:category" element={<ProductsPage />} />
+          <Route path="/subcategory/:category" element={<ProductsPage />} />
           <Route
             path="/product/details/:slug"
             element={<ProductDetailPage />}
