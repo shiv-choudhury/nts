@@ -1,50 +1,48 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import { toast } from "react-toastify";
 
-const initialProducts = [
-  {
-    image: "assets/product.jpg",
-    name: "Estrella Light Grey High Gloss Porcelain Wall and Floor Tile 300X600mm",
-    price: { original: 49.99, discounted: 34.99 },
-    availability: "In stock",
-    finish: "Gloss, High Gloss",
-    material: "Porcelain",
-    color: "Grey",
-    size: "300x600mm"
-  },
-  {
-    image: "assets/product.jpg",
-    name: "Rustic Mix Split Face Slate 100x360mm Wall Cladding Tile",
-    price: { original: 79.99, discounted: 59.99 },
-    availability: "In stock",
-    finish: "Natural Stone, Natural Riven",
-    material: "Natural Stone",
-    color: "Multi",
-    size: "100x360mm"
-  },
-  {
-    image: "assets/product.jpg",
-    name: "Oyster Beige Split Face Slate 100x360mm Wall Cladding Tile",
-    price: { original: 79.99, discounted: 59.99 },
-    availability: "In stock",
-    finish: "Natural Stone, Natural Riven",
-    material: "Natural Stone",
-    color: "Beige, Ivory, Cream",
-    size: "100x360mm"
-  },
-  {
-    image: "assets/product.jpg",
-    name: "Classic White Marble Tile 600x600mm",
-    price: { original: 89.99, discounted: 69.99 },
-    availability: "In stock",
-    finish: "Polished, High Gloss",
-    material: "Marble",
-    color: "White",
-    size: "600x600mm"
-  }
-];
+import { addToCompare, getCompareList } from "../apis/ApiCalls";
+import { imageBaseUrl1 } from "../components/utils/constants";
 
 const ComparisonTable = () => {
-  const [products, setProducts] = useState(initialProducts);
+  const [products, setProducts] = useState([]);
+
+  useEffect(() => {
+    fetchCompareProducts();
+  }, []);
+
+  const fetchCompareProducts = async () => {
+    try {
+      const resp = await getCompareList();
+      const { success, message, compare } = resp.data;
+      console.log("compare", compare);
+
+      if (success) {
+        setProducts(compare);
+      } else {
+        console.error(message);
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const handleRemoveProduct = async (id) => {
+    try {
+      const payload = { productId: id };
+      const resp = await addToCompare(payload);
+      const { compare, success, message } = resp.data;
+      if (success) {
+        fetchCompareProducts();
+        toast.success(message);
+      } else {
+        toast.error(message);
+      }
+    } catch (error) {
+      console.error(error);
+      toast.error("Error removing item");
+    }
+  };
 
   const removeProduct = (index) => {
     setProducts((prevProducts) => prevProducts.filter((_, i) => i !== index));
@@ -61,10 +59,10 @@ const ComparisonTable = () => {
           <thead>
             <tr className="bg-white text-gray-700 text-sm md:text-base">
               <th className="p-2 w-32 bg-red-100 rounded-tl-md">Product</th>
-              {products.map((_, index) => (
+              {products.map((item, index) => (
                 <th key={index} className="p-2 w-48 bg-red-100">
                   <button
-                    onClick={() => removeProduct(index)}
+                    onClick={() => handleRemoveProduct(item?._id)}
                     className="bg-red-500 text-white text-xs px-2 py-1 rounded-full hover:bg-red-600"
                   >
                     ✕
@@ -77,9 +75,13 @@ const ComparisonTable = () => {
               {products.map((product, index) => (
                 <th key={index} className="p-2 w-48 relative align-top">
                   <img
-                    src={product.image}
+                    src={`${imageBaseUrl1}${product?.images[0]}`}
+                    onError={(e) => {
+                      e.target.src = `assets/product.jpg`;
+                    }}
+                    // src={product.image}
                     alt={product.name}
-                    className="mx-auto w-44 h-44 object-cover rounded-md"
+                    className="mx-auto w-44 h-44 object-cover rounded-md border border-gray-200"
                   />
                   <p className="mt-2 text-sm md:text-base font-semibold text-gray-800">
                     {product.name}
@@ -112,16 +114,28 @@ const ComparisonTable = () => {
                     {label === "Price" ? (
                       <span className="text-red-500 font-bold">
                         <span className="line-through text-gray-400">
-                          £{product.price.original}
+                          £{product?.price?.price?.toFixed(2)}
                         </span>{" "}
-                        £{product.price.discounted} Per M2
+                        £{product?.price?.ourPrice?.toFixed(2)} {product?.unit}
                       </span>
                     ) : label === "Availability" ? (
-                      <span className="text-green-600">
-                        {product.availability}
+                      <span
+                        className={
+                          product?.stock > 0 ? "text-green-600" : "text-red-500"
+                        }
+                      >
+                        {product?.stock > 0 ? "In stock" : "Out of stock"}
                       </span>
+                    ) : label === "Finish (Appearance)" ? (
+                      product?.tilesPerfection?.appearance || "-"
+                    ) : label === "Material" ? (
+                      product?.tilesPerfection?.material || "-"
+                    ) : label === "Color" ? (
+                      product?.tilesPerfection?.color || "-"
+                    ) : label === "Size (mm)" ? (
+                      product?.tilesPerfection?.sizeMM || "-"
                     ) : (
-                      product[label.toLowerCase().replace(/ \(.*?\)/, "")]
+                      "-"
                     )}
                   </td>
                 ))}
