@@ -132,7 +132,7 @@ export default function Home(props) {
                 <h1 className="text-3xl md:text-5xl font-bold text-gray-800 mb-4">
                   Natural Stone & Tiles
                 </h1>
-                <p className="text-xs md:text-md text-gray-600 mb-8">
+                <p className="text-xs md:text-base text-gray-600 mb-8">
                   Welcome to The Natural Stone & Tiles Co. We specialize in
                   designing and importing premium quality Natural Stone, Quartz
                   & Porcelain floor & wall tiles. Our products are brought in
@@ -143,7 +143,7 @@ export default function Home(props) {
                   If you have an enquiry or know more please call us at{" "}
                   <a href="tel:02476375531" className="text-blue-600">
                     024-76375531
-                  </a>
+                  </a>{" "}
                   or email the team at{" "}
                   <a
                     href="mailto:info@naturaltilestone.co.uk"
@@ -152,11 +152,13 @@ export default function Home(props) {
                     info@naturaltilestone.co.uk
                   </a>
                 </p>
-                <p className="text-sm md:text-md">
+
+                <p className="text-xs md:text-base">
                   WE ARE EXTREMELY COMPETITIVE ON PRICE; OUR POLICY IS TO BETTER
                   ANY LIKE FOR LIKE QUOTE.
                 </p>
-                <p className="text-sm md:text-md">
+
+                <p className="text-xs md:text-base">
                   WE PROVIDE UK-WIDE DELIVERY.
                 </p>
               </div>

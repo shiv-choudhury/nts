@@ -100,12 +100,11 @@ const SideMenu = (props) => {
                 <ul className="p-4">
                   {headerData?.map((item, index) => (
                     <li
-                      key={item.id || index}
+                      key={item?.id || index}
                       className="py-3 border-b border-gray-700 hover:bg-gray-800"
                     >
                       <Link
-                        className="hover:text-blue-600 block"
-                        key={item?.pageId?._id || index}
+                        className="hover:text-blue-600 block w-full h-full"
                         to={`pages/${item?.pageId?.pg_url_key || ""}`}
                         onClick={() => setIsOpen(false)}
                       >
@@ -113,107 +112,107 @@ const SideMenu = (props) => {
                       </Link>
                     </li>
                   ))}
+
                   <li className="p-3 border-b border-gray-700 hover:bg-gray-800">
-                    <div className="flex justify-between items-center">
-                      <Link
-                        onClick={() => setIsOpen(false)}
-                        to="/wishlist"
-                        className="block"
-                      >
-                        <Icon
-                          icon="heart"
-                          className="mr-2 text-white text-sm"
-                        />
-                        Wishlist
-                      </Link>
-                    </div>
+                    <Link
+                      onClick={() => setIsOpen(false)}
+                      to="/wishlist"
+                      className="flex items-center w-full"
+                    >
+                      <Icon icon="heart" className="mr-2 text-white text-sm" />
+                      Wishlist
+                    </Link>
                   </li>
+
                   <li className="p-3 border-b border-gray-700 hover:bg-gray-800">
-                    <div className="flex justify-between items-center">
-                      <Link
-                        onClick={() => setIsOpen(false)}
-                        to="/compare"
-                        className="block"
-                      >
-                        <ApartmentOutlined className="mr-2 text-sm" />
-                        Compare
-                      </Link>
-                    </div>
+                    <Link
+                      onClick={() => setIsOpen(false)}
+                      to="/compare"
+                      className="flex items-center w-full"
+                    >
+                      <ApartmentOutlined className="mr-2 text-sm" />
+                      Compare
+                    </Link>
                   </li>
                 </ul>
               ) : (
                 <ul className="p-4">
-                  {/* Render active categories and their subcategories */}
-                  {activeCategories.map((category) => (
-                    <li
-                      key={category._id}
-                      className={`py-3 border-b border-gray-700 hover:bg-gray-800 ${
-                        category.slug === "clearance"
-                          ? "bg-red-600 hover:bg-red-500"
-                          : ""
-                      }`}
-                    >
-                      <div className="flex justify-between items-center">
-                        <Link
-                          onClick={() => setIsOpen(false)}
-                          to={`/category/${category.slug}`}
-                          className="block"
-                        >
-                          {category.name}
-                        </Link>
-                        {/* Toggle Button for Submenu */}
-                        {category.subCategories?.filter((sub) => sub.status)
-                          .length > 0 && (
-                          <button
-                            onClick={() => toggleSubMenu(category._id)}
-                            className="text-gray-400 hover:text-white"
+                  {activeCategories?.map((category) => {
+                    const hasSub = category?.subCategories?.some(
+                      (sub) => sub?.status
+                    );
+
+                    return (
+                      <li
+                        key={category?._id}
+                        className={`py-3 border-b border-gray-700 hover:bg-gray-800 ${
+                          category?.slug === "clearance"
+                            ? "bg-red-600 hover:bg-red-500"
+                            : ""
+                        }`}
+                      >
+                        <div className="flex justify-between items-center w-full">
+                          <Link
+                            to={`/category/${category?.slug}`}
+                            onClick={() => setIsOpen(false)}
+                            className="w-full"
                           >
-                            <DownOutlined
-                              className={
-                                openMenus[category._id] ? "rotate-180" : ""
-                              }
-                            />
-                          </button>
-                        )}
-                      </div>
-                      {/* Show subcategories if available and menu is open */}
-                      {openMenus[category._id] &&
-                        category.subCategories?.filter((sub) => sub.status)
-                          .length > 0 && (
+                            {category?.name}
+                          </Link>
+
+                          {hasSub && (
+                            <button
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                toggleSubMenu(category?._id);
+                              }}
+                              className="text-gray-400 hover:text-white ml-2"
+                            >
+                              <DownOutlined
+                                className={`${
+                                  openMenus[category?._id] ? "rotate-180" : ""
+                                }`}
+                              />
+                            </button>
+                          )}
+                        </div>
+
+                        {openMenus[category?._id] && hasSub && (
                           <ul className="pl-4 mt-2">
-                            {category.subCategories
-                              .filter((sub) => sub.status)
-                              .map((sub) => (
+                            {category?.subCategories
+                              ?.filter((sub) => sub?.status)
+                              ?.map((sub) => (
                                 <li
-                                  key={sub._id}
+                                  key={sub?._id}
                                   className="py-2 text-gray-400 hover:text-white"
                                 >
                                   <Link
+                                    to={`/subcategory/${sub?.slug}`}
                                     onClick={() => setIsOpen(false)}
-                                    to={`/subcategory/${sub.slug}`}
+                                    className="block w-full"
                                   >
-                                    {sub.name}
+                                    {sub?.name}
                                   </Link>
                                 </li>
                               ))}
                           </ul>
                         )}
-                    </li>
-                  ))}
-                  {menuItems.map((item) => (
+                      </li>
+                    );
+                  })}
+
+                  {menuItems?.map((item) => (
                     <li
-                      key={item?._id}
+                      key={item?.name}
                       className="py-3 border-b border-gray-700 hover:bg-gray-800"
                     >
-                      <div className="flex justify-between items-center">
-                        <Link
-                          onClick={() => setIsOpen(false)}
-                          to={item?.url}
-                          className="block"
-                        >
-                          {item?.name}
-                        </Link>
-                      </div>
+                      <Link
+                        to={`/${item?.url}`}
+                        onClick={() => setIsOpen(false)}
+                        className="block w-full"
+                      >
+                        {item?.name}
+                      </Link>
                     </li>
                   ))}
                 </ul>

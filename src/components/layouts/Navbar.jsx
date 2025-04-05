@@ -9,58 +9,64 @@ const Navbar = ({ data }) => {
     { name: "CONTACT US", url: "contact" }
   ];
 
-  const activeMenus = data.filter((menu) => menu.status);
+  const activeMenus = data?.filter((menu) => menu?.status) || [];
 
   return (
     <nav className="hidden xl:block bg-gray-800 text-white text-sm relative z-20">
       <div className="container mx-auto w-full">
         <ul className="flex justify-center">
-          {activeMenus.map((menu) => {
-            const activeSubCategories = menu.subCategories.filter(
-              (sub) => sub.status
-            );
+          {activeMenus?.map((menu) => {
+            const activeSubCategories =
+              menu?.subCategories?.filter((sub) => sub?.status) || [];
 
             return (
               <li
-                key={menu._id}
-                className={`relative px-3 py-3 hover:bg-gray-700 cursor-pointer flex items-center ${
+                key={menu?._id}
+                className={`relative group px-3 py-3 hover:bg-gray-700 cursor-pointer flex items-center ${
                   menu?.slug === "clearance"
                     ? "bg-red-600 hover:bg-red-500"
                     : ""
                 }`}
-                onMouseEnter={() => setHoveredMenu(menu.name)}
+                onMouseEnter={() => setHoveredMenu(menu?.name)}
                 onMouseLeave={() => setHoveredMenu(null)}
               >
-                <Link to={`/category/${menu.slug}`}>{menu.name}</Link>
-
-                {activeSubCategories.length > 0 && (
-                  <>
+                <Link
+                  to={`/category/${menu?.slug}`}
+                  className="w-full h-full flex items-center"
+                >
+                  <span>{menu?.name}</span>
+                  {activeSubCategories?.length > 0 && (
                     <span className="ml-1">▼</span>
-                    {hoveredMenu === menu.name && (
-                      <ul className="absolute left-0 top-full bg-black text-white w-56 shadow-lg z-50">
-                        {activeSubCategories.map((sub) => (
-                          <li
-                            key={sub._id}
-                            className="px-4 py-2 hover:bg-gray-600"
+                  )}
+                </Link>
+
+                {hoveredMenu === menu?.name &&
+                  activeSubCategories?.length > 0 && (
+                    <ul className="absolute left-0 top-full bg-black text-white w-56 shadow-lg z-50">
+                      {activeSubCategories?.map((sub) => (
+                        <li key={sub?._id} className="hover:bg-gray-600">
+                          <Link
+                            to={`/subcategory/${sub?.slug}`}
+                            className="block px-4 py-2 w-full h-full"
                           >
-                            <Link to={`/subcategory/${sub.slug}`}>
-                              {sub.name}
-                            </Link>
-                          </li>
-                        ))}
-                      </ul>
-                    )}
-                  </>
-                )}
+                            {sub?.name}
+                          </Link>
+                        </li>
+                      ))}
+                    </ul>
+                  )}
               </li>
             );
           })}
+
           {menuItems?.map((item) => (
             <li
-              key={item.name}
+              key={item?.name}
               className="px-3 py-3 hover:bg-gray-700 cursor-pointer"
             >
-              <Link to={item?.url}>{item?.name}</Link>
+              <Link to={`/${item?.url}`} className="w-full h-full block">
+                {item?.name}
+              </Link>
             </li>
           ))}
         </ul>
