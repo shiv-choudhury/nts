@@ -48,13 +48,28 @@ export default function ProductCard(props) {
   };
 
   const handleAddToCompare = async () => {
+    // if (userState?.compareLength >= 4) {
+    //   toast.error("You can compare only 4 products at a time.");
+    //   return;
+    // }
+
     try {
       setCompareLoader(true);
       const resp = await addToCompare({ productId: data?._id });
-      const { success, message } = resp.data;
+      const { compare, success, message } = resp.data;
+      console.log("compare", compare);
 
       setIsCompare(message === "Product added to compare product.");
       if (success) {
+        dispatch({
+          type: "COMPARE_LENGTH",
+          data: compare?.length
+        });
+        dispatch({
+          type: "COMPARE_DATA",
+          data: compare || []
+        });
+        setOpenCompare(true);
         toast.success(message);
       } else {
         toast.error(message);
@@ -117,7 +132,11 @@ export default function ProductCard(props) {
         <img
           src={`${imageBaseUrl}${data?.images[0]}`}
           onError={(e) => {
-            e.target.src = `assets/product.jpg`;
+            if (
+              e.target.src !== `${window.location.origin}/assets/product.jpg`
+            ) {
+              e.target.src = `${window.location.origin}/assets/product.jpg`;
+            }
           }}
           onClick={() => {
             navigate(`/product/details/${data?.slug}`);

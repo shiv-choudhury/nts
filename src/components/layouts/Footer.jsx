@@ -65,21 +65,29 @@ const Footer = () => {
                 <Link
                   to="https://www.google.com/maps/place/19+Slingsby+Cl,+Nuneaton+CV11+6RP,+UK/@52.514741,-1.449179,16z/data=!4m5!3m4!1s0x48774e24816d8e13:0x91ba7d1e6b2774a3!8m2!3d52.5147413!4d-1.4491792?hl=en-GB"
                   target="_blank"
-                  className="bg-white text-gray-800 px-3 py-1 md:px-4 md:py-2 mt-2 md:mt-4 text-sm md:text-base font-medium"
+                  className="bg-white text-gray-800 hover:text-blue-500 px-3 py-1 md:px-4 md:py-2 mt-2 md:mt-4 text-sm md:text-base font-medium"
                 >
                   Locate Us
                 </Link>
 
                 <div className="flex items-center mt-2 md:mt-4">
                   <Icon icon="phone" className="mr-2" />
-                  <span className="text-sm md:text-base">024 7637 5531</span>
+                  <a
+                    href="tel:02476375531"
+                    className="text-sm md:text-base hover:text-blue-500"
+                  >
+                    024 7637 5531
+                  </a>
                 </div>
 
                 <div className="flex items-center">
                   <Icon icon="envelope" className="mr-2" />
-                  <span className="text-sm md:text-base">
+                  <a
+                    href="mailto:info@naturaltilestone.co.uk"
+                    className="text-sm md:text-base hover:text-blue-500"
+                  >
                     info@naturaltilestone.co.uk
-                  </span>
+                  </a>
                 </div>
 
                 <div className="mt-3 md:mt-4">

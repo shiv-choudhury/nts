@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import HalfModal from "./HalfModal";
+import { useNavigate } from "react-router-dom";
 
 export default function CompareModal(props) {
   const { isOpen, onClose } = props;
@@ -17,6 +18,7 @@ export default function CompareModal(props) {
 }
 
 const ProductComparisonModal = () => {
+  const navigate = useNavigate();
   const [products, setProducts] = useState([
     {
       id: 1,
@@ -79,12 +81,16 @@ const ProductComparisonModal = () => {
 
         <div className="md:col-span-4 flex flex-col md:flex-row md:items-center space-y-2 md:space-y-0 md:space-x-4 justify-end">
           <button
-            className="bg-red-600 text-white px-4 py-2 text-sm font-medium rounded-md hover:bg-gray-700"
+            className="bg-red-600 text-white px-4 py-2 text-sm font-medium rounded-md hover:bg-gray-700 cursor-pointer"
             onClick={handleClearAll}
           >
             Clear All
           </button>
-          <button className="bg-gray-800 text-white px-4 py-2 text-sm font-medium rounded-md hover:bg-gray-700">
+
+          <button
+            onClick={() => navigate("/compare")}
+            className="bg-gray-800 text-white px-4 py-2 text-sm font-medium rounded-md hover:bg-gray-700 cursor-pointer"
+          >
             START COMPARE !
           </button>
         </div>
