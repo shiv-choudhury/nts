@@ -6,6 +6,7 @@ import Router from "./routes/Router";
 import "./App.css";
 import "primeicons/primeicons.css";
 import { UserContextProvider } from "./components/context/UserContext";
+import { useEffect } from "react";
 
 useEffect(() => {
   const script = document.createElement("script");
