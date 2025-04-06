@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import { toast } from "react-toastify";
-import { Link } from "react-router-dom";
 
 import { getHomeData } from "../apis/ApiCalls";
 import CategoryCard from "../components/CategoryCard";
@@ -11,6 +10,7 @@ import PromotionalBanner from "../components/PromotionalBanner";
 import CountdownBanner from "../components/CountdownBanner";
 import WelcomePopup from "../components/WelcomePopup";
 import useAppContext from "../components/context/UserContext";
+import { imageBaseUrl3 } from "../components/utils/constants";
 
 export default function Home(props) {
   const { children, className } = props;
@@ -18,6 +18,7 @@ export default function Home(props) {
   const { categoriesData = [] } = userState;
 
   const [homeData, setHomeData] = useState({});
+  const [sliderImages, setSliderImages] = useState([]);
 
   useEffect(() => {
     fetchHomePageData();
@@ -33,6 +34,11 @@ export default function Home(props) {
           type: "HOME_PAGE_DATA",
           data: data
         });
+        const sliderImages = data?.slidbar?.map(
+          (item) => `${imageBaseUrl3}${item?.s_path}`
+        );
+
+        setSliderImages(sliderImages);
       } else {
         toast.error(message);
       }
@@ -49,14 +55,7 @@ export default function Home(props) {
           <CookieConsentBanner />
         </div>
         <div className="container mx-auto">
-          <ImageCarousel
-            carouselItems={[
-              "assets/banner1.png",
-              "assets/banner2.jpg",
-              "assets/banner1.png",
-              "assets/banner2.jpg"
-            ]}
-          />
+          <ImageCarousel carouselItems={sliderImages} />
         </div>
         <PromotionalBanner data={homeData?.aboutdelivery} />
         <CountdownBanner data={homeData?.offers} />

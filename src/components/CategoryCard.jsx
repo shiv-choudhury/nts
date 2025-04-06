@@ -1,6 +1,18 @@
+import { useNavigate } from "react-router-dom";
 import { imageBaseUrl4 } from "./utils/constants";
 
 const CategoryCard = ({ data, key }) => {
+  const navigate = useNavigate();
+
+  const handleOnClick = () => {
+    navigate(`/category/${data?.slug}`, {
+      state: {
+        imageUrl: `${imageBaseUrl4}${data?.category_image[0]}`,
+        name: data?.name
+      }
+    });
+  };
+
   return (
     <div
       key={key}
@@ -9,6 +21,7 @@ const CategoryCard = ({ data, key }) => {
       {/* Product Image */}
       <div className="mb-3 rounded overflow-hidden">
         <img
+          onClick={handleOnClick}
           src={`${imageBaseUrl4}${data?.banner_image[0]}`}
           onError={(e) => {
             if (
@@ -24,7 +37,10 @@ const CategoryCard = ({ data, key }) => {
 
       {/* Category Info */}
       <h3 className="font-medium">{data?.name}</h3>
-      <h4 className="font-base text-gray-500">{data?.description || ""}</h4>
+      <div
+        dangerouslySetInnerHTML={{ __html: data?.content || "" }}
+        className="font-base text-gray-500"
+      />
     </div>
   );
 };
