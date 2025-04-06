@@ -3,10 +3,12 @@ import { useParams } from "react-router-dom";
 import { getProducts } from "../apis/ApiCalls";
 import ProductCard from "../components/ProductCard";
 import ProductLoader from "../components/Loaders";
+import Filter from "../components/layouts/Filter";
+import Icon from "../components/Icon";
 
 export default function ProductsPage() {
   const { category } = useParams();
-
+  const [openFilter, setOpenFilter] = useState(false);
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(false);
 
@@ -19,9 +21,9 @@ export default function ProductsPage() {
     try {
       setLoading(true);
       const resp = await getProducts(category);
-      const { status, message, data } = resp.data;
+      const { status, success, message, data } = resp.data;
 
-      if (status) {
+      if (success) {
         setProducts(data);
       } else {
         console.error(message);
@@ -35,11 +37,19 @@ export default function ProductsPage() {
 
   return (
     <div className="mb-8 md:mb-12">
+      <Filter isOpen={openFilter} setIsOpen={setOpenFilter} data={products} />
       <div className="flex justify-between items-center mb-4">
         <h2 className="text-xl md:text-2xl font-semibold text-blue-800">
           Category Products
         </h2>
       </div>
+      <button
+        className="mb-4 bg-blue-800 text-white px-4 py-2 rounded cursor-pointer hover:bg-blue-700 transition duration-300"
+        onClick={() => setOpenFilter(true)}
+      >
+        <Icon icon="filter" className="mr-2" />
+        Filter
+      </button>
 
       {loading ? (
         <ProductLoader />

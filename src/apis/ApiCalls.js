@@ -41,6 +41,11 @@ export const getProductDetails = (slug) => {
   return ApiMethods.postResponse(url);
 };
 
+export const getFilters = () => {
+  let url = `filters`;
+  return ApiMethods.postResponse(url);
+};
+
 //wishlist
 export const addToFavorites = (payload) => {
   let url = `favorites/add`;
