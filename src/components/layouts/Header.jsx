@@ -2,7 +2,11 @@ import React, { useEffect, useRef, useState } from "react";
 import { ApartmentOutlined } from "@ant-design/icons";
 import { Link, useLocation } from "react-router-dom";
 
-import { getCategories, getHeaderData } from "../../apis/ApiCalls";
+import {
+  getCategories,
+  getHeaderData,
+  searchProduct
+} from "../../apis/ApiCalls";
 import Icon from "../Icon";
 import useAppContext from "../context/UserContext";
 import Navbar from "./Navbar";
@@ -22,6 +26,9 @@ export default function Header() {
   const [categories, setCategories] = useState([]);
   const [isOpen, setIsOpen] = useState(false);
   const [openCart, setOpenCart] = useState(false);
+  const [searchValue, setSearchValue] = useState("");
+  const [searchResults, setSearchResults] = useState([]);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     if (headerRef.current) {
@@ -54,6 +61,33 @@ export default function Header() {
       console.error(error);
     }
   };
+
+  useEffect(() => {
+    if (searchValue) {
+      handleSearch();
+    }
+  }, [searchValue]);
+
+  const handleSearch = async () => {
+    try {
+      setLoading(true);
+      const params = {
+        product: searchValue || undefined
+      };
+      const resp = await searchProduct(params);
+      const { data, status, success, message } = resp.data;
+      if (success) {
+        setSearchResults(data);
+      } else {
+        toast.error(message);
+      }
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <header ref={headerRef} id="header" className="w-full">
       {/* Top navigation bar */}
