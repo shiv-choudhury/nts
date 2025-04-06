@@ -27,11 +27,19 @@ export default function ProductLoader() {
         <Skeleton height="h-[270px]" pulse />
         <Skeleton height="h-[270px]" pulse />
         <Skeleton height="h-[270px]" pulse />
-
-        {/* <div className="flex gap-3">
       </div>
-      <div className="flex gap-3">
-      </div> */}
+    </>
+  );
+}
+
+export function HomePageLoader() {
+  return (
+    <>
+      <div className="">
+        <Skeleton height="h-[300px]" pulse />
+        <Skeleton height="h-[100px]" pulse />
+        <Skeleton height="h-[200px]" pulse />
+        <Skeleton height="h-[200px]" pulse />
       </div>
     </>
   );

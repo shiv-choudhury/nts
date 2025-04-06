@@ -11,6 +11,7 @@ import CountdownBanner from "../components/CountdownBanner";
 import WelcomePopup from "../components/WelcomePopup";
 import useAppContext from "../components/context/UserContext";
 import { imageBaseUrl3 } from "../components/utils/constants";
+import { HomePageLoader } from "../components/Loaders";
 
 export default function Home(props) {
   const { children, className } = props;
@@ -19,6 +20,7 @@ export default function Home(props) {
 
   const [homeData, setHomeData] = useState({});
   const [sliderImages, setSliderImages] = useState([]);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     fetchHomePageData();
@@ -26,6 +28,7 @@ export default function Home(props) {
 
   const fetchHomePageData = async () => {
     try {
+      setLoading(true);
       const resp = await getHomeData();
       const { data, status, success, message } = resp.data;
       if (success) {
@@ -44,8 +47,18 @@ export default function Home(props) {
       }
     } catch (error) {
       console.error(error);
+    } finally {
+      setLoading(false);
     }
   };
+
+  if (loading) {
+    return (
+      <div className="p-4">
+        <HomePageLoader />
+      </div>
+    );
+  }
 
   return (
     <div>
