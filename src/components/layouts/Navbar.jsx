@@ -1,7 +1,10 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { imageBaseUrl4 } from "../utils/constants";
 
 const Navbar = ({ data }) => {
+  const navigate = useNavigate();
+
   const [hoveredMenu, setHoveredMenu] = useState(null);
 
   const menuItems = [
@@ -30,27 +33,43 @@ const Navbar = ({ data }) => {
                 onMouseEnter={() => setHoveredMenu(menu?.name)}
                 onMouseLeave={() => setHoveredMenu(null)}
               >
-                <Link
-                  to={`/category/${menu?.slug}`}
+                <div
+                  onClick={() => {
+                    navigate(`/category/${menu?.slug}`, {
+                      state: {
+                        imageUrl: `${imageBaseUrl4}${menu?.category_image[0]}`,
+                        name: menu?.name
+                      }
+                    });
+                  }}
+                  // to={`/category/${menu?.slug}`}
                   className="w-full h-full flex items-center"
                 >
                   <span>{menu?.name}</span>
                   {activeSubCategories?.length > 0 && (
                     <span className="ml-1">▼</span>
                   )}
-                </Link>
+                </div>
 
                 {hoveredMenu === menu?.name &&
                   activeSubCategories?.length > 0 && (
                     <ul className="absolute left-0 top-full bg-black text-white w-56 shadow-lg z-50">
                       {activeSubCategories?.map((sub) => (
                         <li key={sub?._id} className="hover:bg-gray-600">
-                          <Link
-                            to={`/subcategory/${sub?.slug}`}
+                          <div
+                            onClick={() => {
+                              navigate(`/subcategory/${sub?.slug}`, {
+                                state: {
+                                  // imageUrl: `${imageBaseUrl4}${sub?.category_image[0]}`,
+                                  name: sub?.name
+                                }
+                              });
+                            }}
+                            // to={`/subcategory/${sub?.slug}`}
                             className="block px-4 py-2 w-full h-full"
                           >
                             {sub?.name}
-                          </Link>
+                          </div>
                         </li>
                       ))}
                     </ul>

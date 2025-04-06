@@ -5,13 +5,14 @@ import {
   DownOutlined
 } from "@ant-design/icons";
 import { motion, AnimatePresence } from "framer-motion";
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 import useAppContext from "../context/UserContext";
 import Icon from "../Icon";
+import { imageBaseUrl4 } from "../utils/constants";
 
-const SideMenu = (props) => {
-  const { isOpen, setIsOpen, data } = props;
+const SideMenu = ({ isOpen, setIsOpen, data }) => {
+  const navigate = useNavigate();
   const { userState } = useAppContext();
   const { headerData } = userState;
   const [activeTab, setActiveTab] = useState("categories");
@@ -24,36 +25,28 @@ const SideMenu = (props) => {
 
   const toggleMenu = () => setIsOpen(!isOpen);
 
-  // Toggle submenu visibility
   const toggleSubMenu = (categoryId) => {
     setOpenMenus((prev) => ({ ...prev, [categoryId]: !prev[categoryId] }));
   };
 
-  // Close menu when clicking outside the side menu
   const closeMenu = (e) => {
     if (!e.target.closest(".sidemenu")) {
       setIsOpen(false);
     }
   };
 
-  // Prevent scrolling when the menu is open
   useEffect(() => {
-    if (isOpen) {
-      document.body.classList.add("overflow-hidden");
-    } else {
-      document.body.classList.remove("overflow-hidden");
-    }
+    if (isOpen) document.body.classList.add("overflow-hidden");
+    else document.body.classList.remove("overflow-hidden");
     return () => document.body.classList.remove("overflow-hidden");
   }, [isOpen]);
 
-  // Filter only active categories
   const activeCategories = data?.filter((category) => category.status);
 
   return (
     <AnimatePresence>
       {isOpen && (
         <>
-          {/* Background Overlay to close menu when clicked */}
           <motion.div
             className="fixed inset-0 bg-black/50 z-50"
             initial={{ opacity: 0 }}
@@ -62,7 +55,6 @@ const SideMenu = (props) => {
             onClick={closeMenu}
           />
 
-          {/* Side Menu Panel */}
           <motion.div
             className="fixed top-0 left-0 h-full w-80 bg-gray-900 text-white z-50 flex flex-col sidemenu"
             initial={{ x: "-100%" }}
@@ -70,7 +62,6 @@ const SideMenu = (props) => {
             exit={{ x: "-100%" }}
             transition={{ duration: 0.3, ease: "easeInOut" }}
           >
-            {/* Tabs for switching between menu categories */}
             <div className="flex border-b border-gray-700">
               <button
                 className={`flex-1 py-3 text-center ${
@@ -94,45 +85,42 @@ const SideMenu = (props) => {
               </button>
             </div>
 
-            {/* Conditional Rendering for Active Tab */}
             <div className="flex-1 overflow-y-auto">
               {activeTab === "main" ? (
                 <ul className="p-4">
                   {headerData?.map((item, index) => (
                     <li
                       key={item?.id || index}
-                      className="py-3 border-b border-gray-700 hover:bg-gray-800"
+                      className="py-3 border-b border-gray-700 hover:bg-gray-800 cursor-pointer"
+                      onClick={() => {
+                        navigate(`/pages/${item?.pageId?.pg_url_key || ""}`);
+                        setIsOpen(false);
+                      }}
                     >
-                      <Link
-                        className="hover:text-blue-600 block w-full h-full"
-                        to={`pages/${item?.pageId?.pg_url_key || ""}`}
-                        onClick={() => setIsOpen(false)}
-                      >
-                        {item?.headerName}
-                      </Link>
+                      {item?.headerName}
                     </li>
                   ))}
 
-                  <li className="p-3 border-b border-gray-700 hover:bg-gray-800">
-                    <Link
-                      onClick={() => setIsOpen(false)}
-                      to="/wishlist"
-                      className="flex items-center w-full"
-                    >
-                      <Icon icon="heart" className="mr-2 text-white text-sm" />
-                      Wishlist
-                    </Link>
+                  <li
+                    className="p-3 border-b border-gray-700 hover:bg-gray-800 cursor-pointer flex items-center"
+                    onClick={() => {
+                      navigate("/wishlist");
+                      setIsOpen(false);
+                    }}
+                  >
+                    <Icon icon="heart" className="mr-2 text-white text-sm" />
+                    Wishlist
                   </li>
 
-                  <li className="p-3 border-b border-gray-700 hover:bg-gray-800">
-                    <Link
-                      onClick={() => setIsOpen(false)}
-                      to="/compare"
-                      className="flex items-center w-full"
-                    >
-                      <ApartmentOutlined className="mr-2 text-sm" />
-                      Compare
-                    </Link>
+                  <li
+                    className="p-3 border-b border-gray-700 hover:bg-gray-800 cursor-pointer flex items-center"
+                    onClick={() => {
+                      navigate("/compare");
+                      setIsOpen(false);
+                    }}
+                  >
+                    <ApartmentOutlined className="mr-2 text-sm" />
+                    Compare
                   </li>
                 </ul>
               ) : (
@@ -152,13 +140,20 @@ const SideMenu = (props) => {
                         }`}
                       >
                         <div className="flex justify-between items-center w-full">
-                          <Link
-                            to={`/category/${category?.slug}`}
-                            onClick={() => setIsOpen(false)}
-                            className="w-full"
+                          <div
+                            onClick={() => {
+                              navigate(`/category/${category?.slug}`, {
+                                state: {
+                                  imageUrl: `${imageBaseUrl4}${category?.category_image[0]}`,
+                                  name: category?.name
+                                }
+                              });
+                              setIsOpen(false);
+                            }}
+                            className="w-full cursor-pointer"
                           >
                             {category?.name}
-                          </Link>
+                          </div>
 
                           {hasSub && (
                             <button
@@ -184,15 +179,17 @@ const SideMenu = (props) => {
                               ?.map((sub) => (
                                 <li
                                   key={sub?._id}
-                                  className="py-2 text-gray-400 hover:text-white"
+                                  className="py-2 text-gray-400 hover:text-white cursor-pointer"
+                                  onClick={() => {
+                                    navigate(`/subcategory/${sub?.slug}`, {
+                                      state: {
+                                        name: sub?.name
+                                      }
+                                    });
+                                    setIsOpen(false);
+                                  }}
                                 >
-                                  <Link
-                                    to={`/subcategory/${sub?.slug}`}
-                                    onClick={() => setIsOpen(false)}
-                                    className="block w-full"
-                                  >
-                                    {sub?.name}
-                                  </Link>
+                                  {sub?.name}
                                 </li>
                               ))}
                           </ul>
@@ -204,30 +201,29 @@ const SideMenu = (props) => {
                   {menuItems?.map((item) => (
                     <li
                       key={item?.name}
-                      className="py-3 border-b border-gray-700 hover:bg-gray-800"
+                      className="py-3 border-b border-gray-700 hover:bg-gray-800 cursor-pointer"
+                      onClick={() => {
+                        navigate(`/${item?.url}`);
+                        setIsOpen(false);
+                      }}
                     >
-                      <Link
-                        to={`/${item?.url}`}
-                        onClick={() => setIsOpen(false)}
-                        className="block w-full"
-                      >
-                        {item?.name}
-                      </Link>
+                      {item?.name}
                     </li>
                   ))}
                 </ul>
               )}
             </div>
 
-            {/* Close Button */}
             <div className="p-4 border-t border-gray-700 flex justify-between items-center">
-              <Link
-                className="text-white"
-                onClick={() => setIsOpen(false)}
-                to="/login"
+              <div
+                className="text-white cursor-pointer"
+                onClick={() => {
+                  navigate("/login");
+                  setIsOpen(false);
+                }}
               >
                 Login/Signup
-              </Link>
+              </div>
               <button className="text-white" onClick={toggleMenu}>
                 <CloseOutlined className="text-lg" />
               </button>
