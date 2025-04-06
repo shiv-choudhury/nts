@@ -7,6 +7,7 @@ import { getProductDetails } from "../apis/ApiCalls";
 import Icon from "../components/Icon";
 import { imageBaseUrl1 } from "../components/utils/constants";
 import ProductCard from "../components/ProductCard";
+import Zoom from "react-medium-image-zoom";
 
 const ProductDetailPage = () => {
   const { slug } = useParams();
@@ -21,10 +22,7 @@ const ProductDetailPage = () => {
     ? parse(productDetails?.metaDescription?.metaDescription)
     : null;
 
-  console.log(
-    "keyFeatures",
-    keyFeatures?.map((feature) => feature?.props?.children)
-  );
+  console.log("keyFeatures", keyFeatures);
 
   useEffect(() => {
     fetchProductDetails();
@@ -33,8 +31,8 @@ const ProductDetailPage = () => {
   const fetchProductDetails = async () => {
     try {
       const resp = await getProductDetails(slug);
-      const { data, status, message } = resp.data;
-      if (status) {
+      const { data, status, success, message } = resp.data;
+      if (success) {
         setProductDetails(data);
       } else {
         toast.error(message);
@@ -125,11 +123,13 @@ const ProductDetailPage = () => {
         <div className="lg:w-1/3 md:w-1/2 p-2 relative">
           <div className="bg-white p-4 rounded-md shadow-sm mb-4 relative">
             {productDetails?.images && productDetails.images.length > 0 && (
-              <img
-                src={`${imageBaseUrl}${productDetails?.images[currentImage]}`}
-                alt={productDetails?.name}
-                className="w-full h-auto object-cover aspect-square"
-              />
+              <Zoom>
+                <img
+                  src={`${imageBaseUrl}${productDetails?.images[currentImage]}`}
+                  alt={productDetails?.name}
+                  className="w-full h-auto object-cover aspect-square"
+                />
+              </Zoom>
             )}
             <button
               onClick={prevImage}

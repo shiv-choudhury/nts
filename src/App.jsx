@@ -7,6 +7,7 @@ import Router from "./routes/Router";
 import "./App.css";
 import "primeicons/primeicons.css";
 import { UserContextProvider } from "./components/context/UserContext";
+import "react-medium-image-zoom/dist/styles.css";
 
 function App() {
   // useEffect(() => {
