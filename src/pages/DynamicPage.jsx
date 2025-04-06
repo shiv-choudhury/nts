@@ -3,6 +3,7 @@ import { useParams } from "react-router-dom";
 
 import PageNotFound from "./PageNotFound";
 import { getPages } from "../apis/ApiCalls";
+import { AboutPageLoader } from "../components/Loaders";
 
 export default function DynamicPage() {
   const { pageUrl } = useParams();
@@ -10,6 +11,7 @@ export default function DynamicPage() {
   const [pageTitle, setPageTitle] = useState("");
   const [pageDetails, setPageDetails] = useState("");
   const [pageNotFound, setPageNotFound] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     fetchPageDetails();
@@ -17,6 +19,7 @@ export default function DynamicPage() {
 
   const fetchPageDetails = async () => {
     try {
+      setLoading(true);
       const resp = await getPages(pageUrl);
       const { data, status, success, message } = resp.data;
       if (success) {
@@ -31,11 +34,21 @@ export default function DynamicPage() {
       }
     } catch (error) {
       console.error(error);
+    } finally {
+      setLoading(false);
     }
   };
 
   if (pageNotFound) {
     return <PageNotFound />;
+  }
+
+  if (loading) {
+    return (
+      <div className="">
+        <AboutPageLoader />
+      </div>
+    );
   }
 
   return (

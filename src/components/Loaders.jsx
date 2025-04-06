@@ -72,6 +72,19 @@ export function OrderLoader2() {
   );
 }
 
+export function AboutPageLoader() {
+  return (
+    <div className="">
+      <Skeleton height="h-[50px]" width="w-1/3" pulse />
+      <Skeleton height="h-[40px]" width="w-2/4" pulse />
+      <Skeleton height="h-[30px]" width="w-2/4" pulse />
+      <Skeleton height="h-[100px]" width="w-full" pulse />
+      <Skeleton height="h-[250px]" width="w-full" pulse />
+      <Skeleton height="h-[350px]" width="w-full" pulse />
+    </div>
+  );
+}
+
 export function OrderDetailLoader() {
   return (
     <div className="">
