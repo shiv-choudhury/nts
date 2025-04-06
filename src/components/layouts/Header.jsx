@@ -43,6 +43,10 @@ export default function Header() {
       setCategories(categories?.data?.data);
       setAboutData(about?.data?.data);
       dispatch({
+        type: "CATEGORIES_DATA",
+        data: categories?.data?.data
+      });
+      dispatch({
         type: "HEADER_DATA",
         data: about?.data?.data
       });

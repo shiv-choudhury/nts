@@ -3,6 +3,7 @@ import { createContext, useContext, useReducer } from "react";
 const initialState = {
   userData: null,
   headerData: null,
+  categoriesData: null,
   homePageData: null,
   wishlistData: null,
   compareData: null,
@@ -22,6 +23,8 @@ function appReducer(userState, action) {
       return { ...userState, userData: action.data };
     case "HEADER_DATA":
       return { ...userState, headerData: action.data };
+    case "CATEGORIES_DATA":
+      return { ...userState, categoriesData: action.data };
     case "HOME_PAGE_DATA":
       return { ...userState, homePageData: action.data };
     case "WISHLIST_DATA":

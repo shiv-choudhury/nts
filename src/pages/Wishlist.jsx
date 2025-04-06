@@ -12,7 +12,7 @@ export default function Wishlist() {
   const fetchWishlist = async () => {
     try {
       const resp = await getFavoritesList();
-      const { favorites: data, success, message } = resp.data;
+      const { data, success, message } = resp.data;
 
       if (success) {
         setWishlist(data);

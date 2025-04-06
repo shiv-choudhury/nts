@@ -22,8 +22,6 @@ const ProductDetailPage = () => {
     ? parse(productDetails?.metaDescription?.metaDescription)
     : null;
 
-  console.log("keyFeatures", keyFeatures);
-
   useEffect(() => {
     fetchProductDetails();
   }, [slug]);

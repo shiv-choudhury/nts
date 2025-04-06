@@ -57,7 +57,6 @@ export default function ProductCard(props) {
       setCompareLoader(true);
       const resp = await addToCompare({ productId: data?._id });
       const { compare, success, message } = resp.data;
-      console.log("compare", compare);
 
       setIsCompare(message === "Product added to compare product.");
       if (success) {

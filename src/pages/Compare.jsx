@@ -14,11 +14,10 @@ const ComparisonTable = () => {
   const fetchCompareProducts = async () => {
     try {
       const resp = await getCompareList();
-      const { success, message, compare } = resp.data;
-      console.log("compare", compare);
+      const { success, message, data } = resp.data;
 
       if (success) {
-        setProducts(compare);
+        setProducts(data);
       } else {
         console.error(message);
       }
@@ -31,7 +30,7 @@ const ComparisonTable = () => {
     try {
       const payload = { productId: id };
       const resp = await addToCompare(payload);
-      const { compare, success, message } = resp.data;
+      const { data, success, message } = resp.data;
       if (success) {
         fetchCompareProducts();
         toast.success(message);
