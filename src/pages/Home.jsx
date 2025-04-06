@@ -15,14 +15,15 @@ import useAppContext from "../components/context/UserContext";
 export default function Home(props) {
   const { children, className } = props;
   const { userState, dispatch } = useAppContext();
+  const { categoriesData = [] } = userState;
 
   const [homeData, setHomeData] = useState({});
 
   useEffect(() => {
-    fetchCategories();
+    fetchHomePageData();
   }, []);
 
-  const fetchCategories = async () => {
+  const fetchHomePageData = async () => {
     try {
       const resp = await getHomeData();
       const { data, status, success, message } = resp.data;
@@ -119,8 +120,8 @@ export default function Home(props) {
               Shop By Category
             </h2>
             <div className="grid grid-cols-1 xs:grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 md:gap-6">
-              {[1, 2, 3, 4].map((item) => (
-                <CategoryCard key={item} />
+              {categoriesData?.map((item, index) => (
+                <CategoryCard key={index} data={item} />
               ))}
             </div>
           </div>
