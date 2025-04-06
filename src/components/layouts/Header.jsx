@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import { ApartmentOutlined } from "@ant-design/icons";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
+import { debounce } from "lodash";
 
 import {
   getCategories,
@@ -16,6 +17,7 @@ import MiniCart from "../MiniCart";
 export default function Header() {
   const headerRef = useRef(null);
   const location = useLocation();
+  const navigate = useNavigate();
 
   const { userState, dispatch } = useAppContext();
   const marqueData = userState?.homePageData?.offers?.find(
@@ -29,6 +31,8 @@ export default function Header() {
   const [searchValue, setSearchValue] = useState("");
   const [searchResults, setSearchResults] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [highlightedIndex, setHighlightedIndex] = useState(-1);
+  const searchContainerRef = useRef(null);
 
   useEffect(() => {
     if (headerRef.current) {
@@ -62,31 +66,52 @@ export default function Header() {
     }
   };
 
+  const debouncedSearch = useRef(
+    debounce(async (value) => {
+      try {
+        setLoading(true);
+        const params = {
+          product: value || undefined
+        };
+        const resp = await searchProduct(params);
+        const { data, success, message } = resp.data;
+        if (success) {
+          setSearchResults(data);
+        } else {
+          toast.error(message);
+        }
+      } catch (error) {
+        console.error(error);
+      } finally {
+        setLoading(false);
+      }
+    }, 300)
+  ).current;
+
   useEffect(() => {
     if (searchValue) {
-      handleSearch();
+      debouncedSearch(searchValue);
+    } else {
+      setSearchResults([]);
     }
   }, [searchValue]);
 
-  const handleSearch = async () => {
-    try {
-      setLoading(true);
-      const params = {
-        product: searchValue || undefined
-      };
-      const resp = await searchProduct(params);
-      const { data, status, success, message } = resp.data;
-      if (success) {
-        setSearchResults(data);
-      } else {
-        toast.error(message);
-      }
-    } catch (error) {
-      console.error(error);
-    } finally {
-      setLoading(false);
+  useEffect(() => {
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
+
+  function handleClickOutside(event) {
+    if (
+      searchContainerRef.current &&
+      !searchContainerRef.current.contains(event.target)
+    ) {
+      setSearchResults([]);
+      setHighlightedIndex(-1);
     }
-  };
+  }
 
   return (
     <header ref={headerRef} id="header" className="w-full">
@@ -144,7 +169,10 @@ export default function Header() {
             </Link>
           </div>
 
-          <div className="mr-2 md:mr-4 relative flex-1">
+          <div
+            className="mr-2 md:mr-4 relative flex-1"
+            ref={searchContainerRef}
+          >
             <div className="relative w-full">
               <input
                 type="text"
@@ -152,8 +180,35 @@ export default function Header() {
                 className="w-full border border-green-600 rounded px-3 py-2"
                 value={searchValue}
                 onChange={(e) => setSearchValue(e.target.value)}
+                onKeyDown={(e) => {
+                  if (e.key === "ArrowDown") {
+                    setHighlightedIndex((prev) =>
+                      Math.min(prev + 1, searchResults.length - 1)
+                    );
+                  } else if (e.key === "ArrowUp") {
+                    setHighlightedIndex((prev) => Math.max(prev - 1, 0));
+                  } else if (e.key === "Enter" && highlightedIndex >= 0) {
+                    const selected = searchResults[highlightedIndex];
+                    if (selected && selected?.slug) {
+                      navigate(`/product/details/${selected?.slug}`);
+                      setSearchResults([]);
+                      setSearchValue("");
+                    }
+                  }
+                }}
               />
-              <button className="absolute right-0 top-0 h-full bg-green-600 text-white px-3 rounded-r">
+              <button
+                className="absolute right-0 top-0 h-full bg-green-600 text-white px-3 rounded-r"
+                onClick={() => {
+                  if (searchValue && searchResults.length > 0) {
+                    const selected =
+                      searchResults[highlightedIndex] || searchResults[0];
+                    if (selected?.url_key) {
+                      window.location.href = `/product/${selected.url_key}`;
+                    }
+                  }
+                }}
+              >
                 <Icon icon="pi-search" />
               </button>
 
@@ -162,7 +217,15 @@ export default function Header() {
                   {searchResults.map((item, index) => (
                     <li
                       key={index}
-                      className="px-4 py-2 hover:bg-green-100 cursor-pointer text-sm"
+                      className={`px-4 py-2 cursor-pointer text-sm ${
+                        index === highlightedIndex
+                          ? "bg-green-100"
+                          : "hover:bg-green-50"
+                      }`}
+                      onClick={() =>
+                        item?.slug && navigate(`/product/details/${item?.slug}`)
+                      }
+                      onMouseEnter={() => setHighlightedIndex(index)}
                     >
                       {item.name}
                     </li>
