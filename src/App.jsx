@@ -9,18 +9,19 @@ import "primeicons/primeicons.css";
 import { UserContextProvider } from "./components/context/UserContext";
 
 function App() {
-  useEffect(() => {
-    const script = document.createElement("script");
-    script.async = true;
-    script.src = "https://embed.tawk.to/673afd382480f5b4f59fc918/1icv6qa48";
-    script.charset = "UTF-8";
-    script.setAttribute("crossorigin", "*");
-    document.body.appendChild(script);
+  // useEffect(() => {
+  //   const script = document.createElement("script");
+  //   script.async = true;
+  //   script.src = "https://embed.tawk.to/673afd382480f5b4f59fc918/1icv6qa48";
+  //   script.charset = "UTF-8";
+  //   script.setAttribute("crossorigin", "*");
+  //   document.body.appendChild(script);
 
-    return () => {
-      document.body.removeChild(script);
-    };
-  }, []);
+  //   return () => {
+  //     document.body.removeChild(script);
+  //   };
+  // }, []);
+
   return (
     <>
       <BrowserRouter>
