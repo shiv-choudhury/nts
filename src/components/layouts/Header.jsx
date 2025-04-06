@@ -145,11 +145,32 @@ export default function Header() {
           </div>
 
           <div className="mr-2 md:mr-4 relative flex-1">
-            <input
-              type="text"
-              placeholder="Search in..."
-              className="w-full border border-green-600 rounded px-3 py-2"
-            />
+            <div className="relative w-full">
+              <input
+                type="text"
+                placeholder="Search in..."
+                className="w-full border border-green-600 rounded px-3 py-2"
+                value={searchValue}
+                onChange={(e) => setSearchValue(e.target.value)}
+              />
+              <button className="absolute right-0 top-0 h-full bg-green-600 text-white px-3 rounded-r">
+                <Icon icon="pi-search" />
+              </button>
+
+              {searchValue && searchResults.length > 0 && (
+                <ul className="absolute z-30 w-full bg-white border border-gray-300 mt-1 rounded shadow-lg max-h-60 overflow-y-auto">
+                  {searchResults.map((item, index) => (
+                    <li
+                      key={index}
+                      className="px-4 py-2 hover:bg-green-100 cursor-pointer text-sm"
+                    >
+                      {item.name}
+                    </li>
+                  ))}
+                </ul>
+              )}
+            </div>
+
             <button className="absolute right-0 top-0 h-full bg-green-600 text-white px-3 rounded-r">
               <Icon icon="pi-search" />
             </button>
