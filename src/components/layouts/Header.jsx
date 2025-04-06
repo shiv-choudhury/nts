@@ -222,9 +222,12 @@ export default function Header() {
                           ? "bg-green-100"
                           : "hover:bg-green-50"
                       }`}
-                      onClick={() =>
-                        item?.slug && navigate(`/product/details/${item?.slug}`)
-                      }
+                      onClick={() => {
+                        item?.slug &&
+                          navigate(`/product/details/${item?.slug}`);
+                        setSearchResults([]);
+                        setSearchValue("");
+                      }}
                       onMouseEnter={() => setHighlightedIndex(index)}
                     >
                       {item.name}

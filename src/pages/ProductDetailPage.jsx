@@ -8,6 +8,7 @@ import Icon from "../components/Icon";
 import { imageBaseUrl1 } from "../components/utils/constants";
 import ProductCard from "../components/ProductCard";
 import Zoom from "react-medium-image-zoom";
+import { OrderDetailLoader } from "../components/Loaders";
 
 const ProductDetailPage = () => {
   const { slug } = useParams();
@@ -17,6 +18,7 @@ const ProductDetailPage = () => {
   const [quantity, setQuantity] = useState(1);
   const [currentImage, setCurrentImage] = useState(0);
   const [productDetails, setProductDetails] = useState([]);
+  const [loading, setLoading] = useState(false);
 
   const keyFeatures = productDetails?.metaDescription?.metaDescription
     ? parse(productDetails?.metaDescription?.metaDescription)
@@ -28,6 +30,7 @@ const ProductDetailPage = () => {
 
   const fetchProductDetails = async () => {
     try {
+      setLoading(true);
       const resp = await getProductDetails(slug);
       const { data, status, success, message } = resp.data;
       if (success) {
@@ -37,6 +40,8 @@ const ProductDetailPage = () => {
       }
     } catch (error) {
       console.error(error);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -104,6 +109,14 @@ const ProductDetailPage = () => {
   };
 
   const inStock = Number(productDetails?.stock) > 0;
+
+  if (loading) {
+    return (
+      <div className="p-4 max-w-7xl mx-auto ">
+        <OrderDetailLoader />
+      </div>
+    );
+  }
 
   return (
     <div className="pb-2 max-w-7xl mx-auto bg-gray-50 min-h-screen">
