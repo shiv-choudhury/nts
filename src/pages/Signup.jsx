@@ -77,9 +77,9 @@ const Signup = () => {
         agree: form.agree
       };
       const response = await register(payload);
-      const { data, status, message } = response.data;
-      if (status) {
-        localStorage.setItem("token", data?.token);
+      const { data, status, success, message } = response.data;
+      if (success) {
+        localStorage.setItem("token", data?.currenttoken);
         toast.success(message);
         navigate("/");
       } else {

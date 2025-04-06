@@ -22,9 +22,9 @@ export default function MiniCart({ isOpen, setIsOpen }) {
   const fetchCartlist = async () => {
     try {
       const resp = await getCartList();
-      const { data, status, message } = resp.data;
+      const { data, status, success, message } = resp.data;
 
-      if (status) {
+      if (success) {
         setCartData(data);
         dispatch({
           type: "CART_LENGTH",
@@ -110,8 +110,8 @@ const MiniCartCard = ({ data, fetchCartlist }) => {
       setLoading(true);
       const payload = { productId: data?.product?._id, quantity };
       const resp = await updateCart(payload);
-      const { status, message } = resp.data;
-      if (status) {
+      const { status, success, message } = resp.data;
+      if (success) {
         toast.success(message);
         fetchCartlist();
       } else {

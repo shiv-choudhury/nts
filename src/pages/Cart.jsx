@@ -26,9 +26,9 @@ const Cart = () => {
   const fetchCartData = async () => {
     try {
       const resp = await getCartList();
-      const { data, status, message } = resp.data;
+      const { data, status, success, message } = resp.data;
 
-      if (status) {
+      if (success) {
         setCartItems(data.products);
         dispatch({ type: "CART_LENGTH", data: data?.products?.length });
       } else {
@@ -46,7 +46,7 @@ const Cart = () => {
     try {
       const payload = { productId: id, quantity: newQuantity };
       const resp = await updateCart(payload);
-      if (resp.data.status) {
+      if (resp.data.success) {
         fetchCartData();
       } else {
         toast.error(resp.data.message);
@@ -61,7 +61,7 @@ const Cart = () => {
     try {
       const payload = { productId: id };
       const resp = await removeFromCart(payload);
-      if (resp.data.status) {
+      if (resp.data.success) {
         fetchCartData();
         toast.success("Item removed");
       } else {
@@ -76,7 +76,7 @@ const Cart = () => {
   const handleClearCart = async () => {
     try {
       const resp = await clearCart();
-      if (resp.data.status) {
+      if (resp.data.success) {
         setCartItems([]);
         dispatch({ type: "CART_LENGTH", data: 0 });
         toast.success(resp.data.message);

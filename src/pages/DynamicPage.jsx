@@ -18,8 +18,8 @@ export default function DynamicPage() {
   const fetchPageDetails = async () => {
     try {
       const resp = await getPages(pageUrl);
-      const { data, status, message } = resp.data;
-      if (status) {
+      const { data, status, success, message } = resp.data;
+      if (success) {
         if (data.length === 0) {
           setPageNotFound(true);
           return;

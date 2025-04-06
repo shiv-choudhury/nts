@@ -25,8 +25,8 @@ export default function Home(props) {
   const fetchCategories = async () => {
     try {
       const resp = await getHomeData();
-      const { data, status, message } = resp.data;
-      if (status) {
+      const { data, status, success, message } = resp.data;
+      if (success) {
         setHomeData(data);
         dispatch({
           type: "HOME_PAGE_DATA",

@@ -13,8 +13,8 @@ export default function Gallery() {
   const fetchRealImages = async () => {
     try {
       const resp = await getRealImages();
-      const { data, status, message } = resp.data;
-      if (status) {
+      const { data, status, success, message } = resp.data;
+      if (success) {
         setRealImages(data);
       } else {
         toast.error(message);

@@ -91,7 +91,7 @@ export default function ProductCard(props) {
       };
       const resp = await addToCart(payload);
       const { data: productData, success, message, status } = resp.data;
-      if (status) {
+      if (success) {
         toast.success(message);
         dispatch({
           type: "CART_LENGTH",

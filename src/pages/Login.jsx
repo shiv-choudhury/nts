@@ -42,8 +42,8 @@ const Login = () => {
     try {
       setLoading(true);
       const response = await login(form);
-      const { data, status, message } = response.data;
-      if (status) {
+      const { data, status, success, message } = response.data;
+      if (success) {
         localStorage.setItem("token", data?.token);
         toast.success(message);
         navigate("/");
