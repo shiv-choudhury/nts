@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import { ApartmentOutlined } from "@ant-design/icons";
 import { Link, useLocation, useNavigate } from "react-router-dom";
+import Select from "react-select";
 import { debounce } from "lodash";
 
 import {
@@ -28,11 +29,8 @@ export default function Header() {
   const [categories, setCategories] = useState([]);
   const [isOpen, setIsOpen] = useState(false);
   const [openCart, setOpenCart] = useState(false);
-  const [searchValue, setSearchValue] = useState("");
-  const [searchResults, setSearchResults] = useState([]);
+  const [searchOptions, setSearchOptions] = useState([]);
   const [loading, setLoading] = useState(false);
-  const [highlightedIndex, setHighlightedIndex] = useState(-1);
-  const searchContainerRef = useRef(null);
 
   useEffect(() => {
     if (headerRef.current) {
@@ -66,52 +64,40 @@ export default function Header() {
     }
   };
 
-  const debouncedSearch = useRef(
-    debounce(async (value) => {
-      try {
-        setLoading(true);
-        const params = {
-          product: value || undefined
-        };
-        const resp = await searchProduct(params);
-        const { data, success, message } = resp.data;
-        if (success) {
-          setSearchResults(data);
-        } else {
-          toast.error(message);
-        }
-      } catch (error) {
-        console.error(error);
-      } finally {
-        setLoading(false);
+  const debouncedSearch = debounce(async (inputValue) => {
+    try {
+      setLoading(true);
+      const resp = await searchProduct({ product: inputValue });
+      const { data, success, message } = resp.data;
+      if (success) {
+        const formatted = data.map((item) => ({
+          label: item.name,
+          value: item.slug,
+          url_key: item.url_key
+        }));
+        setSearchOptions(formatted);
       }
-    }, 300)
-  ).current;
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setLoading(false);
+    }
+  }, 300);
 
-  useEffect(() => {
-    if (searchValue) {
-      debouncedSearch(searchValue);
+  const handleInputChange = (inputValue) => {
+    if (inputValue) {
+      debouncedSearch(inputValue);
     } else {
-      setSearchResults([]);
+      setSearchOptions([]);
     }
-  }, [searchValue]);
+  };
 
-  useEffect(() => {
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
-  }, []);
-
-  function handleClickOutside(event) {
-    if (
-      searchContainerRef.current &&
-      !searchContainerRef.current.contains(event.target)
-    ) {
-      setSearchResults([]);
-      setHighlightedIndex(-1);
+  const handleSelect = (selected) => {
+    if (selected?.value) {
+      navigate(`/product/details/${selected.value}`);
+      setSearchOptions([]);
     }
-  }
+  };
 
   return (
     <header ref={headerRef} id="header" className="w-full">
@@ -119,17 +105,15 @@ export default function Header() {
       <div className="bg-white border-b border-gray-300">
         <div className="w-full lg:container mx-auto px-4 py-2 flex flex-wrap justify-between items-center">
           <div className="hidden lg:flex space-x-6 text-sm">
-            <>
-              {aboutData.map((item, index) => (
-                <Link
-                  key={item?.pageId?._id || index}
-                  to={`pages/${item?.pageId?.pg_url_key}`}
-                  className="hover:text-blue-600"
-                >
-                  {item?.headerName}
-                </Link>
-              ))}
-            </>
+            {aboutData.map((item, index) => (
+              <Link
+                key={item?.pageId?._id || index}
+                to={`pages/${item?.pageId?.pg_url_key}`}
+                className="hover:text-blue-600"
+              >
+                {item?.headerName}
+              </Link>
+            ))}
           </div>
           <div className="text-sm font-bold text-center">
             Call Us: 024 7637 5531 | Mon-Friday 9am - 5pm | Saturday 10:00am -
@@ -169,77 +153,22 @@ export default function Header() {
             </Link>
           </div>
 
-          <div
-            className="mr-2 md:mr-4 relative flex-1"
-            ref={searchContainerRef}
-          >
-            <div className="relative w-full">
-              <input
-                type="text"
-                placeholder="Search in..."
-                className="w-full border border-green-600 rounded px-3 py-2"
-                value={searchValue}
-                onChange={(e) => setSearchValue(e.target.value)}
-                onKeyDown={(e) => {
-                  if (e.key === "ArrowDown") {
-                    setHighlightedIndex((prev) =>
-                      Math.min(prev + 1, searchResults.length - 1)
-                    );
-                  } else if (e.key === "ArrowUp") {
-                    setHighlightedIndex((prev) => Math.max(prev - 1, 0));
-                  } else if (e.key === "Enter" && highlightedIndex >= 0) {
-                    const selected = searchResults[highlightedIndex];
-                    if (selected && selected?.slug) {
-                      navigate(`/product/details/${selected?.slug}`);
-                      setSearchResults([]);
-                      setSearchValue("");
-                    }
-                  }
-                }}
-              />
-              <button
-                className="absolute right-0 top-0 h-full bg-green-600 text-white px-3 rounded-r"
-                onClick={() => {
-                  if (searchValue && searchResults.length > 0) {
-                    const selected =
-                      searchResults[highlightedIndex] || searchResults[0];
-                    if (selected?.url_key) {
-                      window.location.href = `/product/${selected.url_key}`;
-                    }
-                  }
-                }}
-              >
-                <Icon icon="pi-search" />
-              </button>
-
-              {searchValue && searchResults.length > 0 && (
-                <ul className="absolute z-30 w-full bg-white border border-gray-300 mt-1 rounded shadow-lg max-h-60 overflow-y-auto">
-                  {searchResults.map((item, index) => (
-                    <li
-                      key={index}
-                      className={`px-4 py-2 cursor-pointer text-sm ${
-                        index === highlightedIndex
-                          ? "bg-green-100"
-                          : "hover:bg-green-50"
-                      }`}
-                      onClick={() => {
-                        item?.slug &&
-                          navigate(`/product/details/${item?.slug}`);
-                        setSearchResults([]);
-                        setSearchValue("");
-                      }}
-                      onMouseEnter={() => setHighlightedIndex(index)}
-                    >
-                      {item.name}
-                    </li>
-                  ))}
-                </ul>
-              )}
-            </div>
-
-            <button className="absolute right-0 top-0 h-full bg-green-600 text-white px-3 rounded-r">
-              <Icon icon="pi-search" />
-            </button>
+          <div className="mr-2 md:mr-4 relative flex-1 z-30">
+            <Select
+              className="react-select-container cursor-pointer  "
+              classNamePrefix="react-select"
+              options={searchOptions}
+              onInputChange={handleInputChange}
+              onChange={handleSelect}
+              isLoading={loading}
+              placeholder="Search in..."
+              isClearable
+              noOptionsMessage={() => {
+                "No results found";
+              }}
+              menuPortalTarget={document.body}
+              styles={{ menuPortal: (base) => ({ ...base, zIndex: 50 }) }}
+            />
           </div>
 
           <div className="flex items-center space-x-4">
