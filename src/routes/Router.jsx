@@ -18,6 +18,7 @@ const ProductsPage = lazy(() => import("../pages/ProductsPage"));
 const Gallery = lazy(() => import("../pages/Gallery"));
 const Contact = lazy(() => import("../pages/Contact"));
 const ProductDetailPage = lazy(() => import("../pages/ProductDetailPage"));
+const Account = lazy(() => import("../pages/Account"));
 
 export default function Router() {
   return (
@@ -40,6 +41,7 @@ export default function Router() {
           <Route path="/compare" element={<Compare />} />
           <Route path="/cart" element={<Cart />} />
           <Route path="/checkout" element={<Checkout />} />
+          <Route path="/account" element={<Account />} />
           <Route path="*" element={<PageNotFound />} />
         </Routes>
       </Suspense>
