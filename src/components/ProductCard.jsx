@@ -42,6 +42,9 @@ export default function ProductCard(props) {
       }
     } catch (error) {
       console.error(error);
+      if (error?.response?.data?.message === "invalidToken") {
+        toast.error("Please login to add to wishlist");
+      }
     } finally {
       setLoading(false);
     }
@@ -57,8 +60,8 @@ export default function ProductCard(props) {
       setCompareLoader(true);
       const resp = await addToCompare({ productId: data?._id });
       const { compare, success, message } = resp.data;
-
-      setIsCompare(message === "Product added to compare product.");
+      const isAdded = message === "Product added to compare product.";
+      setIsCompare(isAdded);
       if (success) {
         dispatch({
           type: "COMPARE_LENGTH",
@@ -68,13 +71,16 @@ export default function ProductCard(props) {
           type: "COMPARE_DATA",
           data: compare || []
         });
-        setOpenCompare(true);
+        // setOpenCompare(isAdded);
         toast.success(message);
       } else {
         toast.error(message);
       }
     } catch (error) {
       console.error(error);
+      if (error?.response?.data?.message === "invalidToken") {
+        toast.error("Please login to add to compare");
+      }
     } finally {
       setCompareLoader(false);
     }
@@ -101,6 +107,9 @@ export default function ProductCard(props) {
       }
     } catch (error) {
       console.error(error);
+      if (error?.response?.data?.message === "invalidToken") {
+        toast.error("Please login to add to cart");
+      }
     } finally {
       setCartLoader(false);
     }
