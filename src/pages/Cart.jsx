@@ -12,7 +12,6 @@ import {
 import useAppContext from "../components/context/UserContext";
 import { imageBaseUrl1 } from "../components/utils/constants";
 import Counter from "../components/Counter";
-import { DeleteFilled, DeleteOutlined } from "@ant-design/icons";
 
 const Cart = () => {
   const navigate = useNavigate();
@@ -46,10 +45,12 @@ const Cart = () => {
     try {
       const payload = { productId: id, quantity: newQuantity };
       const resp = await updateCart(payload);
-      if (resp.data.success) {
+      const { data, status, success, message } = resp.data;
+      if (success) {
+        toast.success(message);
         fetchCartData();
       } else {
-        toast.error(resp.data.message);
+        toast.error(message);
       }
     } catch (error) {
       console.error(error);
@@ -61,11 +62,12 @@ const Cart = () => {
     try {
       const payload = { productId: id };
       const resp = await removeFromCart(payload);
-      if (resp.data.success) {
+      const { data, status, success, message } = resp.data;
+      if (success) {
         fetchCartData();
-        toast.success("Item removed");
+        toast.success(message);
       } else {
-        toast.error(resp.data.message);
+        toast.error(message);
       }
     } catch (error) {
       console.error(error);

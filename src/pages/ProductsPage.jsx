@@ -38,6 +38,10 @@ export default function ProductsPage() {
     }
   };
 
+  if (loading) {
+    return <ProductLoader />;
+  }
+
   return (
     <div className="mb-8 md:mb-12">
       <Filter isOpen={openFilter} setIsOpen={setOpenFilter} data={products} />
@@ -57,14 +61,12 @@ export default function ProductsPage() {
         <img
           src={imageUrl}
           alt="Category"
-          className="w-full h-full object-cover rounded-lg mb-6"
+          className="w-full h-full object-cover rounded-lg shadow-md mb-6"
           onError={(e) => (e.target.src = `/assets/product.jpg`)}
         />
       )}
 
-      {loading ? (
-        <ProductLoader />
-      ) : products.length === 0 ? (
+      {products.length === 0 ? (
         <p className="text-center text-gray-600 text-lg font-medium py-12">
           No products found in this category.
         </p>
