@@ -7,6 +7,7 @@ const initialState = {
   homePageData: null,
   wishlistData: null,
   compareData: null,
+  localCompareData: [],
   compareLength: 0,
   cartData: null,
   cartLength: 0
@@ -31,6 +32,8 @@ function appReducer(userState, action) {
       return { ...userState, wishlistData: action.data };
     case "COMPARE_DATA":
       return { ...userState, compareData: action.data };
+    case "LOCAL_COMPARE_DATA":
+      return { ...userState, localCompareData: action.data };
     case "COMPARE_LENGTH":
       return { ...userState, compareLength: action.data };
     case "CART_DATA":

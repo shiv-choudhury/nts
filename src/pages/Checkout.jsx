@@ -1,4 +1,28 @@
+import { useState } from "react";
+import { toast } from "react-toastify";
+
 const Checkout = () => {
+  const [checked, setChecked] = useState(false);
+  const [loading, setLoading] = useState(false);
+
+  const handlePlaceOrder = async () => {
+    // toast.success("Order placed successfully!");
+    try {
+      setLoading(true);
+      const resp = await placeOrder();
+      const { data, status, success, message } = resp.data;
+      if (success) {
+        toast.success(message);
+      } else {
+        toast.error(message);
+      }
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <div className="bg-gray-100 min-h-screen p-4">
       <div className="max-w-4xl mx-auto bg-white p-6 rounded-lg shadow-lg">
@@ -96,75 +120,83 @@ const Checkout = () => {
 
           {/* Shipping Address */}
           <div className="bg-gray-50 p-4 rounded-lg shadow">
-            <div className="flex items-center gap-2">
-              <input type="checkbox" id="sameAsDelivery" className="h-4 w-4" />
+            <h2 className="text-lg font-semibold mb-2">SHIPPING ADDRESS</h2>
+            <div className="mb-4 flex items-center gap-2">
+              <input
+                checked={checked}
+                onChange={() => setChecked(!checked)}
+                type="checkbox"
+                id="sameAsDelivery"
+                className="h-4 w-4"
+              />
               <label htmlFor="sameAsDelivery" className="text-sm font-semibold">
                 Same as delivery address
               </label>
             </div>
-            <h2 className="text-lg font-semibold mt-4 mb-4">
-              SHIPPING ADDRESS
-            </h2>
-            <form className="flex flex-col gap-3">
-              <input
-                type="email"
-                placeholder="Email Address *"
-                className="border p-2 rounded"
-              />
-              <input
-                type="text"
-                placeholder="Company Name"
-                className="border p-2 rounded"
-              />
-              <div className="flex gap-2">
-                <input
-                  type="text"
-                  placeholder="First Name *"
-                  className="border p-2 rounded w-1/2"
-                />
-                <input
-                  type="text"
-                  placeholder="Last Name *"
-                  className="border p-2 rounded w-1/2"
-                />
+            {!checked && (
+              <div>
+                <form className="flex flex-col gap-3">
+                  <input
+                    type="email"
+                    placeholder="Email Address *"
+                    className="border p-2 rounded"
+                  />
+                  <input
+                    type="text"
+                    placeholder="Company Name"
+                    className="border p-2 rounded"
+                  />
+                  <div className="flex gap-2">
+                    <input
+                      type="text"
+                      placeholder="First Name *"
+                      className="border p-2 rounded w-1/2"
+                    />
+                    <input
+                      type="text"
+                      placeholder="Last Name *"
+                      className="border p-2 rounded w-1/2"
+                    />
+                  </div>
+                  <input
+                    type="text"
+                    placeholder="Postal Code *"
+                    className="border p-2 rounded"
+                  />
+                  <input
+                    type="text"
+                    placeholder="Street Address *"
+                    className="border p-2 rounded"
+                  />
+                  <div className="flex gap-2">
+                    <input
+                      type="text"
+                      placeholder="Town / City *"
+                      className="border p-2 rounded w-1/2"
+                    />
+                    <input
+                      type="text"
+                      placeholder="Country *"
+                      value="India"
+                      readOnly
+                      className="border p-2 rounded bg-gray-100 w-1/2"
+                    />
+                  </div>
+                  <div className="flex gap-2">
+                    <input
+                      type="text"
+                      placeholder="State *"
+                      className="border p-2 rounded w-1/2"
+                    />
+                    <input
+                      type="text"
+                      placeholder="Telephone *"
+                      className="border p-2 rounded w-1/2"
+                    />
+                  </div>
+                </form>
               </div>
-              <input
-                type="text"
-                placeholder="Postal Code *"
-                className="border p-2 rounded"
-              />
-              <input
-                type="text"
-                placeholder="Street Address *"
-                className="border p-2 rounded"
-              />
-              <div className="flex gap-2">
-                <input
-                  type="text"
-                  placeholder="Town / City *"
-                  className="border p-2 rounded w-1/2"
-                />
-                <input
-                  type="text"
-                  placeholder="Country *"
-                  value="India"
-                  readOnly
-                  className="border p-2 rounded bg-gray-100 w-1/2"
-                />
-              </div>
-              <div className="flex gap-2">
-                <input
-                  type="text"
-                  placeholder="State *"
-                  className="border p-2 rounded w-1/2"
-                />
-                <input
-                  type="text"
-                  placeholder="Telephone *"
-                  className="border p-2 rounded w-1/2"
-                />
-              </div>
-            </form>
+            )}
           </div>
 
           {/* Order Note */}
@@ -185,7 +217,10 @@ const Checkout = () => {
 
         {/* Place Order Button */}
         <div className="mt-6 text-center">
-          <button className="bg-green-600 text-white px-6 py-3 rounded-lg w-full md:w-auto">
+          <button
+            onClick={handlePlaceOrder}
+            className="bg-green-600 text-white px-6 py-3 rounded-lg w-full md:w-auto"
+          >
             PLACE ORDER
           </button>
         </div>
@@ -221,7 +256,7 @@ const OrderSummaryCard = () => {
           </label>
           <label className="flex items-center gap-2 bg-yellow-300 p-2 rounded">
             <input type="radio" name="payment" /> Paypal Standard{" "}
-            <img src="/paypal.png" alt="PayPal" className="h-4" />
+            <img src="assets/paypal.png" alt="PayPal" className="h-5" />
           </label>
           <label className="flex items-center gap-2">
             <input type="radio" name="payment" /> Pay By Debit/Credit Card
@@ -230,4 +265,51 @@ const OrderSummaryCard = () => {
       </div>
     </div>
   );
+};
+
+const placeOrderBody = {
+  orderDetails: {
+    email: "customer@example.com",
+    telephone: "9876543210",
+    cart_total: 5000,
+    discount: 200,
+    tax: 100,
+    charges: 50,
+    grand_total: 4950,
+    payment_mode: "Credit Card",
+    items: [
+      {
+        product_id: "679873f5e137185de21aab2e",
+        product_price: 2500,
+        product_quantity: 2,
+        total_amount: 5000
+      }
+    ]
+  },
+  billingAddress: {
+    email: "customer@example.com",
+    telephone: "9876543210",
+    companyname: "XYZ Pvt Ltd",
+    firstname: "John",
+    lastname: "Doe",
+    postalcode: "110001",
+    streetaddress: "123 Street Name",
+    towncity: "New Delhi",
+    state: "Delhi",
+    country: "India",
+    ordernotes: "Please send the invoice"
+  },
+  deliveryAddress: {
+    email: "customer@example.com",
+    telephone: "9876543210",
+    companyname: "",
+    firstname: "John",
+    lastname: "Doe",
+    postalcode: "110001",
+    streetaddress: "456 Another Street",
+    towncity: "New Delhi",
+    state: "Delhi",
+    country: "India",
+    ordernotes: "Leave package at the door"
+  }
 };
