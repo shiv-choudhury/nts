@@ -119,3 +119,23 @@ export const getReviews = async (config) => {
 
   return resp;
 };
+
+export const getUserProfile = (payload) => {
+  let url = `profile`;
+  return ApiMethods.postResponse(url, payload);
+};
+
+export const getUserOrders = (payload) => {
+  let url = `user/orders`;
+  return ApiMethods.postResponse(url, payload);
+};
+
+export const checkDiscount = (payload) => {
+  let url = `discount/check`;
+  return ApiMethods.postResponse(url, payload);
+};
+// {
+//     "code":"X9YNEGE1AXK",
+//     "cartTotal":22,
+//     "buyQty":1
+// }

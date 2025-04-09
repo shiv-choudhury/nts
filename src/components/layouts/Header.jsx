@@ -161,11 +161,11 @@ export default function Header() {
               onInputChange={handleInputChange}
               onChange={handleSelect}
               isLoading={loading}
-              placeholder="Search in..."
+              placeholder="Search products here"
               isClearable
-              noOptionsMessage={() => {
-                "No results found";
-              }}
+              noOptionsMessage={({ inputValue }) =>
+                !inputValue ? "Find a product" : "No results found"
+              }
               menuPortalTarget={document.body}
               styles={{ menuPortal: (base) => ({ ...base, zIndex: 50 }) }}
             />
