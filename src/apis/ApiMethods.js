@@ -27,6 +27,9 @@ export const getResponse = async (url, params, token = null) => {
         }
       })
       .catch((error) => {
+        if (error?.response?.data?.message === "invalidToken") {
+          localStorage.removeItem("token");
+        }
         if (error?.response?.status === 403 && !error.response.success) {
           // logout()
           // window.location.href = "/logout";
@@ -53,6 +56,9 @@ export const postResponse = async (url, payload, token = null) => {
         }
       })
       .catch((error) => {
+        if (error?.response?.data?.message === "invalidToken") {
+          localStorage.removeItem("token");
+        }
         if (error?.response?.status === 403 && !error.response.success) {
           // logout()
           // window.location.href = "/logout";
