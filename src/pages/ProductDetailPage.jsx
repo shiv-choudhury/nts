@@ -2,16 +2,21 @@ import React, { useEffect, useState } from "react";
 import { ApartmentOutlined } from "@ant-design/icons";
 import { Link, useParams } from "react-router-dom";
 import parse from "html-react-parser";
+import Zoom from "react-medium-image-zoom";
+import { toast } from "react-toastify";
 
-import { addToCart, getProductDetails } from "../apis/ApiCalls";
+import {
+  addToCart,
+  addToCompare,
+  addToFavorites,
+  getProductDetails
+} from "../apis/ApiCalls";
 import Icon from "../components/Icon";
 import { imageBaseUrl1 } from "../components/utils/constants";
 import ProductCard from "../components/ProductCard";
-import Zoom from "react-medium-image-zoom";
 import { OrderDetailLoader } from "../components/Loaders";
 import Counter from "../components/Counter";
 import useAppContext from "../components/context/UserContext";
-import { toast } from "react-toastify";
 
 const ProductDetailPage = () => {
   const { userState, dispatch } = useAppContext();
@@ -24,6 +29,10 @@ const ProductDetailPage = () => {
   const [currentImage, setCurrentImage] = useState(0);
   const [productDetails, setProductDetails] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [isFavorite, setIsFavorite] = useState(false);
+  const [isCompare, setIsCompare] = useState(false);
+  const [wishlistLoader, setWishlistLoader] = useState(false);
+  const [compareLoader, setCompareLoader] = useState(false);
   const [cartLoader, setCartLoader] = useState(false);
 
   const keyFeatures = productDetails?.metaDescription?.metaDescription
@@ -94,6 +103,47 @@ const ProductDetailPage = () => {
         value: productDetails?.tilesPerfection?.recommendedRoom
       }
     ]
+  };
+
+  const addToWishlist = async () => {
+    try {
+      setWishlistLoader(true);
+      const resp = await addToFavorites({ productId: productDetails?._id });
+      const { success, message } = resp.data;
+      setIsFavorite(message === "Product added to favorites.");
+      success ? toast.success(message) : toast.error(message);
+    } catch (error) {
+      console.error(error);
+      if (error?.response?.data?.message === "invalidToken") {
+        toast.error("Please login to add to wishlist");
+      }
+    } finally {
+      setWishlistLoader(false);
+    }
+  };
+
+  const handleAddToCompare = async () => {
+    try {
+      setCompareLoader(true);
+      const resp = await addToCompare({ productId: productDetails?._id });
+      const { compare, success, message } = resp.data;
+      const isAdded = message === "Product added to compare product.";
+      setIsCompare(isAdded);
+      if (success) {
+        dispatch({ type: "COMPARE_LENGTH", data: compare?.length });
+        dispatch({ type: "COMPARE_DATA", data: compare || [] });
+        toast.success(message);
+      } else {
+        toast.error(message);
+      }
+    } catch (error) {
+      console.error(error);
+      if (error?.response?.data?.message === "invalidToken") {
+        toast.error("Please login to add to compare");
+      }
+    } finally {
+      setCompareLoader(false);
+    }
   };
 
   const handleAddToCart = async () => {
@@ -265,11 +315,42 @@ const ProductDetailPage = () => {
                 <Icon icon="shopping-cart" className="mr-2" />
                 {cartLoader ? "ADDING..." : "ADD TO CART"}
               </button>
-              <button className="border border-gray-300 hover:bg-gray-100 px-2 py-2 rounded cursor-pointer">
-                <Icon icon="heart" className="" />
+
+              <button
+                onClick={addToWishlist}
+                title={isFavorite ? "Remove from Wishlist" : "Add to Wishlist"}
+                className={`border px-3 py-2 rounded flex items-center justify-center ${
+                  isFavorite
+                    ? "bg-red-500 text-white"
+                    : "border-gray-300 hover:bg-gray-100"
+                }`}
+              >
+                {wishlistLoader ? (
+                  <Icon icon="spinner" className="animate-spin" />
+                ) : (
+                  <Icon icon="heart" />
+                )}
               </button>
-              <button className="border border-gray-300 hover:bg-gray-100 px-2 py-2 rounded cursor-pointer">
-                <ApartmentOutlined className="text-lg" />
+
+              <button
+                onClick={handleAddToCompare}
+                title={isCompare ? "Remove from Compare" : "Add to Compare"}
+                className={`border px-3 py-2 rounded flex items-center justify-center ${
+                  isCompare
+                    ? "bg-red-500 text-white"
+                    : "border-gray-300 hover:bg-gray-100"
+                }`}
+              >
+                {compareLoader ? (
+                  <Icon icon="spinner" className="animate-spin" />
+                ) : (
+                  <ApartmentOutlined
+                    style={{
+                      fontSize: "18px",
+                      color: isCompare ? "white" : "inherit"
+                    }}
+                  />
+                )}
               </button>
             </div>
 
@@ -291,7 +372,9 @@ const ProductDetailPage = () => {
               <p className="font-medium text-gray-700">
                 Need Help? Call Our Experts On
               </p>
-              <p className="font-bold text-gray-900">024 7637 5531</p>
+              <a href="tel:02476375531" className="font-bold text-blue-700">
+                024 7637 5531
+              </a>
             </div>
           </div>
         </div>
