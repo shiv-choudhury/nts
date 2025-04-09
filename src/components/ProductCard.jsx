@@ -118,7 +118,7 @@ export default function ProductCard(props) {
   return (
     <div
       key={data?.id}
-      className="bg-white rounded-lg shadow hover:shadow-lg transition-shadow overflow-hidden relative group"
+      className="bg-white rounded-lg shadow hover:shadow-lg overflow-hidden relative group hover:scale-102 transition-transform duration-300"
     >
       <div id="popup">
         {openQuickview && (

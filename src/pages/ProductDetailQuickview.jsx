@@ -2,15 +2,25 @@ import React, { useEffect, useState } from "react";
 import { ApartmentOutlined } from "@ant-design/icons";
 import parse from "html-react-parser";
 import Zoom from "react-medium-image-zoom";
+import { toast } from "react-toastify";
 
-import { getProductDetails } from "../apis/ApiCalls";
+import {
+  addToCart,
+  addToCompare,
+  addToFavorites,
+  getProductDetails
+} from "../apis/ApiCalls";
 import { OrderDetailLoader } from "../components/Loaders";
 import Modal from "../components/Modal";
 import { imageBaseUrl1 } from "../components/utils/constants";
 import Icon from "../components/Icon";
 import ProductCard from "../components/ProductCard";
+import Counter from "../components/Counter";
+import useAppContext from "../components/context/UserContext";
 
 export default function ProductDetailQuickview(props) {
+  const { userState, dispatch } = useAppContext();
+
   const { isOpen, onClose, slug } = props;
   const imageBaseUrl = imageBaseUrl1;
 
@@ -18,6 +28,11 @@ export default function ProductDetailQuickview(props) {
   const [currentImage, setCurrentImage] = useState(0);
   const [productDetails, setProductDetails] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [isFavorite, setIsFavorite] = useState(false);
+  const [isCompare, setIsCompare] = useState(false);
+  const [wishlistLoader, setWishlistLoader] = useState(false);
+  const [compareLoader, setCompareLoader] = useState(false);
+  const [cartLoader, setCartLoader] = useState(false);
 
   const keyFeatures = productDetails?.metaDescription?.metaDescription
     ? parse(productDetails?.metaDescription?.metaDescription)
@@ -89,13 +104,73 @@ export default function ProductDetailQuickview(props) {
     ]
   };
 
-  const incrementQuantity = () => {
-    setQuantity(quantity + 1);
+  const addToWishlist = async () => {
+    try {
+      setWishlistLoader(true);
+      const resp = await addToFavorites({ productId: productDetails?._id });
+      const { success, message } = resp.data;
+      setIsFavorite(message === "Product added to favorites.");
+      success ? toast.success(message) : toast.error(message);
+    } catch (error) {
+      console.error(error);
+      if (error?.response?.data?.message === "invalidToken") {
+        toast.error("Please login to add to wishlist");
+      }
+    } finally {
+      setWishlistLoader(false);
+    }
   };
 
-  const decrementQuantity = () => {
-    if (quantity > 1) {
-      setQuantity(quantity - 1);
+  const handleAddToCompare = async () => {
+    try {
+      setCompareLoader(true);
+      const resp = await addToCompare({ productId: productDetails?._id });
+      const { compare, success, message } = resp.data;
+      const isAdded = message === "Product added to compare product.";
+      setIsCompare(isAdded);
+      if (success) {
+        dispatch({ type: "COMPARE_LENGTH", data: compare?.length });
+        dispatch({ type: "COMPARE_DATA", data: compare || [] });
+        toast.success(message);
+      } else {
+        toast.error(message);
+      }
+    } catch (error) {
+      console.error(error);
+      if (error?.response?.data?.message === "invalidToken") {
+        toast.error("Please login to add to compare");
+      }
+    } finally {
+      setCompareLoader(false);
+    }
+  };
+
+  const handleAddToCart = async () => {
+    try {
+      setCartLoader(true);
+      const payload = {
+        productId: productDetails?._id,
+        quantity: quantity,
+        price: productDetails?.price?.ourPrice
+      };
+      const resp = await addToCart(payload);
+      const { data: productData, success, message, status } = resp.data;
+      if (success) {
+        toast.success(message);
+        dispatch({
+          type: "CART_LENGTH",
+          data: productData?.products?.length
+        });
+      } else {
+        toast.error(message);
+      }
+    } catch (error) {
+      console.error(error);
+      if (error?.response?.data?.message === "invalidToken") {
+        toast.error("Please login to add to cart");
+      }
+    } finally {
+      setCartLoader(false);
     }
   };
 
@@ -233,40 +308,57 @@ export default function ProductDetailQuickview(props) {
 
                   <div className="flex items-center mb-4">
                     <span className="mr-4 text-gray-600">SqM(QTY)</span>
-                    <div className="flex items-center border rounded">
-                      <button
-                        onClick={decrementQuantity}
-                        className="px-3 py-1 border-r hover:bg-gray-100 rounded cursor-pointer"
-                      >
-                        −
-                      </button>
-                      <input
-                        type="text"
-                        value={quantity}
-                        onChange={(e) =>
-                          setQuantity(parseInt(e.target.value) || 1)
-                        }
-                        className="w-12 text-center py-1"
-                      />
-                      <button
-                        onClick={incrementQuantity}
-                        className="px-3 py-1 border-l hover:bg-gray-100 rounded cursor-pointer"
-                      >
-                        +
-                      </button>
-                    </div>
+                    <Counter quantity={quantity} setQuantity={setQuantity} />
                   </div>
 
                   <div className="flex flex-wrap gap-2 mb-4">
-                    <button className="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded flex items-center cursor-pointer">
+                    <button
+                      onClick={handleAddToCart}
+                      className="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded flex items-center cursor-pointer"
+                    >
                       <Icon icon="shopping-cart" className="mr-2" />
-                      ADD TO CART
+                      {cartLoader ? "ADDING..." : "ADD TO CART"}
                     </button>
-                    <button className="border border-gray-300 hover:bg-gray-100 px-2 py-2 rounded cursor-pointer">
-                      <Icon icon="heart" className="" />
+
+                    <button
+                      onClick={addToWishlist}
+                      title={
+                        isFavorite ? "Remove from Wishlist" : "Add to Wishlist"
+                      }
+                      className={`border px-3 py-2 rounded flex items-center justify-center ${
+                        isFavorite
+                          ? "bg-red-500 text-white"
+                          : "border-gray-300 hover:bg-gray-100"
+                      }`}
+                    >
+                      {wishlistLoader ? (
+                        <Icon icon="spinner" className="animate-spin" />
+                      ) : (
+                        <Icon icon="heart" />
+                      )}
                     </button>
-                    <button className="border border-gray-300 hover:bg-gray-100 px-2 py-2 rounded cursor-pointer">
-                      <ApartmentOutlined className="text-lg" />
+
+                    <button
+                      onClick={handleAddToCompare}
+                      title={
+                        isCompare ? "Remove from Compare" : "Add to Compare"
+                      }
+                      className={`border px-3 py-2 rounded flex items-center justify-center ${
+                        isCompare
+                          ? "bg-red-500 text-white"
+                          : "border-gray-300 hover:bg-gray-100"
+                      }`}
+                    >
+                      {compareLoader ? (
+                        <Icon icon="spinner" className="animate-spin" />
+                      ) : (
+                        <ApartmentOutlined
+                          style={{
+                            fontSize: "18px",
+                            color: isCompare ? "white" : "inherit"
+                          }}
+                        />
+                      )}
                     </button>
                   </div>
 
@@ -289,7 +381,12 @@ export default function ProductDetailQuickview(props) {
                     <p className="font-medium text-gray-700">
                       Need Help? Call Our Experts On
                     </p>
-                    <p className="font-bold text-gray-900">024 7637 5531</p>
+                    <a
+                      href="tel:02476375531"
+                      className="font-bold text-blue-700"
+                    >
+                      024 7637 5531
+                    </a>
                   </div>
                 </div>
               </div>
