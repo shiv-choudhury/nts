@@ -3,14 +3,19 @@ import { ApartmentOutlined } from "@ant-design/icons";
 import { Link, useParams } from "react-router-dom";
 import parse from "html-react-parser";
 
-import { getProductDetails } from "../apis/ApiCalls";
+import { addToCart, getProductDetails } from "../apis/ApiCalls";
 import Icon from "../components/Icon";
 import { imageBaseUrl1 } from "../components/utils/constants";
 import ProductCard from "../components/ProductCard";
 import Zoom from "react-medium-image-zoom";
 import { OrderDetailLoader } from "../components/Loaders";
+import Counter from "../components/Counter";
+import useAppContext from "../components/context/UserContext";
+import { toast } from "react-toastify";
 
 const ProductDetailPage = () => {
+  const { userState, dispatch } = useAppContext();
+
   const { slug } = useParams();
 
   const imageBaseUrl = imageBaseUrl1;
@@ -19,6 +24,7 @@ const ProductDetailPage = () => {
   const [currentImage, setCurrentImage] = useState(0);
   const [productDetails, setProductDetails] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [cartLoader, setCartLoader] = useState(false);
 
   const keyFeatures = productDetails?.metaDescription?.metaDescription
     ? parse(productDetails?.metaDescription?.metaDescription)
@@ -90,13 +96,32 @@ const ProductDetailPage = () => {
     ]
   };
 
-  const incrementQuantity = () => {
-    setQuantity(quantity + 1);
-  };
-
-  const decrementQuantity = () => {
-    if (quantity > 1) {
-      setQuantity(quantity - 1);
+  const handleAddToCart = async () => {
+    try {
+      setCartLoader(true);
+      const payload = {
+        productId: productDetails?._id,
+        quantity: quantity,
+        price: productDetails?.price?.ourPrice
+      };
+      const resp = await addToCart(payload);
+      const { data: productData, success, message, status } = resp.data;
+      if (success) {
+        toast.success(message);
+        dispatch({
+          type: "CART_LENGTH",
+          data: productData?.products?.length
+        });
+      } else {
+        toast.error(message);
+      }
+    } catch (error) {
+      console.error(error);
+      if (error?.response?.data?.message === "invalidToken") {
+        toast.error("Please login to add to cart");
+      }
+    } finally {
+      setCartLoader(false);
     }
   };
 
@@ -229,32 +254,16 @@ const ProductDetailPage = () => {
 
             <div className="flex items-center mb-4">
               <span className="mr-4 text-gray-600">SqM(QTY)</span>
-              <div className="flex items-center border rounded">
-                <button
-                  onClick={decrementQuantity}
-                  className="px-3 py-1 border-r hover:bg-gray-100 rounded cursor-pointer"
-                >
-                  −
-                </button>
-                <input
-                  type="text"
-                  value={quantity}
-                  onChange={(e) => setQuantity(parseInt(e.target.value) || 1)}
-                  className="w-12 text-center py-1"
-                />
-                <button
-                  onClick={incrementQuantity}
-                  className="px-3 py-1 border-l hover:bg-gray-100 rounded cursor-pointer"
-                >
-                  +
-                </button>
-              </div>
+              <Counter quantity={quantity} setQuantity={setQuantity} />
             </div>
 
             <div className="flex flex-wrap gap-2 mb-4">
-              <button className="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded flex items-center cursor-pointer">
+              <button
+                onClick={handleAddToCart}
+                className="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded flex items-center cursor-pointer"
+              >
                 <Icon icon="shopping-cart" className="mr-2" />
-                ADD TO CART
+                {cartLoader ? "ADDING..." : "ADD TO CART"}
               </button>
               <button className="border border-gray-300 hover:bg-gray-100 px-2 py-2 rounded cursor-pointer">
                 <Icon icon="heart" className="" />
@@ -309,15 +318,15 @@ const ProductDetailPage = () => {
         <div className="flex">
           <div className="lg:p-4">
             <ul className="space-y-3">
-              {keyFeatures?.map((feature, index) => (
+              {/* {keyFeatures?.map((feature, index) => (
                 <li key={index} className="flex items-start ">
                   <Icon icon="check" className="mt-1 mr-2 text-green-500" />
 
                   <span>{feature?.props?.children}</span>
                 </li>
-              ))}
+              ))} */}
               {/* to handle empty strings */}
-              {/* {keyFeatures?.map(
+              {keyFeatures?.map(
                 (feature, index) =>
                   typeof feature?.props?.children === "string" &&
                   feature?.props?.children.trim() && (
@@ -326,7 +335,7 @@ const ProductDetailPage = () => {
                       <span>{feature?.props?.children}</span>
                     </li>
                   )
-              )} */}
+              )}
             </ul>
           </div>
         </div>
