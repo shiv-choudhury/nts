@@ -27,7 +27,7 @@ export default function ProductsPage() {
       const { status, success, message, data } = resp.data;
 
       if (success) {
-        setProducts(data);
+        setProducts(data?.products);
       } else {
         console.error(message);
       }
@@ -42,9 +42,18 @@ export default function ProductsPage() {
     return <ProductLoader />;
   }
 
+  const onFilterApply = (data) => {
+    console.log("filters", data);
+  };
+
   return (
     <div className="mb-8 md:mb-12">
-      <Filter isOpen={openFilter} setIsOpen={setOpenFilter} data={products} />
+      <Filter
+        onFilterApply={onFilterApply}
+        isOpen={openFilter}
+        setIsOpen={setOpenFilter}
+        data={products}
+      />
       <div className="flex justify-between items-center mb-4">
         <h2 className="text-xl md:text-2xl font-semibold text-blue-800">
           {name || "Products"}

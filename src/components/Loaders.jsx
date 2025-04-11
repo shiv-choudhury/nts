@@ -18,6 +18,8 @@ export const Skeleton = ({
 export default function ProductLoader() {
   return (
     <>
+      <Skeleton height="h-[100px] md:h-[300px] mb-4" pulse />
+
       <div className="grid grid-cols-1 xs:grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3 md:gap-6">
         <Skeleton height="h-[270px]" pulse />
         <Skeleton height="h-[270px]" pulse />

@@ -95,6 +95,12 @@ const Filter = (props) => {
     return () => document.body.classList.remove("overflow-hidden");
   }, [isOpen]);
 
+  const applyFilters = () => {
+    const { onFilterApply } = props;
+    onFilterApply(selectedFilters);
+    setIsOpen(false);
+  };
+
   return (
     <AnimatePresence>
       {isOpen && (
@@ -107,99 +113,106 @@ const Filter = (props) => {
             onClick={closeMenu}
           />
           <motion.div
-            className="fixed top-0 left-0 h-full w-80 bg-white z-50 sidemenu shadow-lg overflow-y-auto"
+            className="fixed top-0 left-0 h-full w-80 bg-white z-50 sidemenu shadow-lg"
             initial={{ x: "-100%" }}
             animate={{ x: 0 }}
             exit={{ x: "-100%" }}
             transition={{ duration: 0.3 }}
           >
-            {/* Header */}
-            <div className="flex justify-between items-center p-4 border-b bg-gray-100">
-              <h2 className="text-lg font-semibold">Filter :</h2>
-              <button
-                className="text-sm text-blue-600 hover:underline"
-                onClick={clearAllFilters}
-              >
-                Clear All
-              </button>
-            </div>
-
-            {/* Content */}
-            <div className="p-4 space-y-5">
-              {/* Price Range */}
-              <div className="space-y-2">
-                <h3 className="text-md font-bold">Price</h3>
-                <p className="text-sm text-gray-600">{`${selectedFilters.Price[0]} - ${selectedFilters.Price[1]}`}</p>
-                <input
-                  type="range"
-                  className="w-full accent-green-500"
-                  min={100}
-                  max={500}
-                  value={selectedFilters.Price[1]}
-                  onChange={(e) =>
-                    setSelectedFilters((prev) => ({
-                      ...prev,
-                      Price: [prev.Price[0], +e.target.value]
-                    }))
-                  }
-                />
+            <div className="h-full flex flex-col">
+              {/* Sticky Top: Close Button */}
+              <div className="flex justify-between items-center sticky top-0 z-10 bg-white border-b p-2">
+                <div className="text-lg font-bold text-gray-700">Filters</div>
+                <button
+                  className="p-2 bg-gray-100 hover:bg-gray-200 rounded text-sm font-medium"
+                  onClick={toggleMenu}
+                >
+                  <CloseOutlined className="" />
+                </button>
               </div>
 
-              {/* Dynamic Filters */}
-              {Object.entries(filters).map(([category, options]) => {
-                const sectionKey =
-                  category === "Color" ? "ColorList" : category;
+              {/* Scrollable Content */}
+              <div className="flex-1 overflow-y-auto p-4 space-y-5">
+                {/* Price Range */}
+                <div className="space-y-2">
+                  <h3 className="text-md font-bold">Price</h3>
+                  <p className="text-sm text-gray-600">{`${selectedFilters.Price[0]} - ${selectedFilters.Price[1]}`}</p>
+                  <input
+                    type="range"
+                    className="w-full accent-green-500 cursor-grab"
+                    min={100}
+                    max={500}
+                    value={selectedFilters.Price[1]}
+                    onChange={(e) =>
+                      setSelectedFilters((prev) => ({
+                        ...prev,
+                        Price: [prev.Price[0], +e.target.value]
+                      }))
+                    }
+                  />
+                </div>
 
-                return (
-                  <div key={category} className="border-b pb-3">
-                    <button
-                      onClick={() => toggleSection(category)}
-                      className="flex justify-between items-center w-full text-sm font-semibold text-gray-800"
-                    >
-                      <span>{category}</span>
-                      {expanded[category] ? (
-                        <MinusOutlined className="text-xs" />
-                      ) : (
-                        <PlusOutlined className="text-xs" />
+                {/* Dynamic Filters */}
+                {Object.entries(filters).map(([category, options]) => {
+                  const sectionKey =
+                    category === "Color" ? "ColorList" : category;
+
+                  return (
+                    <div key={category} className="border-b pb-3">
+                      <button
+                        onClick={() => toggleSection(category)}
+                        className="flex justify-between items-center w-full text-md font-semibold text-gray-800 cursor-pointer"
+                      >
+                        <span>{category}</span>
+                        {expanded[category] ? (
+                          <MinusOutlined className="text-xs" />
+                        ) : (
+                          <PlusOutlined className="text-xs" />
+                        )}
+                      </button>
+
+                      {expanded[category] && (
+                        <div className="mt-2 max-h-80 overflow-y-auto space-y-1">
+                          {options.map((item, index) => (
+                            <label
+                              key={index}
+                              className="flex items-center space-x-2 text-md text-gray-700 cursor-pointer hover:text-green-600"
+                            >
+                              <input
+                                type="checkbox"
+                                className="form-checkbox text-green-600"
+                                checked={selectedFilters[sectionKey]?.includes(
+                                  item
+                                )}
+                                onChange={() =>
+                                  handleCheckboxChange(category, item)
+                                }
+                              />
+                              <span>{item}</span>
+                            </label>
+                          ))}
+                        </div>
                       )}
-                    </button>
+                    </div>
+                  );
+                })}
+              </div>
 
-                    {expanded[category] && (
-                      <div className="mt-2 max-h-40 overflow-y-auto space-y-1">
-                        {options.map((item, index) => (
-                          <label
-                            key={index}
-                            className="flex items-center space-x-2 text-sm text-gray-700 cursor-pointer"
-                          >
-                            <input
-                              type="checkbox"
-                              className="form-checkbox text-green-600"
-                              checked={selectedFilters[sectionKey]?.includes(
-                                item.name
-                              )}
-                              onChange={() =>
-                                handleCheckboxChange(category, item.name)
-                              }
-                            />
-                            <span>{item.name}</span>
-                          </label>
-                        ))}
-                      </div>
-                    )}
-                  </div>
-                );
-              })}
-            </div>
-
-            {/* Footer Close */}
-            <div className="p-4 border-t">
-              <button
-                onClick={toggleMenu}
-                className="w-full py-2 bg-gray-100 hover:bg-gray-200 rounded text-sm font-medium"
-              >
-                <CloseOutlined className="mr-1" />
-                Close
-              </button>
+              {/* Sticky Bottom: Apply / Clear All */}
+              <div className="px-4 py-2 sticky bottom-0 z-10 bg-white border-t flex justify-between gap-2">
+                <button
+                  onClick={applyFilters}
+                  className="w-full text-sm bg-green-600 text-white px-4 py-2 hover:bg-green-700 rounded-sm"
+                >
+                  Apply Filter
+                </button>
+                <button
+                  onClick={clearAllFilters}
+                  className="w-full text-sm bg-red-600 text-white px-4 py-2 hover:bg-red-700 rounded-sm"
+                >
+                  Clear All
+                </button>
+              </div>
             </div>
           </motion.div>
         </>
