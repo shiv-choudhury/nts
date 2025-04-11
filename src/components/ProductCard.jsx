@@ -153,7 +153,7 @@ export default function ProductCard(props) {
           className="w-full h-full object-cover hover:scale-110 transition-transform duration-500"
         />
         {data?.productLabel && (
-          <span className="absolute top-2 right-2 bg-red-500 text-white text-xs px-2 py-1 rounded">
+          <span className="absolute top-0 right-0 bg-red-500 text-white text-xs px-2 py-1 rounded-tr-lg rounded-bl-lg">
             {data?.productLabel}
           </span>
         )}

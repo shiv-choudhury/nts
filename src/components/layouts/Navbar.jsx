@@ -35,12 +35,7 @@ const Navbar = ({ data }) => {
               >
                 <div
                   onClick={() => {
-                    navigate(`/category/${menu?.slug}`, {
-                      state: {
-                        imageUrl: `${imageBaseUrl4}${menu?.category_image[0]}`,
-                        name: menu?.name
-                      }
-                    });
+                    navigate(`/category/${menu?.slug}`);
                   }}
                   // to={`/category/${menu?.slug}`}
                   className="w-full h-full flex items-center"

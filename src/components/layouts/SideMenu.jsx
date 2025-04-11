@@ -142,12 +142,7 @@ const SideMenu = ({ isOpen, setIsOpen, data }) => {
                         <div className="flex justify-between items-center w-full">
                           <div
                             onClick={() => {
-                              navigate(`/category/${category?.slug}`, {
-                                state: {
-                                  imageUrl: `${imageBaseUrl4}${category?.category_image[0]}`,
-                                  name: category?.name
-                                }
-                              });
+                              navigate(`/category/${category?.slug}`);
                               setIsOpen(false);
                             }}
                             className="w-full cursor-pointer"

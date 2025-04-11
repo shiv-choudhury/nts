@@ -1,19 +1,21 @@
 import React, { useEffect, useState } from "react";
-import { useLocation, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
+
 import { getProducts } from "../apis/ApiCalls";
-import ProductCard from "../components/ProductCard";
-import ProductLoader from "../components/Loaders";
-import Filter from "../components/layouts/Filter";
 import Icon from "../components/Icon";
+import ProductLoader from "../components/Loaders";
+import ProductCard from "../components/ProductCard";
+import Filter from "../components/layouts/Filter";
+import { imageBaseUrl4 } from "../components/utils/constants";
 
 export default function ProductsPage() {
   const { category } = useParams();
-  const location = useLocation();
-  const { imageUrl, name } = location?.state || {};
 
   const [openFilter, setOpenFilter] = useState(false);
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(false);
+
+  const bannerImage = products?.details?.category_image?.[0] || "";
 
   useEffect(() => {
     setProducts([]);
@@ -27,7 +29,7 @@ export default function ProductsPage() {
       const { status, success, message, data } = resp.data;
 
       if (success) {
-        setProducts(data?.products);
+        setProducts(data);
       } else {
         console.error(message);
       }
@@ -56,7 +58,7 @@ export default function ProductsPage() {
       />
       <div className="flex justify-between items-center mb-4">
         <h2 className="text-xl md:text-2xl font-semibold text-blue-800">
-          {name || "Products"}
+          {products?.details?.name || "Products"}
         </h2>
         <button
           className="bg-blue-800 text-white px-4 py-2 rounded cursor-pointer hover:bg-blue-700 transition duration-300"
@@ -66,22 +68,22 @@ export default function ProductsPage() {
           Filter
         </button>
       </div>
-      {imageUrl && (
+      {bannerImage && (
         <img
-          src={imageUrl}
+          src={`${imageBaseUrl4}${bannerImage}`}
           alt="Category"
           className="w-full h-full object-cover rounded-lg shadow-md mb-6"
           onError={(e) => (e.target.src = `/assets/product.jpg`)}
         />
       )}
 
-      {products.length === 0 ? (
+      {products?.products?.length === 0 ? (
         <p className="text-center text-gray-600 text-lg font-medium py-12">
           No products found in this category.
         </p>
       ) : (
         <div className="grid grid-cols-1 xs:grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 md:gap-6">
-          {products.map((item) => (
+          {products?.products.map((item) => (
             <ProductCard key={item._id || item.id} data={item} />
           ))}
         </div>
