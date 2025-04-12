@@ -31,6 +31,7 @@ export default function Header() {
   const [openCart, setOpenCart] = useState(false);
   const [searchOptions, setSearchOptions] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [hoveredAccount, setHoveredAccount] = useState(false);
 
   useEffect(() => {
     if (headerRef.current) {
@@ -99,6 +100,8 @@ export default function Header() {
     }
   };
 
+  const user = JSON.parse(localStorage.getItem("user")) || {};
+
   return (
     <header ref={headerRef} id="header" className="w-full">
       {/* Top navigation bar */}
@@ -120,9 +123,46 @@ export default function Header() {
             4:00pm | Sunday Closed
           </div>
           <div className="hidden md:block text-sm">
-            <Link to="/login" className="hover:text-blue-600">
-              Sign In / Register
-            </Link>
+            {user?.firstname ? (
+              <div
+                className="relative"
+                onMouseEnter={() => setHoveredAccount(true)}
+                onMouseLeave={() => setHoveredAccount(false)}
+              >
+                <div className="cursor-pointer capitalize flex items-center">
+                  <Icon icon="user" className="mr-2 text-sm" />
+                  Welcome {user?.firstname}
+                </div>
+                {hoveredAccount && (
+                  <ul className="absolute left-0 top-full bg-black text-white w-full shadow-lg z-50">
+                    <li>
+                      <Link
+                        to="/account"
+                        className="block py-2 px-4 hover:bg-gray-700"
+                      >
+                        My Account
+                      </Link>
+                    </li>
+                    <li>
+                      <Link
+                        onClick={() => {
+                          localStorage.removeItem("token");
+                          localStorage.removeItem("user");
+                          setHoveredAccount(false);
+                        }}
+                        className="block py-2 px-4 hover:bg-gray-700"
+                      >
+                        Logout
+                      </Link>
+                    </li>
+                  </ul>
+                )}
+              </div>
+            ) : (
+              <Link to="/login" className="hover:text-blue-600">
+                Sign In / Register
+              </Link>
+            )}
           </div>
         </div>
       </div>
@@ -155,13 +195,13 @@ export default function Header() {
 
           <div className="mr-2 md:mr-4 relative flex-1 z-30">
             <Select
-              className="react-select-container cursor-pointer  "
+              className="react-select-container cursor-pointer"
               classNamePrefix="react-select"
               options={searchOptions}
               onInputChange={handleInputChange}
               onChange={handleSelect}
               isLoading={loading}
-              placeholder="Search products here"
+              placeholder="Search "
               isClearable
               noOptionsMessage={({ inputValue }) =>
                 !inputValue ? "Find a product" : "No results found"

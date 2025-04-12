@@ -45,6 +45,7 @@ const Login = () => {
       const { data, status, success, message } = response.data;
       if (success) {
         localStorage.setItem("token", data?.token);
+        localStorage.setItem("user", JSON.stringify(data));
         toast.success(message);
         navigate("/");
       } else {

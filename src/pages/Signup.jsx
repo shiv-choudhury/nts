@@ -80,6 +80,7 @@ const Signup = () => {
       const { data, status, success, message } = response.data;
       if (success) {
         localStorage.setItem("token", data?.currenttoken);
+        localStorage.setItem("user", JSON.stringify(data?.user));
         toast.success(message);
         navigate("/");
       } else {

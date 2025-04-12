@@ -1,8 +1,45 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import { getUserOrders, getUserProfile } from "../apis/ApiCalls";
+import { useNavigate } from "react-router-dom";
 
 export default function Account() {
+  const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState("ACCOUNT DETAILS");
-  const tabs = ["ACCOUNT DETAILS", "ORDERS", "WHISHLIST", "LOGOUT"];
+  const tabs = ["ACCOUNT DETAILS", "ORDERS", "LOGOUT"];
+  const [userProfile, setUserProfile] = useState({});
+
+  useEffect(() => {
+    fetchUserProfile();
+    // fetchOrderList();
+  }, []);
+
+  const fetchUserProfile = async () => {
+    try {
+      const resp = await getUserProfile();
+      const { data, success, message } = resp.data;
+      if (success) {
+        setUserProfile(data);
+      } else {
+        toast.error(message);
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const fetchOrderList = async () => {
+    try {
+      const resp = await getUserOrders();
+      const { data, success, message } = resp.data;
+      if (success) {
+        setOrders(data);
+      } else {
+        toast.error(message);
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
   const renderContent = () => {
     switch (activeTab) {
@@ -13,25 +50,33 @@ export default function Account() {
               <label className="block text-sm font-medium text-gray-600">
                 First name
               </label>
-              <div className="mt-1 bg-gray-100 p-2 rounded">shiv</div>
+              <div className="mt-1 bg-gray-100 p-2 rounded">
+                {userProfile?.firstname}
+              </div>
             </div>
             <div>
               <label className="block text-sm font-medium text-gray-600">
                 Last name
               </label>
-              <div className="mt-1 bg-gray-100 p-2 rounded">test</div>
+              <div className="mt-1 bg-gray-100 p-2 rounded">
+                {userProfile?.lastname}
+              </div>
             </div>
             <div>
               <label className="block text-sm font-medium text-gray-600">
                 Mobile
               </label>
-              <div className="mt-1 bg-gray-100 p-2 rounded">9876543210</div>
+              <div className="mt-1 bg-gray-100 p-2 rounded">
+                {userProfile?.mobileno}
+              </div>
             </div>
             <div>
               <label className="block text-sm font-medium text-gray-600">
                 Email
               </label>
-              <div className="mt-1 bg-gray-100 p-2 rounded">shiv@gmail.com</div>
+              <div className="mt-1 bg-gray-100 p-2 rounded">
+                {userProfile?.email}
+              </div>
             </div>
           </div>
         );
@@ -71,10 +116,23 @@ export default function Account() {
             </div>
           </div>
         );
-      case "WHISHLIST":
-        return <div className="p-4">Wishlist content.</div>;
+      // case "WHISHLIST":
+      //   return <div className="p-4">Wishlist content.</div>;
       case "LOGOUT":
-        return <div className="p-4">Logout content.</div>;
+        return (
+          <div className="p-4">
+            <button
+              onClick={() => {
+                localStorage.removeItem("token");
+                localStorage.removeItem("user");
+                navigate("/");
+              }}
+              className="bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700 cursor-pointer"
+            >
+              CONFIRM LOGOUT
+            </button>
+          </div>
+        );
       default:
         return null;
     }

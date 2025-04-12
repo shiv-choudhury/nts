@@ -29,6 +29,7 @@ export const getResponse = async (url, params, token = null) => {
       .catch((error) => {
         if (error?.response?.data?.message === "invalidToken") {
           localStorage.removeItem("token");
+          localStorage.removeItem("user");
         }
         if (error?.response?.status === 403 && !error.response.success) {
           // logout()
@@ -58,6 +59,7 @@ export const postResponse = async (url, payload, token = null) => {
       .catch((error) => {
         if (error?.response?.data?.message === "invalidToken") {
           localStorage.removeItem("token");
+          localStorage.removeItem("user");
         }
         if (error?.response?.status === 403 && !error.response.success) {
           // logout()
