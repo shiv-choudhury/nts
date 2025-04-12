@@ -105,7 +105,7 @@ const Cart = () => {
   };
 
   return (
-    <div className="container mx-auto p-4 sm:p-6">
+    <div className="container mx-auto">
       <h2 className="text-xl sm:text-2xl font-bold mb-4 sm:mb-6">
         Shopping Cart
       </h2>
@@ -168,7 +168,7 @@ const Cart = () => {
             </div>
           )}
 
-          <div className="flex flex-col sm:flex-row sm:justify-between mt-4 sm:mt-6 gap-3">
+          <div className="flex justify-between mt-4 sm:mt-6 gap-3">
             <button
               onClick={() => navigate("/")}
               className="px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700 transition text-sm sm:text-base"
@@ -176,7 +176,7 @@ const Cart = () => {
               Continue Shopping
             </button>
             <button
-              className="px-4 py-2 bg-gray-500 text-white rounded hover:bg-gray-600 transition text-sm sm:text-base"
+              className="px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600 transition text-sm sm:text-base"
               onClick={handleClearCart}
             >
               Clear Cart

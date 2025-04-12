@@ -139,3 +139,8 @@ export const checkDiscount = (payload) => {
 //     "cartTotal":22,
 //     "buyQty":1
 // }
+
+export const placeOrder = (payload) => {
+  let url = `placeorder`;
+  return ApiMethods.postResponse(url, payload);
+};
