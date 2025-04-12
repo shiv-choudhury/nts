@@ -43,6 +43,8 @@ const SideMenu = ({ isOpen, setIsOpen, data }) => {
 
   const activeCategories = data?.filter((category) => category.status);
 
+  const user = JSON.parse(localStorage.getItem("user")) || {};
+
   return (
     <AnimatePresence>
       {isOpen && (
@@ -142,7 +144,11 @@ const SideMenu = ({ isOpen, setIsOpen, data }) => {
                         <div className="flex justify-between items-center w-full">
                           <div
                             onClick={() => {
-                              navigate(`/category/${category?.slug}`);
+                              navigate(`/category/${category?.slug}`, {
+                                state: {
+                                  isGroup: true
+                                }
+                              });
                               setIsOpen(false);
                             }}
                             className="w-full cursor-pointer"
@@ -178,6 +184,7 @@ const SideMenu = ({ isOpen, setIsOpen, data }) => {
                                   onClick={() => {
                                     navigate(`/subcategory/${sub?.slug}`, {
                                       state: {
+                                        isGroup: true,
                                         name: sub?.name
                                       }
                                     });
@@ -210,15 +217,27 @@ const SideMenu = ({ isOpen, setIsOpen, data }) => {
             </div>
 
             <div className="p-4 border-t border-gray-700 flex justify-between items-center">
-              <div
-                className="text-white cursor-pointer"
-                onClick={() => {
-                  navigate("/login");
-                  setIsOpen(false);
-                }}
-              >
-                Login/Signup
-              </div>
+              {user?.firstname ? (
+                <div
+                  className="text-green-300 cursor-pointer"
+                  onClick={() => {
+                    navigate("/account");
+                    setIsOpen(false);
+                  }}
+                >
+                  Welcome {user?.firstname}
+                </div>
+              ) : (
+                <div
+                  className="text-white cursor-pointer"
+                  onClick={() => {
+                    navigate("/login");
+                    setIsOpen(false);
+                  }}
+                >
+                  Login/Signup
+                </div>
+              )}
               <button className="text-white" onClick={toggleMenu}>
                 <CloseOutlined className="text-lg" />
               </button>

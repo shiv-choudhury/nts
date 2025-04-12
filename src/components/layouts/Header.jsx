@@ -102,6 +102,15 @@ export default function Header() {
 
   const user = JSON.parse(localStorage.getItem("user")) || {};
 
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+    localStorage.removeItem("user");
+    setHoveredAccount(false);
+    setTimeout(() => {
+      navigate("/");
+    }, 0);
+  };
+
   return (
     <header ref={headerRef} id="header" className="w-full">
       {/* Top navigation bar */}
@@ -145,11 +154,7 @@ export default function Header() {
                     </li>
                     <li>
                       <Link
-                        onClick={() => {
-                          localStorage.removeItem("token");
-                          localStorage.removeItem("user");
-                          setHoveredAccount(false);
-                        }}
+                        onClick={handleLogout}
                         className="block py-2 px-4 hover:bg-gray-700"
                       >
                         Logout
