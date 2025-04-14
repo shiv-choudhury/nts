@@ -24,6 +24,7 @@ const Checkout = () => {
   });
   const [shipping, setShipping] = useState({ ...billing });
   const [paymentMode, setPaymentMode] = useState("");
+  const [showCouponField, setShowCouponField] = useState(false);
 
   useEffect(() => {
     fetchUserCart();
@@ -245,29 +246,37 @@ const Checkout = () => {
     <div className="bg-white sm:bg-gray-100 min-h-screen p-0 sm:p-4">
       <div className="mx-auto bg-white p-2 sm:p-6 rounded-lg shadow-lg">
         <div className="mb-2 text-2xl font-semibold">Checkout</div>
-        <div className="bg-red-500 text-white text-sm p-3 text-center rounded">
+        <div className="p-2 sm:p-3 text-xs sm:text-sm bg-red-500 text-white text-center rounded">
           DELIVERY MAY TAKE FROM NEXT DAY TO 4 WORKING DAYS. PLEASE CONTACT US
           FOR THE EXACT DAY OF DELIVERY.
         </div>
         <div className="mt-4 p-4 bg-gray-100 rounded-lg flex flex-col md:flex-row gap-2 items-center">
-          <p className="text-sm font-semibold">
-            Have a coupon? <span className="font-bold">ENTER YOUR CODE</span>
-          </p>
-          <div className="flex flex-col md:flex-row mt-2 gap-2 w-full">
-            <input
-              type="text"
-              value={couponCode}
-              onChange={(e) => setCouponCode(e.target.value)}
-              placeholder="Enter coupon code"
-              className="border p-2 flex-1 rounded w-full"
-            />
-            <button
-              onClick={handleApplyCoupon}
-              className="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded w-full md:w-auto"
+          <p className="text-sm font-semibold text-gray-500">
+            Have a coupon?{" "}
+            <span
+              onClick={() => setShowCouponField(!showCouponField)}
+              className="font-bold text-green-600 cursor-pointer hover:underline"
             >
-              APPLY COUPON
-            </button>
-          </div>
+              ENTER YOUR CODE
+            </span>
+          </p>
+          {showCouponField && (
+            <div className="flex flex-col md:flex-row mt-2 gap-2 w-full">
+              <input
+                type="text"
+                value={couponCode}
+                onChange={(e) => setCouponCode(e.target.value)}
+                placeholder="Enter coupon code"
+                className="border p-2 flex-1 rounded w-full"
+              />
+              <button
+                onClick={handleApplyCoupon}
+                className="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded w-full md:w-auto"
+              >
+                APPLY COUPON
+              </button>
+            </div>
+          )}
         </div>
 
         <div className="flex flex-col md:flex-row gap-6 mt-6">
