@@ -34,7 +34,11 @@ export default function Gallery() {
           <img
             src={`${imageBaseUrl}${item?.img_path}`}
             onError={(e) => {
-              e.target.src = `assets/product1.jpg`;
+              if (
+                e.target.src !== `${window.location.origin}/assets/product.jpg`
+              ) {
+                e.target.src = `${window.location.origin}/assets/product.jpg`;
+              }
             }}
             alt="Product"
             className="w-full h-full object-cover hover:scale-105 transition-transform duration-500 cursor-pointer"
