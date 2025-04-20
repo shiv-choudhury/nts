@@ -1,6 +1,7 @@
 import axios from "axios";
 
-const BaseUrl = "https://aksasoftware.com:5018/api/";
+// const BaseUrl = "https://aksasoftware.com:5018/api/";
+const BaseUrl = "https://nts-node.onrender.com/api/";
 
 export const getHeader = async (token) => {
   const authToken = token || localStorage.getItem("token");
